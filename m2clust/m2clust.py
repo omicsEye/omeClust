@@ -26,8 +26,8 @@ def main_run(distance_matrix=None,
               number_of_estimated_clusters =None,
               linkage_method = 'single', 
               output_dir=None, 
-              do_plot = True, 
-              resolution = 'low'):
+              do_plot=True,
+              resolution='low'):
     bTree=True
 
     if do_plot:

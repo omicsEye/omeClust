@@ -206,7 +206,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order = [], xlabels = None, ylabel
         #axmatrix.get_figure().colorbar(im, ax=axmatrix)
     #plt.tight_layout()
         
-    fig.savefig(filename + '.pdf', bbox_inches ='tight')
+    fig.savefig(filename + '.pdf', bbox_inches ='tight', dpi=350, figsize=(cm2inch(4.5), cm2inch(4.5)))
     #heatmap2(data_table, xlabels = xlabels, filename=filename+"_distance", metric = "nmi", method = "single", )
     #pylab.close()
     return Y1
@@ -276,6 +276,7 @@ def ord_plot(coords, target_names = None, ord_name = 'ord',\
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).all(axis=1)]  
     
     plt.close()
+    plt.rcParams["figure.figsize"] = (3, 3)
     ax = plt.axes()
     colors = ncolors(n= max(2, sum([1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))#
     markers = ["o", "s", "v", "^","D", "H", "d","<", ">","p",  
@@ -374,7 +375,7 @@ def ord_plot(coords, target_names = None, ord_name = 'ord',\
                        yp, 
                        color= 'whitesmoke',
                        marker = mp,  
-                       s =50, alpha = .2, linewidths = .25, edgecolors = 'black',
+                       s =35, alpha = .4, linewidths = .25, edgecolors = 'black',
                        label= label_cluster)
     '''# Label for shapesbased on metadat
     for i, val in enumerate( set(metadata[shapeby])):
@@ -429,7 +430,8 @@ def ord_plot(coords, target_names = None, ord_name = 'ord',\
         plt.tight_layout()
     except:
         pass
-    plt.savefig(config.output_dir + '/'+ ord_name+'_plot.pdf', dpi=350, figsize=(cm2inch(8.9), cm2inch(8.9)))
+
+    plt.savefig(config.output_dir + '/'+ ord_name+'_plot.pdf', dpi=350)  #figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 def cm2inch(value):
