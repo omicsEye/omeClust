@@ -32,7 +32,7 @@ except ImportError:
         "Topic :: Scientific/Engineering :: Bio-Informatics"
         ]
 
-VERSION = "0.0.5"
+VERSION = "0.0.6"
 AUTHOR = "Gholamali Rahnavard"
 AUTHOR_EMAIL = "gholamali.rahnavard@gmail.com"
 MAINTAINER = "Gholamali Rahnavard"

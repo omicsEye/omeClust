@@ -10,7 +10,7 @@ import scipy
 import pylab
 from array import array
 import math
-from numpy import array , rank, median
+#from numpy import array, median
 import numpy 
 import argparse
 import scipy.cluster 
