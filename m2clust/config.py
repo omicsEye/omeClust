@@ -1,20 +1,18 @@
-
 version = '0.0.6'
-__description__      = """
+__description__ = """
  m2clust for multi-resolution clustering
 """
 
-__doc__             = __doc__ 
-__version__          = version
-__author__             = ["Ali Rahnavard"]
-__contact__         = "gholamali.rahnavard@gmail.com"
-
+__doc__ = __doc__
+__version__ = version
+__author__ = ["Ali Rahnavard"]
+__contact__ = "gholamali.rahnavard@gmail.com"
 
 keys_attribute = ["__description__", "__version__", "__author__", "__contact__", "clustering", "multi-resolution"]
 
 # default Parameters
 similarity_method = 'spearman'
-diatance_metric = 'spearman' #euclidean'
+diatance_metric = 'spearman'  # euclidean'
 data = None
 metadata = None
 resolution = 'low'
@@ -24,5 +22,5 @@ linkage_method = 'average'
 plot = False
 size_to_plot = 3
 
-#output directort
+# output directort
 output_dir = './'
