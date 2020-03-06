@@ -1,4 +1,4 @@
-version = '0.0.6'
+version = '0.0.7'
 __description__ = """
  m2clust for multi-resolution clustering
 """

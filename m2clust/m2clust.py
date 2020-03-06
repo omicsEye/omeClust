@@ -115,7 +115,7 @@ def parse_arguments(args):
         default=False)
     parser.add_argument(
         "--resolution",
-        default='low',
+        default='high',
         help="Resolution c .\
          Low resolution is good when clusters are well separated clusters.",
         choices=['high', 'medium', 'low'])
