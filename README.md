@@ -9,7 +9,14 @@ account not only similarity between measurements and
 also the structure in a hierarchical structure of data and 
 number of features which group together.
 
-**Citation:** Rahnavard A. et al, *m2clust: multi-resolution clustering of omics data*
+---
 
+**Citation:**
 
-Please see the [Wiki](https://github.com/omicsEye/m2clust/wiki) for the data, their description.
+Rahnavard A. et al, *m2clust: multi-resolution clustering of omics data*
+
+----
+
+* Please see the [Wiki/Home](https://github.com/omicsEye/m2clust/wiki/Home) for  a detailed user manual.
+
+* Please see the [Wiki/Workshop](https://github.com/omicsEye/m2clust/wiki/Workshop) for  a one hour workshop.
