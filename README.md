@@ -17,9 +17,7 @@ Rahnavard A. et al, *m2clust: multi-resolution clustering of omics data*
 
 ----
 
-* Please see the [Wiki/Home](https://github.com/omicsEye/m2clust/wiki/Home) for  a detailed user manual.
-
-* Please see the [Wiki/Workshop](https://github.com/omicsEye/m2clust/wiki/Workshop) for  a one hour workshop.
+* Please see the [Wiki/Workshop](https://github.com/omicsEye/m2clust/wiki/Workshop) for a one hour workshop.
 
 ----
 # mclust user manual
