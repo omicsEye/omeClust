@@ -25,7 +25,7 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
 ----
 
 ## Contents ##
-* [mclust](#markdown-header-mclust)
+* [m2clust](#m2clust)
     * [mclust approach](#mclust-approach)
     * [Requirements](#requirements)
     * [Installation](#installation)
@@ -39,8 +39,8 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
 
 
 ------------------------------------------------------------------------------------------------------------------------------
-# mclust #
-## mclust appraoch ##
+# m2clust #
+## m2clust appraoch ##
 ![overview.png](https://github.com/omicsEye/m2clust/docs/overviwe.png)
 ## REQUIREMENTS ##
 * [Matplotlib](http://matplotlib.org/)
@@ -50,33 +50,24 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
 
 ## INSTALLATION ##
 ```
-$ pip install mclust
+$ sudo pip3 install m2clust
 ```
 ------------------------------------------------------------------------------------------------------------------------------
 
 # Getting Started with mclust #
-## TEST mclust ##
+## TEST m2clust ##
 
-To test if mclust is running correctly, you may run the following command in the terminal:
+To test if m2clust is installed correctly, you may run the following command in the terminal:
 
 ```
 #!cmd
 
-mclust_test
+m2clust -h
 
 ```
 
-Which yields:
+Which yields m2clust command line options
 
-```
-test_create_folders (basic_tests_utilities.TestUtilitiesBasicFunctions) ... ok
-test_is_present (basic_tests_utilities.TestUtilitiesBasicFunctions) ... ok
-
-----------------------------------------------------------------------
-Ran 2 tests in 1.01s
-
-OK
-```
 
 ## Options ##
 
@@ -235,7 +226,7 @@ gene expression, microbial species stains, and metabolite profiles.
 <img src="m2clust_demo/output/MDS_plot.png" height="35%" width="35%">
 <img src="m2clust_demo/output/PCoA_plot.png" height="35%" width="35%">
 
-Please see the [Wiki](https://github.com/omicsEye/m2clust/wiki) for the data, their description.
+Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki) for the data, their description.
 
 
 ### Support ###

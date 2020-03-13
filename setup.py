@@ -33,17 +33,17 @@ except ImportError:
         ]
 
 VERSION = "0.0.8"
-AUTHOR = "Gholamali Rahnavard"
+AUTHOR = "Ali Rahnavard"
 AUTHOR_EMAIL = "gholamali.rahnavard@gmail.com"
-MAINTAINER = "Gholamali Rahnavard"
+MAINTAINER = "Ali Rahnavard"
 MAINTAINER_EMAIL = "gholamali.rahnavard@gmail.com"
 
 # try to download the bitbucket counter file to count downloads
 # this has been added since PyPI has turned off the download stats
 # this will be removed when PyPI Warehouse is production as it
 # will have download stats
-COUNTER_URL="https://github.com/omicsEye/m2clust/blob/master/README.md"
-counter_file="README.md"
+COUNTER_URL = "https://github.com/omicsEye/m2clust/blob/master/README.md"
+counter_file = "README.md"
 if not os.path.isfile(counter_file):
     print("Downloading counter file to track m2clust downloads"+
         " since the global PyPI download stats are currently turned off.")
@@ -61,7 +61,7 @@ setup(
     description="m2clust: mluti-resolution clustering",
     long_description="m2clust provides an elegant clustering approach " + \
         "to find clusters in data sets with different density and resolution." ,
-    url="http://bitbucket.org/omicsEye/m2clust",
+    url="http://github.com/omicsEye/m2clust",
     keywords=['clustering','multi-resolution','hierarchically'],
     platforms=['Linux','MacOS', "Windows"],
     classifiers=classifiers,
@@ -78,7 +78,8 @@ setup(
         'console_scripts': [
             'm2clust = m2clust.m2clust:main',
             'm2clustviz = m2clust.viz:main',
+            'm2clust_test = m2clust.tests.m2clust_test:main'
         ]},
-    test_suite= '',
-    zip_safe = False
+    test_suite='m2clust.tests.m2clust_test',
+    zip_safe=False
  )
