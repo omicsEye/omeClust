@@ -179,6 +179,7 @@ optional input is a metadata table `n*m` where
 
 * How to run?
 
+
 ``
 $ m2clust -i synthetic_demo/adist.txt -o demo_output
 ``
@@ -195,7 +196,20 @@ deprogram of the data
 `--metadata` is optional to shape the clusters with 
 highest influence in clusters.
 
+* How to run from script?
 
+``
+$ python3
+`` 
+
+``
+from m2clust import m2clust
+``
+
+``
+m2clust.m2clust(data='/path-to/adist.txt', metadata='/path-to/metadata.txt', 
+                output_dir='m2clust_output')
+``
 * output
 1. `m2clust.txt` contains cluster, their members,
 and metadata resolution score sorted 

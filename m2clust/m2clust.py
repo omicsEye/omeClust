@@ -131,6 +131,14 @@ def m2clust(data, metadata, resolution=config.resolution,
             output_dir=config.output_dir,
             estimated_number_of_clusters=config.estimated_number_of_clusters,
             linkage_method=config.linkage_method, plot=config.plot, size_to_plot=config.size_to_plot):
+
+    #read  input files
+    data = pd.read_table(data, index_col=0, header=0)
+
+    if metadata is not None:
+        metadata = pd.read_table(metadata, index_col=0, header=0)
+        metadata = metadata.loc[data.index, :]
+
     config.output_dir = output_dir
     check_requirements()
     data_flag = True
@@ -188,15 +196,8 @@ def main():
     config.linkage_method = args.linkage_method
     config.plot = args.plot
     config.size_to_plot = config.size_to_plot
-    input_df = pd.DataFrame()
-    df_data = pd.DataFrame()
-    df_data = pd.read_table(config.input, index_col=0, header=0)
 
-    config.metadata = args.metadata
-    if config.metadata is not None:
-        config.metadata = pd.read_table(config.metadata, index_col=0, header=0)
-        config.metadata = config.metadata.loc[df_data.index, :]
-    m2clust(data=df_data, metadata=config.metadata,
+    m2clust(data=config.input, metadata=config.metadata,
             resolution=config.resolution, output_dir=config.output)
 
 
