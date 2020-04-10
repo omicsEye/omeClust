@@ -397,7 +397,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                        s=35, alpha=.4, linewidths=.25, edgecolors='black',
                        label=label_cluster)
     # Label for shape based on metadata
-    '''for i, val in enumerate(set(metadata[shapeby])):
+    for i, val in enumerate(set(metadata[shapeby])):
         # print(val)
         if i == 0:
             label = str(shapeby) + '\n' + str(val)
@@ -408,7 +408,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                    color='whitesmoke',
                    marker=markers_dic[val],
                    s=35, alpha=.8, linewidths=.25, edgecolors='black',
-                   label=label)'''
+                   label=label)
 
 
     metadata_leg_markers = [markers[i] for i in range(len(order_metadata))]
