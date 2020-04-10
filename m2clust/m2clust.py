@@ -195,10 +195,17 @@ def main():
     config.estimated_number_of_clusters = args.estimated_number_of_clusters
     config.linkage_method = args.linkage_method
     config.plot = args.plot
+    config.size_to_plot = args.size_to_plot
+    config.estimated_number_of_clusters = args.estimated_number_of_clusters,
+    config.linkage_method = args.linkage_method
+    config.plot = config.plot
     config.size_to_plot = config.size_to_plot
-
-    m2clust(data=config.input, metadata=config.metadata,
-            resolution=config.resolution, output_dir=config.output)
+    m2clust(data=args.input, metadata=args.metadata,
+            resolution=args.resolution, output_dir=args.output,
+            linkage_method=args.linkage_method,
+            plot=args.plot,
+            estimated_number_of_clusters=args.estimated_number_of_clusters,
+            size_to_plot=args.size_to_plot)
 
 
 if __name__ == "__main__":
