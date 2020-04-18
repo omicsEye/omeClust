@@ -165,6 +165,7 @@ def m2clust(data, metadata, resolution=config.resolution,
         m2clust_scores, sorted_keys = utilities.m2clust_score(clusters, metadata, len(metadata))
         if len(sorted_keys) > 1:
             shapeby = sorted_keys[1]
+            print(shapeby, " is the most influential metadata in clusters")
     else:
         m2clust_scores, sorted_keys = utilities.m2clust_score(clusters, metadata, df_distance.shape[0])
     # print m2clust_scores, sorted_keys

@@ -32,7 +32,7 @@ except ImportError:
         "Topic :: Scientific/Engineering :: Bio-Informatics"
         ]
 
-VERSION = "0.0.8"
+VERSION = "1.1.1"
 AUTHOR = "Ali Rahnavard"
 AUTHOR_EMAIL = "gholamali.rahnavard@gmail.com"
 MAINTAINER = "Ali Rahnavard"
@@ -66,7 +66,9 @@ setup(
     platforms=['Linux','MacOS', "Windows"],
     classifiers=classifiers,
     #long_description=open('readme.md').read(),
-    install_requires=[  
+    install_requires=[
+        "latex >= 0.0.1",
+        "Cython >= 0.29.2",
         "Numpy >= 1.9.2",
         "Scipy >= 0.17.0",
         "Matplotlib >= 1.5.1",

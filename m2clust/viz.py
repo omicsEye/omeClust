@@ -12,6 +12,11 @@ import warnings
 
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import rc
+# activate latex text rendering
+#rc('text', usetex=True)
+#matplotlib.rcParams['text.usetex']=True
+#matplotlib.rcParams['text.latex.unicode']=True
 import numpy as np
 import pandas as pd
 import pylab
@@ -328,7 +333,6 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         markers_dic = {'nan': "_"}
         df = metadata
         df['freq'] = df.groupby(shapeby)[shapeby].transform('count')
-        print(shapeby)
         order_metadata = list(df.sort_values(by=['freq'], ascending=False, na_position='last')[shapeby].unique())
         for i, val in enumerate(order_metadata):
             markers_dic[val] = markers[i]
@@ -396,19 +400,15 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                        marker=mp,
                        s=35, alpha=.4, linewidths=.25, edgecolors='black',
                        label=label_cluster)
+
     # Label for shape based on metadata
-    for i, val in enumerate(set(metadata[shapeby])):
-        # print(val)
-        if i == 0:
-            label = str(shapeby) + '\n' + str(val)
-        else:
-            label = str(val)
-        ax.scatter(None,
-                   None,
-                   color='whitesmoke',
-                   marker=markers_dic[val],
-                   s=35, alpha=.8, linewidths=.25, edgecolors='black',
-                   label=label)
+    ax.scatter(None,
+               None,
+               color='whitesmoke',
+               marker=None,
+               s=50, alpha=0, linewidths=.25, edgecolors='black',
+               label=shapeby)
+
 
 
     metadata_leg_markers = [markers[i] for i in range(len(order_metadata))]
