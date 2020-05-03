@@ -34,8 +34,8 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
     * [Options](#options) 
     * [Input](#input)
     * [Output](#output)  
-* [Guides to mclustviz for visuzlaization](#markdown-header-guides-to-m2clustviz-for-visualiazation)
-
+* [Guides to mclustviz for visuzlaization](#guides-to-m2clustviz-for-visualiazation)
+* [Synthetic clusters](#synthetic-clusters)
 
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -287,7 +287,17 @@ gene expression, microbial species stains, and metabolite profiles.
 
 Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki) for the data, their description.
 
+# Synthetic clusters #
 
+```buildoutcfg
+$ python3
+>>> import m2clust.m2clust
+>>> from m2clust import cluster_generator
+ X,Y,A = cluster_generator.circular_block(nSamples = 100, nX =100, nY = 100, nBlocks =5, noiseVar = 0.1,
+... blockIntraCov = 0.3, offByOneIntraCov = 0.0,
+... blockInterCov = 0.2, offByOneInterCov = 0.0,
+... holeCov = 0.3, holeProb = .25)
+```
 ### Support ###
 
 * Please submit your questions or issues with the software at [Issues tracker](https://github.com/omicsEye/m2clust/issues).
