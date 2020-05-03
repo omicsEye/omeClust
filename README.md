@@ -73,10 +73,10 @@ Which yields m2clust command line options
 
 ```
 #!python
-usage: mclust [-h] [-i INPUT] -o OUTPUT [-m SIMILARITY] [--metadata METADATA]
-              [-n ESTIMATED_NUMBER_OF_CLUSTERS] [--size-to-plot SIZE_TO_PLOT]
-              [-c LINKAGE_METHOD] [--plot] [--resolution {high,medium,low}]
-              [-v]
+usage: m2clust [-h] [-i INPUT] -o OUTPUT [-m SIMILARITY] [--metadata METADATA]
+               [-n ESTIMATED_NUMBER_OF_CLUSTERS] [--size-to-plot SIZE_TO_PLOT]
+               [-c LINKAGE_METHOD] [--plot] [--resolution {high,medium,low}]
+               [-v]
 
 Multi-resolution clustering using hierarchical clustering and Silhouette score.
 
@@ -99,7 +99,7 @@ optional arguments:
                         linkage clustering method method {default = single, options average, complete
   --plot                dendrogram plus heatmap
   --resolution {high,medium,low}
-                        Resolution c .         Low resolution is good when clusters are well-separated clusters.
+                        Resolution c .         Low resolution is good when clusters are well separated clusters.
   -v, --verbose         additional output is printed
 ```
 
@@ -110,11 +110,56 @@ optional arguments:
 * ``--output-folder``: a folder containing all the output files
 * ``--resolution``: a resolution to be used for clustering {low or high}
 
+Th input is a tab-delimited text file of `n * n` where `n` is number of features 
+(e.g. metabolites, stains, microbial species, individuals).
+  
+
+
 ## Output ##
 
-Returns a list of clusters for features.
-**an example output coming soon**
+the main output is the `m2clust.txt` a a tab-delimited text file that each row is a cluster with following columns.
+* cluster: is a cluster name starts with C	
+* members: members of a cluster	
+* resolution_score: an score defined by 	
+* Meta1: if metadata is provides this is the first metadata that is enriched in cluster and
+is reported as most influential metadata on clusters structure. 	
+* Meta2: the second most 
+influential metadata. (Metadata2 is a name of a column in metadata if if it is provided).
 
+Below is an example output `m2clust.txt` file:
+```
+cluster  |  members                                  |  resolution_score  |  Meta1        |  Meta2
+---------|-------------------------------------------|--------------------|---------------|-------------
+C7       |  A44;A48;A42;A46;A49;A41;A43;A47;A45;A50  |  0.337590449       |  0.311316112  |  0.29595993
+C1       |  A26;A24;A21;A23;A20;A28;A25;A22;A27      |  0.299340924       |  0.276096463  |  0.276096463
+C4       |  A35;A37;A33;A38;A40;A36;A34;A39          |  0.271570917       |  0.254305428  |  0.244961184
+C6       |  A2;A7;A5;A4;A6;A1;A3                     |  0.246264653       |  0.231982388  |  0.229761528
+C2       |  A8;A9;A10;A13;A12;A11;A14                |  0.239955783       |  0.217158357  |  0.226375741
+C3       |  A16;A19;A15;A17;A18                      |  0.181968762       |  0.17405081   |  0.172177829
+C5       |  A32;A31;A29;A30                          |  0.149117609       |  0.143758382  |  0.142056564
+```
+*   File name: `` $OUTPUT_DIR/m2clust.txt ``
+*   This file details the clusters. Features are grouped in clusters.
+*    **```cluster```**: a column contains clusters names that each cluster name starts with `C` following with a number.
+*    **```members```**: has one or more features that participate in the cluster.
+*    **```resolution_score```**: this value is corresponding to `binary silhouette score` introduced in this work.
+*    **```Meta1```**: 
+*    **```Meta2```**:
+## Output files ##
+1. [###](#PCoA)
+2. [###](###)
+3. [###](####)
+ 4. [###](####)
+
+### 1. First dataset heatmap ###
+![](http:// =15x)
+
+### 2. mclust ordination plots ###
+![](http://.png =15x)
+
+*   File name: `` $OUTPUT_DIR/###.pdf ``
+*   This file has a 
+*   ###
 
 # Guides to mclustviz for visuzlaization #
 
