@@ -25,6 +25,7 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
 ----
 
 ## Contents ##
+* [Features](#features)
 * [m2clust](#m2clust)
     * [mclust approach](#mclust-approach)
     * [Requirements](#requirements)
@@ -34,11 +35,36 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
     * [Options](#options) 
     * [Input](#input)
     * [Output](#output)  
+* [How to run](#how-to-run)
+    * [Basic usage](#basic-usage)
+    * [Setting for cluster resolution](#setting-for-cluster-resolution)
+    * [Demo runs](#demo-runs)
 * [Guides to mclustviz for visuzlaization](#guides-to-m2clustviz-for-visualiazation)
 * [Synthetic clusters](#synthetic-clusters)
-
-
+* [Output files](#output-files)
+    1. [Cluster file](#clsters-file)
+    2. [Distance table](#distance-table)
+* [Result plots](#result-plots)
+    1. [PCoA plot](#pcoa-plot)
+    2. [MDS plot](#MDS plot)
+    3. [t-SNE plot](#t-sne-plot)
+* [Configuration](#markdown-header-configuration)
+* [Tutorials for distance calculation](#tutorials-for-distance-calculation)
+    * [Distance between sequencing alignments](#distance-between-sequencing-alignments)
+    * [Distance using correlation](#Distance-using-correlation)
+    * [Distance using entropy](#distance-using-entropy)
+* [Tools](#markdown-header-tools)
+    * [m2clust synthetic paired datasets generator](#m2clust-synthetic-paired-datasets-generator)
+    * [m2clust Python API](#m2clust-python-api)
+* [FAQs](#markdown-header-faqs)
+* [Complete option list](#markdown-header-complete-option-list)
 ------------------------------------------------------------------------------------------------------------------------------
+# Features #
+1. Generality: m2clust uses distance matrix as input
+
+2. A simple user interface (single command driven flow)
+    * The user only needs to provide a paired dataset
+    
 # m2clust #
 ## m2clust appraoch ##
 ![overview.png](https://github.com/omicsEye/m2clust/docs/overviwe.png)
