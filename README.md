@@ -22,8 +22,6 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
 ----
 # mclust user manual
 
-----
-
 ## Contents ##
 * [Features](#features)
 * [m2clust](#m2clust)
@@ -46,7 +44,7 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
     2. [Distance table](#distance-table)
 * [Result plots](#result-plots)
     1. [PCoA plot](#pcoa-plot)
-    2. [MDS plot](#MDS plot)
+    2. [MDS plot](#MDS-plot)
     3. [t-SNE plot](#t-sne-plot)
 * [Configuration](#markdown-header-configuration)
 * [Tutorials for distance calculation](#tutorials-for-distance-calculation)
@@ -317,13 +315,41 @@ Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki) for the data
 
 ```buildoutcfg
 $ python3
->>> import m2clust.m2clust
->>> from m2clust import cluster_generator
+from  m2clust import cluster_generator
+from  m2clust import dataprocess
  X,Y,A = cluster_generator.circular_block(nSamples = 100, nX =100, nY = 100, nBlocks =5, noiseVar = 0.1,
 ... blockIntraCov = 0.3, offByOneIntraCov = 0.0,
 ... blockInterCov = 0.2, offByOneInterCov = 0.0,
 ... holeCov = 0.3, holeProb = .25)
+
+# wite file
+dataprocess.write_table(X, name= '/your-file-path/+ 'X'+ str(nSamples) + '_' + str(nX)+ '.txt', prefix="Feature")
+
+dataprocess.write_table(Y, name= '/your-file-path/+ 'Y'+ str(nSamples) + '_' + str(nY)+ '.txt', prefix="Feature")
+colheader = ['Feature'+ str(i) for i in rnage(0, 100)]
+colheader = ['Feature'+ str(i) for i in range(0, 100)]
+
+dataprocess.write_table(A, name= '/your-file-path/A.txt', prefix="Feature", colheader = colheader, rowheader = rowheader)
 ```
+`circular_block` function returns two datasets `X` and `Y`, and also 
+`A` matrix for relationships between features among these two datasets.
+
+Here is a description for parameters of the function for properties of 
+the datasets and spiked relationship within and between datasets:
+* `nSample`: number of samples in each datasets (appers as columns)
+* `nX`: number of features in each datasets (appears as rows of X)
+* `nY`: number of features in each datasets (appears as rows of Y)
+* `nBlocks`: number of clusters in each dataset
+* `noiseVar`: noise variable between [0.0..1.0], 0.0 refers to no noise
+* `blockIntraCov`: specifies covariance between features within a cluster
+* `offByOneIntraCov`: 
+* `blockInterCov`: specifies covariance between features among clusters between datasets
+* `offByOneInterCov`:
+* `holeCov`:
+* `holeCov`: 
+* `holeProb`: 
+
+
 ### Support ###
 
 * Please submit your questions or issues with the software at [Issues tracker](https://github.com/omicsEye/m2clust/issues).
