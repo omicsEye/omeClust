@@ -317,7 +317,10 @@ Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki) for the data
 $ python3
 from  m2clust import cluster_generator
 from  m2clust import dataprocess
- X,Y,A = cluster_generator.circular_block(nSamples = 100, nX =100, nY = 100, nBlocks =5, noiseVar = 0.1,
+nX = 100
+nY = 100 
+nSamples = 50
+ X,Y,A = cluster_generator.circular_block(nSamples = nSamples, nX =nX, nY = nY, nBlocks =5, noiseVar = 0.1,
 ... blockIntraCov = 0.3, offByOneIntraCov = 0.0,
 ... blockInterCov = 0.2, offByOneInterCov = 0.0,
 ... holeCov = 0.3, holeProb = .25)
@@ -326,8 +329,9 @@ from  m2clust import dataprocess
 dataprocess.write_table(X, name= '/your-file-path/+ 'X'+ str(nSamples) + '_' + str(nX)+ '.txt', prefix="Feature")
 
 dataprocess.write_table(Y, name= '/your-file-path/+ 'Y'+ str(nSamples) + '_' + str(nY)+ '.txt', prefix="Feature")
-colheader = ['Feature'+ str(i) for i in rnage(0, 100)]
-colheader = ['Feature'+ str(i) for i in range(0, 100)]
+rowheader = ['Feature'+ str(i) for i in range(0, nX)]
+colheader = ['Feature'+ str(i) for i in range(0, nY)]
+
 
 dataprocess.write_table(A, name= '/your-file-path/A.txt', prefix="Feature", colheader = colheader, rowheader = rowheader)
 ```
