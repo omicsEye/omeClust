@@ -311,7 +311,7 @@ gene expression, microbial species stains, and metabolite profiles.
 
 Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki) for the data, their description.
 
-# Synthetic clusters #
+# m2clust synthetic paired datasets generator #
 
 ```buildoutcfg
 $ python3
