@@ -326,9 +326,9 @@ nSamples = 50
 ... holeCov = 0.3, holeProb = .25)
 
 # wite file
-dataprocess.write_table(X, name= '/your-file-path/' + 'X_'+ str(nSamples) + '_' + str(nX)+ '.txt', prefix="Feature")
+dataprocess.write_table(X, name= '/your-file-path/' + 'X_'+ str(nSamples) + '_' + str(nX) + '.txt', prefix="Feature")
 
-dataprocess.write_table(Y, name= '/your-file-path/' + 'Y_'+ str(nSamples) + '_' + str(nY)+ '.txt', prefix="Feature")
+dataprocess.write_table(Y, name= '/your-file-path/' + 'Y_'+ str(nSamples) + '_' + str(nY) + '.txt', prefix="Feature")
 rowheader = ['Feature'+ str(i) for i in range(0, nX)]
 colheader = ['Feature'+ str(i) for i in range(0, nY)]
 

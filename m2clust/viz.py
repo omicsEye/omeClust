@@ -235,7 +235,7 @@ def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeb
 
     adist = np.array(adist)
     amax = np.amax(adist)
-    adist /= amax
+    adist = adist / amax
     mds = manifold.MDS(n_components=2, dissimilarity="precomputed", random_state=6)
     results = mds.fit(adist)
 
@@ -280,7 +280,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).all(axis=1)]
 
     plt.close()
-    plt.rcParams["figure.figsize"] = (4, 3)
+    plt.rcParams["figure.figsize"] = (3, 2.5)
     ax = plt.axes()
     colors = ncolors(n=max(2, sum(
         [1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))  #
@@ -371,9 +371,21 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                        yp,
                        color=colors[i],
                        marker=mp,
-                       label=label_cluster,
-                       s=50, alpha=.8, linewidths=.25, edgecolors='black')
+                       #label=label_cluster,
+                       s=15, alpha=.8, linewidths=.1, edgecolors='black')
 
+        i -= 1
+    # Use legend with no shape for clusters as clusters
+    # can have various values sof metadata value
+    i = len(colors) - 1
+    for target_name in sorted_key_by_len_large:
+        label_cluster = str(target_name) + ': ' + str(len(target_names_large[target_name]))
+        ax.scatter(None,
+                   None,
+                   color=colors[i],
+                   marker='o',
+                   label=label_cluster,
+                   s=50, alpha=1, linewidths=.0, edgecolors=colors[i])
         i -= 1
 
     label_flag = True
@@ -392,21 +404,27 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
             if label_flag:
                 label_cluster = '#' + str(len(target_names_small)) + ' < ' + str(size_tobe_colered)
                 label_flag = False
+                ax.scatter(xp,
+                           yp,
+                           color='whitesmoke',
+                           marker=mp,
+                           s=50, alpha=1, linewidths=0, edgecolors='black',
+                           label=label_cluster)
             else:
                 label_cluster = None
-            ax.scatter(xp,
-                       yp,
-                       color='whitesmoke',
-                       marker=mp,
-                       s=35, alpha=.4, linewidths=.25, edgecolors='black',
-                       label=label_cluster)
+                ax.scatter(xp,
+                           yp,
+                           color='whitesmoke',
+                           marker=mp,
+                           s=15, alpha=.3, linewidths=.1, edgecolors='black',
+                           label=label_cluster)
 
-    # Label for shape based on metadata
+    # Legend and label for shape based on metadata
     ax.scatter(None,
                None,
                color='whitesmoke',
                marker=None,
-               s=50, alpha=0, linewidths=.25, edgecolors='black',
+               s=50, alpha=0, linewidths=.2, edgecolors='black',
                label=shapeby)
 
 
@@ -437,8 +455,8 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
     ax.get_yaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')
     ax.get_xaxis().set_ticks([])
     ax.get_yaxis().set_ticks([])
-    ax.spines['bottom'].set_linewidth(0.5)
-    ax.spines['left'].set_linewidth(0.5)
+    ax.spines['bottom'].set_linewidth(0.25)
+    ax.spines['left'].set_linewidth(0.25)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     try:
