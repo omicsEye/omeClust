@@ -28,13 +28,12 @@ def main_run(distance_matrix=None,
              do_plot=True,
              resolution='low'):
     bTree = True
-
     if do_plot:
         Z = viz.dendrogram_plot(data_table=None, D=distance_matrix, xlabels_order=[], xlabels=distance_matrix.index,
-                                filename=output_dir + "/m2clust_dendrogram", colLable=False,
+                                filename=output_dir + "/dendrogram", colLable=False,rowLabel=False,
                                 linkage_method=linkage_method)
     else:
-        Z = linkage(distance_matrix, method=linkage_method)
+        Z = linkage(squareform(distance_matrix), method=linkage_method)
 
     hclust_tree = to_tree(Z)
     # clusters = cutree_to_get_below_threshold_number_of_features (hclust_tree, t = estimated_num_clust)
@@ -159,17 +158,17 @@ def m2clust(data, metadata, resolution=config.resolution,
                         number_of_estimated_clusters=estimated_number_of_clusters,
                         linkage_method=linkage_method,
                         output_dir=output_dir, do_plot=plot, resolution=resolution)
-    m2clust_scores, sorted_keys = None, None
+    m2clust_enrichment_scores, sorted_keys = None, None
     shapeby = None
     if metadata is not None:
-        m2clust_scores, sorted_keys = utilities.m2clust_score(clusters, metadata, len(metadata))
-        if len(sorted_keys) > 1:
-            shapeby = sorted_keys[1]
+        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, df_distance.shape[0])
+        if len(sorted_keys) > 2:
+            shapeby = sorted_keys[2]
             print(shapeby, " is the most influential metadata in clusters")
     else:
-        m2clust_scores, sorted_keys = utilities.m2clust_score(clusters, metadata, df_distance.shape[0])
-    # print m2clust_scores, sorted_keys
-    dataprocess.write_output(clusters, output_dir, df_distance, m2clust_scores, sorted_keys)
+        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, df_distance.shape[0])
+    # print m2clust_enrichment_scores, sorted_keys
+    dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
 
     viz.mds_ord(df_distance, target_names=dataprocess.cluster2dict(clusters, df_distance), \
                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)

@@ -19,15 +19,15 @@ def create_output(output):
         sys.exit("Unable to create directory: " + output)
 
 
-def write_output(clusters, output, df_distance, m2clust_scores=None, sorted_keys=None):
-    f = open(output + "/m2clust.txt", 'w')
+def write_output(clusters, output, df_distance, enrichment_scores=None, sorted_keys=None):
+    f = open(output + "/clusters.txt", 'w')
     print("There are %s clusters" % len(clusters))
 
     metadata_order = ''
     if sorted_keys is not None:
-        zipped = list(zip(clusters, m2clust_scores[sorted_keys[0]]))
+        zipped = list(zip(clusters, enrichment_scores[sorted_keys[0]]))
         zipped.sort(key=lambda t: t[1], reverse=True)
-        importance_order = numpy.argsort(m2clust_scores[sorted_keys[0]])[::-1]
+        importance_order = numpy.argsort(enrichment_scores[sorted_keys[0]])[::-1]
         for key in sorted_keys:
             metadata_order += '\t' + key
     else:
@@ -40,9 +40,9 @@ def write_output(clusters, output, df_distance, m2clust_scores=None, sorted_keys
         for j in range(len(feature_names) - 1):
             f.write("%s;" % feature_names[j])
         f.write("%s" % feature_names[len(feature_names) - 1])
-        if m2clust_scores is not None:
+        if enrichment_scores is not None:
             for key in sorted_keys:
-                f.write("\t" + str(m2clust_scores[key][i]))
+                f.write("\t" + str(enrichment_scores[key][i]))
         f.write("\n")
     # print c_medoids
     '''if not df_data.empty:

@@ -244,30 +244,32 @@ def cutree_to_get_number_of_features(cluster, distance_matrix, number_of_estimat
     return sub_clusters
 
 
-def m2clust_score(clusters, metadata, n):
-    rahnavard_metadata_score = dict()
-    sorted_keys = []
-    # rahnavard_metadata_score['resolution_score'] = weighted_hormonic_mean(clusters, [], n)
+def m2clust_enrichment_score(clusters, metadata, n):
+    metadata_enrichment_score = dict()
+    #sorted_keys = []
+    # metadata_enrichment_score['resolution_score'] = weighted_hormonic_mean(clusters, [], n)
     if metadata is not None:
         for meta in metadata.columns:
             if len(metadata[meta].unique()) < 2:
                 continue
-            rahnavard_meta_score = []
+            meta_enrichment_score = []
             if metadata is not None:
                 for cluster in clusters:
                     cluster_members = cluster.pre_order(lambda x: x.id)
                     # get category with max frequency in the cluster for meta column as metadata
                     freq_metadata, freq_value = most_common(metadata[meta].iloc[cluster_members])
-                    rahnavard_meta_score.append(freq_value * 1.0 / len(cluster_members))
+                    meta_enrichment_score.append(freq_value * 1.0 / len(cluster_members))
                     # calculate the cluster score
                 # calculate meta data score for metadata meta
-            rahnavard_metadata_score[meta] = weighted_hormonic_mean(clusters, rahnavard_meta_score, n)
-            # print rahnavard_metadata_score[meta]
-        sorted_keys = sorted(rahnavard_metadata_score, key=lambda k: sum(rahnavard_metadata_score[k]), reverse=True)
-    rahnavard_metadata_score['resolution_score'] = weighted_hormonic_mean(clusters, [], n)
-    sorted_keys = sorted(rahnavard_metadata_score, key=lambda k: sum(rahnavard_metadata_score[k]), reverse=True)
-    # sorted_keys += ['resolution_score']
-    return rahnavard_metadata_score, sorted_keys
+            metadata_enrichment_score[meta] = meta_enrichment_score #weighted_hormonic_mean(clusters, meta_enrichment_score, n)
+            # print metadata_enrichment_score[meta]
+        #sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
+    sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
+    metadata_enrichment_score['resolution_score'] = resolution_score(clusters)
+    sorted_keys.insert(0, 'resolution_score')
+    metadata_enrichment_score['n'] = [clusters[i].count for i in range(len(clusters))]
+    sorted_keys.insert(0, 'n')
+    return metadata_enrichment_score, sorted_keys
 
 
 def most_common(lst):
@@ -278,14 +280,9 @@ def most_common(lst):
     return freq_metadata, freq_value
 
 
-def weighted_hormonic_mean(clusters, rahnavard_meta_score=None, n=0):
-    w = [2.0, 1.0, 1.0]
-    # print rahnavard_meta_score
-    if len(rahnavard_meta_score) > 0:
-        w_h_mean = [sum(w) / (w[0] / (clusters[i].count * 1.0 / n) + w[1] / rahnavard_meta_score[i] + w[2] / (
-                    1.0 - clusters[i].dist)) for i in range(len(clusters))]
-    else:
-        w_h_mean = [sum(w) / (w[0] / (clusters[i].count * 1.0 / n) + w[2] / (1.0 - clusters[i].dist)) for i in
-                    range(len(clusters))]
-    return w_h_mean
+def resolution_score(clusters):
+    n = sum([clusters[i].count  for i in range(len(clusters))])
+    scores = [1.0 / (.5 / (clusters[i].count / n) + .5 / (1.0 - clusters[i].dist)) for i in
+                range(len(clusters))]
+    return scores
 

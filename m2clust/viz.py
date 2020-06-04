@@ -23,7 +23,7 @@ import pylab
 import scipy.cluster.hierarchy as sch
 from matplotlib import font_manager
 from scipy.cluster.hierarchy import linkage
-from scipy.spatial.distance import pdist
+from scipy.spatial.distance import pdist, squareform
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
@@ -52,9 +52,9 @@ def ncolors(n, colormap='jet'):
 
 
 def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[],
-                    filename=config.output_dir + '/m2clust_dendrogram', metric=config.similarity_method,
+                    filename=config.output_dir + '/dendrogram', metric=config.similarity_method,
                     linkage_method="single",
-                    colLable=False, rowLabel=True, color_bar=True, sortCol=True):
+                    colLable=False, rowLabel=False, color_bar=True, sortCol=True):
     # Adopted from Ref: http://stackoverflow.com/questions/2982929/plotting-results-of-hierarchical-clustering-ontop-of-a-matrix-of-data-in-python
     scale = []  # config.transform_method
     max_hight = 300
@@ -75,11 +75,11 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         fig = pylab.figure(figsize=(plot_weight, plot_height))
 
     ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6], frame_on=True)
-    ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', direction='out')
-    ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', direction='out')
+    ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom ='off',  direction='out')
+    ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off', direction='out')
     # Compute and plot second dendrogram.
     if len(D) > 0:
-        Y1 = linkage(D, method=linkage_method)
+        Y1 = linkage(squareform(D), method=linkage_method)
     else:
         D = pdist(data_table, metric=distance.pDistance)
         Y1 = linkage(D, method=linkage_method)
@@ -89,7 +89,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         except:
             print("Warning: dendrogram plot faced an exception!")
             pylab.close()
-            Y1 = linkage(D, method=linkage_method)
+            Y1 = linkage(squareform(D), method=linkage_method)
             return Y1
     ax1.set_xticks([])
     ax1.set_yticks([])
@@ -97,8 +97,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
     # Compute and plot second dendrogram.
     if len(xlabels_order) == 0:
         ax2 = fig.add_axes([0.3, 0.71, 0.6, 0.2], frame_on=True)
-        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', direction='out')
-        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', direction='out')
+        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom ='off', direction='out')
+        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off', direction='out')
         Y2 = []
         if not data_table is None:
             try:
@@ -115,8 +115,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
 
         ax2.set_xticks([])
         ax2.set_yticks([])
-        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', direction='out')
-        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', direction='out')
+        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom = 'off', direction='out')
+        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off',  direction='out')
     else:
         Y2 = []
 
@@ -160,18 +160,19 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
             label2 = [ylabels[i] for i in idx2]
         else:
             label2 = idx2
-        axmatrix.set_xticks(range(len(idx2)))
-        axmatrix.set_xticklabels(label2, minor=False)
-        axmatrix.xaxis.set_label_position('bottom')
-        axmatrix.xaxis.tick_bottom()
-        axmatrix.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', direction='out')
-        axmatrix.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', direction='out')
+        #axmatrix.set_xticks(range(len(idx2)))
+        #axmatrix.set_xticklabels(label2, minor=False)
+        #axmatrix.xaxis.set_label_position('bottom')
+        #axmatrix.xaxis.tick_bottom()
+        axmatrix.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom = 'off', direction='out')
+        axmatrix.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off',  direction='out')
     else:
         axmatrix.set_xticks([])
         axmatrix.set_xticklabels([])
         axmatrix.get_xaxis().set_tick_params(which='both', top='off')
         axmatrix.get_xaxis().set_tick_params(which='both', bottom='off')
         axmatrix.get_yaxis().set_tick_params(which='both', right='off')
+        axmatrix.get_yaxis().set_tick_params(which='both', left='off')
         axmatrix.xaxis.set_label_position('bottom')
         axmatrix.xaxis.tick_bottom()
 
@@ -185,8 +186,10 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         axmatrix.yaxis.set_label_position('right')
         axmatrix.set_yticklabels(label1, minor=False)
         axmatrix.set_yticks(range(len(idx1)))
-        axmatrix.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', direction='out')
-        axmatrix.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', direction='out')
+        axmatrix.set_yticks([])
+        axmatrix.set_yticklabels([])
+        axmatrix.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
+        axmatrix.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
         axmatrix.yaxis.tick_right()
         # pylab.yticks(rotation=0, fontsize=6)
     if color_bar:
@@ -443,7 +446,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         [handle for i, handle in enumerate(handles) if i in range(to_display)] + markerArtist[0:to_display_markers],
         [label for i, label in enumerate(labels) if i in range(to_display)] + order_metadata[0:to_display_markers],
         loc='center left', bbox_to_anchor=(1, 0.5), title='Cluster: size', shadow=False, scatterpoints=1,
-        frameon=True, labelspacing=1, fontsize=5)
+        frameon=True, framealpha = .8, labelspacing=.6, fontsize=5)
     ax.get_legend().get_title().set_fontsize('6')
     ax.get_legend().get_title().set_weight('bold')
 
@@ -470,7 +473,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
     except:
         pass
 
-    plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
+    plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
                 dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
