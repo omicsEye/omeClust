@@ -221,17 +221,17 @@ def lda_ord(adist, X, y, target_names=None):
     X_r2 = lda.fit(X, y).transform(X)
 
 
-def tsne_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None):
+def tsne_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
     from sklearn.manifold import TSNE
     model = TSNE(n_components=2, random_state=0, metric='precomputed')
     coords = model.fit_transform(adist)
     ord_plot(coords, target_names=target_names, ord_name='t-SNE', \
              size_tobe_colered=size_tobe_colered, \
              xlabel='t-SNE 1', ylabel='t-SNE 2',
-             metadata=metadata, shapeby=shapeby)
+             metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
 
 
-def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None):
+def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
     # pca = PCA(n_components=2)
     # X_r = pca.fit(X).transform(X)
     from sklearn import manifold
@@ -246,10 +246,10 @@ def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeb
     ord_plot(coords, target_names=target_names, ord_name='MDS', \
              size_tobe_colered=size_tobe_colered, \
              xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')', \
-             ylabel='', metadata=metadata, shapeby=shapeby)
+             ylabel='', metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
 
 
-def pcoa_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None):
+def pcoa_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
     pca = PCA(n_components=2)
     pca_fit = pca.fit(X)
     X_r = pca_fit.transform(X)
@@ -258,10 +258,10 @@ def pcoa_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=N
              size_tobe_colered=size_tobe_colered, \
              xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
              ylabel='PCo2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
-             metadata=metadata, shapeby=shapeby)
+             metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
 
 
-def pca_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None):
+def pca_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
     pca = PCA(n_components=2)
     pca_fit = pca.fit(X)
     X_r = pca_fit.transform(X)
@@ -270,12 +270,12 @@ def pca_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=No
              size_tobe_colered=size_tobe_colered, \
              xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
              ylabel='PC2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
-             metadata=metadata, shapeby=shapeby)
+             metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
 
 
 def ord_plot(coords, target_names=None, ord_name='ord', \
              size_tobe_colered=3, xlabel='First component',
-             ylabel='Second component', metadata=None, shapeby=None):
+             ylabel='Second component', metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
     # identify/filter outliers 
     from scipy import stats
     '''if metadata is not None:
@@ -283,7 +283,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).all(axis=1)]
 
     plt.close()
-    plt.rcParams["figure.figsize"] = (3, 2.5)
+    plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
     ax = plt.axes()
     colors = ncolors(n=max(2, sum(
         [1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))  #
@@ -375,7 +375,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                        color=colors[i],
                        marker=mp,
                        #label=label_cluster,
-                       s=15, alpha=.8, linewidths=.1, edgecolors='black')
+                       s=point_size, alpha=.8, linewidths=.1, edgecolors='black')
 
         i -= 1
     # Use legend with no shape for clusters as clusters
@@ -388,7 +388,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                    color=colors[i],
                    marker='o',
                    label=label_cluster,
-                   s=50, alpha=1, linewidths=.0, edgecolors=colors[i])
+                   s=point_size*3, alpha=1, linewidths=.0, edgecolors=colors[i])
         i -= 1
 
     label_flag = True
@@ -407,11 +407,11 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
             if label_flag:
                 label_cluster = '#' + str(len(target_names_small)) + ' < ' + str(size_tobe_colered)
                 label_flag = False
-                ax.scatter(xp,
-                           yp,
+                ax.scatter(None,
+                           None,
                            color='whitesmoke',
-                           marker=mp,
-                           s=50, alpha=1, linewidths=0, edgecolors='black',
+                           marker='o',
+                           s=point_size*3, alpha=1, linewidths=0, edgecolors='black',
                            label=label_cluster)
             else:
                 label_cluster = None
@@ -419,7 +419,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                            yp,
                            color='whitesmoke',
                            marker=mp,
-                           s=15, alpha=.3, linewidths=.1, edgecolors='black',
+                           s=point_size, alpha=.3, linewidths=.1, edgecolors='black',
                            label=label_cluster)
 
     # Legend and label for shape based on metadata
@@ -427,7 +427,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                None,
                color='whitesmoke',
                marker=None,
-               s=50, alpha=0, linewidths=.2, edgecolors='black',
+               s=point_size*3, alpha=0, linewidths=.2, edgecolors='black',
                label=shapeby)
 
 
@@ -472,9 +472,12 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         plt.tight_layout()
     except:
         pass
-
-    plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
-                dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    if not shapeby is None:
+        plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
+                    dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    else:
+        plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
+                    dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 
@@ -530,6 +533,14 @@ def parse_arguments():
         dest='size_to_plot',
         default=3,
         help="Minimum size of cluster to be plotted")
+    parser.add_argument("--fig-size", nargs=2,
+                        #type=int,
+                        dest='fig_size',
+                        default=[3, 2.5], help="width and height of plots")
+    parser.add_argument("--point-size",
+                        type=int,
+                        dest='point_size',
+                        default=15, help="width and height of plots")
     return parser.parse_args()
 
 
@@ -546,19 +557,20 @@ def main():
     if args.shapeby and args.metadata:
         metadata = pd.read_table(args.metadata, index_col=0, header=0)
         metadata = metadata.loc[df_distance.index, :]
+        #metadatadf.fillna(method='ffill')
     with open(args.clusters) as fin:
         next(fin)
         rows = (line.strip().split('\t') for line in fin)
         clusters = {row[0]: [list(df_distance).index(val) for val in row[1].split(';')] for row in rows}
     config.output_dir = args.output
     mds_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
-            shapeby=args.shapeby)
+            shapeby=args.shapeby, fig_size = args.fig_size, point_size = args.point_size)
 
     pcoa_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
-             shapeby=args.shapeby)
+             shapeby=args.shapeby, fig_size = args.fig_size, point_size = args.point_size)
 
     tsne_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
-             shapeby=args.shapeby)
+             shapeby=args.shapeby, fig_size = args.fig_size, point_size = args.point_size)
     # if data_flag:
     # pca_ord(df_data, target_names = dataprocess.cluster2dict(clusters, df_distance), size_tobe_colered = args.size_to_plot)
 

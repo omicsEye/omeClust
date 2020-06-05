@@ -73,8 +73,12 @@ def parse_arguments(args):
 
     parser = argparse.ArgumentParser(
         description="Multi-resolution clustering using hierarchical clustering and Silhouette score.\n",
-        formatter_class=argparse.RawTextHelpFormatter)
-
+        formatter_class=argparse.RawTextHelpFormatter,
+        prog="m2clust")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s " + config.version)
     parser.add_argument(
         "-i", "--input",
         help="the input file D*N, Rows: D features and columns: N samples OR \n" +
@@ -136,7 +140,15 @@ def m2clust(data, metadata, resolution=config.resolution,
 
     if metadata is not None:
         metadata = pd.read_table(metadata, index_col=0, header=0)
-        metadata = metadata.loc[data.index, :]
+        #print(data.index)
+        #print(metadata.index)
+        ind = metadata.index.intersection(data.index)
+        #print(len(ind), data.shape[1])
+        if len(ind) != data.shape[0]:
+            print ("the data and metadata have different number of rows and number of common rows is: ", len(ind))
+            print("the data and metadata have different number of rows!!!!")
+        metadata = metadata.loc[ind, :]
+        data = data.loc[ind, :]
 
     config.output_dir = output_dir
     check_requirements()
