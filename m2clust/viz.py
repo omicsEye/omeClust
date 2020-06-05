@@ -557,7 +557,7 @@ def main():
     if args.shapeby and args.metadata:
         metadata = pd.read_table(args.metadata, index_col=0, header=0)
         metadata = metadata.loc[df_distance.index, :]
-        #metadatadf.fillna(method='ffill')
+        # metadatadf.fillna(method='ffill')
     with open(args.clusters) as fin:
         next(fin)
         rows = (line.strip().split('\t') for line in fin)
