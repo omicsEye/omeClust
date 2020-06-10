@@ -279,7 +279,8 @@ def m2clust_enrichment_score(clusters, metadata, n):
     #metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(
     #    columns=(['n'] + list([a for a in metadata_enrichment_score_df.columns if a != 'n'])))
 
-    sorted_keys = metadata_enrichment_score_df.columns
+    sorted_keys = list(metadata_enrichment_score_df.columns)
+    print(sorted_keys)
     sorted_keys.remove('resolution_score')
     sorted_keys.insert(0, 'resolution_score')
     sorted_keys.remove('n')
