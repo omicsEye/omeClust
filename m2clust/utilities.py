@@ -8,11 +8,12 @@ import sys
 from itertools import product
 
 import numpy as np
-import pandas
+import pandas as pd
+from . import config
 
 
 def predict_best_number_of_clusters(hierarchy_tree, distance_matrix):
-    # distance_matrix = pandas.DataFrame(distance_matrix)
+    # distance_matrix = pd.DataFrame(distance_matrix)
     features = get_leaves(hierarchy_tree)
     clusters = []  # [hierarchy_tree]
     min_num_cluster = 2
@@ -114,7 +115,7 @@ def silhouette_coefficient(clusters, distance_matrix):
     # ====check within class homogeniety
     # Ref: http://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html
     # pMe = distance.c_hash_metric[config.Distance]
-    distance_matrix = pandas.DataFrame(distance_matrix)
+    distance_matrix = pd.DataFrame(distance_matrix)
     silhouette_scores = []
     if len(clusters) <= 1:
         sys.exit("silhouette method needs at least two clusters!")
@@ -264,11 +265,21 @@ def m2clust_enrichment_score(clusters, metadata, n):
             metadata_enrichment_score[meta] = meta_enrichment_score #weighted_hormonic_mean(clusters, meta_enrichment_score, n)
             # print metadata_enrichment_score[meta]
         #sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
-    sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
+    #sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
     metadata_enrichment_score['resolution_score'] = resolution_score(clusters)
-    sorted_keys.insert(0, 'resolution_score')
     metadata_enrichment_score['n'] = [clusters[i].count for i in range(len(clusters))]
-    sorted_keys.insert(0, 'n')
+    metadata_enrichment_score_df = pd.DataFrame.from_dict(metadata_enrichment_score)
+    metadata_enrichment_score_df = metadata_enrichment_score_df[metadata_enrichment_score_df['resolution_score'] > 0.05]
+    metadata_enrichment_score_df.reindex(metadata_enrichment_score_df.mean().sort_values().index, axis=1)
+    #print(metadata_enrichment_score_df)
+    config.size_to_plot = min(metadata_enrichment_score_df['n'])
+    metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(columns=(['resolution_score'] + list([a for a in metadata_enrichment_score_df.columns if a != 'resolution_score'])))
+    metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(columns=(['n'] + list([a for a in metadata_enrichment_score_df.columns if a != 'n'])))
+    sorted_keys = metadata_enrichment_score_df.columns
+    #sorted_keys.insert(0, 'resolution_score')
+
+    #sorted_keys.insert(0, 'n')
+
     return metadata_enrichment_score, sorted_keys
 
 

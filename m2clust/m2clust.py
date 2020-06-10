@@ -7,12 +7,16 @@ Multi-resolution clustering approach to find clusters with different diameter
 import argparse
 import os
 import sys
-
+import logging
 import pandas as pd
 from numpy import array
 from scipy.cluster.hierarchy import to_tree, linkage
 from scipy.spatial.distance import pdist, squareform
 
+# name global logging instance
+logger=logging.getLogger(__name__)
+
+VERSION="1.1.2"
 try:
     from . import utilities, config, dataprocess
 except ImportError:
@@ -105,7 +109,7 @@ def parse_arguments(args):
         "--size-to-plot",
         type=int,
         dest='size_to_plot',
-        default=3,
+        default=None,
         help="Minimum size of cluster to be plotted")
     parser.add_argument(
         "-c", "--linkage_method",
@@ -118,7 +122,7 @@ def parse_arguments(args):
         default=False)
     parser.add_argument(
         "--resolution",
-        default='high',
+        default='low',
         help="Resolution c .\
          Low resolution is good when clusters are well separated clusters.",
         choices=['high', 'medium', 'low'])
@@ -133,11 +137,13 @@ def parse_arguments(args):
 def m2clust(data, metadata, resolution=config.resolution,
             output_dir=config.output_dir,
             estimated_number_of_clusters=config.estimated_number_of_clusters,
-            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=config.size_to_plot):
+            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None):
 
     #read  input files
     data = pd.read_table(data, index_col=0, header=0)
-
+    #print(data.shape)
+    #print(data.index)
+    #print(data.columns)
     if metadata is not None:
         metadata = pd.read_table(metadata, index_col=0, header=0)
         #print(data.index)
@@ -146,9 +152,12 @@ def m2clust(data, metadata, resolution=config.resolution,
         #print(len(ind), data.shape[1])
         if len(ind) != data.shape[0]:
             print ("the data and metadata have different number of rows and number of common rows is: ", len(ind))
-            print("the data and metadata have different number of rows!!!!")
+            print("The number of missing metadata are: ", data.shape[0] - len(ind))
+            #print("Metadata will not be used!!! ")
+            #metadata = None
+            #else:
         metadata = metadata.loc[ind, :]
-        data = data.loc[ind, :]
+        data = data.loc[ind, ind]
 
     config.output_dir = output_dir
     check_requirements()
@@ -181,7 +190,8 @@ def m2clust(data, metadata, resolution=config.resolution,
         m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, df_distance.shape[0])
     # print m2clust_enrichment_scores, sorted_keys
     dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
-
+    if size_to_plot is None:
+        size_to_plot = config.size_to_plot
     viz.mds_ord(df_distance, target_names=dataprocess.cluster2dict(clusters, df_distance), \
                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
     viz.pcoa_ord(df_distance, target_names=dataprocess.cluster2dict(clusters, df_distance), \
@@ -191,6 +201,21 @@ def m2clust(data, metadata, resolution=config.resolution,
     if data_flag:
         viz.pca_ord(data, target_names=dataprocess.cluster2dict(clusters, df_distance), \
                     size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
+
+
+def update_configuration(args):
+
+    # configure the logger
+    logging.basicConfig(filename=args.output+'/m2clust_log.txt', format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+                        level=getattr(logging, "INFO"), filemode='w', datefmt='%m/%d/%Y %I:%M:%S %p')
+
+    # write the version of the software to the log
+    logger.info("Running m2clust version:\t" + VERSION)
+
+    # write the version of the software to the log
+    logger.info("resolution level:\t" + args.resolution)
+
+
 
 
 def main():
@@ -218,6 +243,8 @@ def main():
             plot=args.plot,
             estimated_number_of_clusters=args.estimated_number_of_clusters,
             size_to_plot=args.size_to_plot)
+    update_configuration(config)
+
 
 
 if __name__ == "__main__":

@@ -58,10 +58,15 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
 * [Complete option list](#markdown-header-complete-option-list)
 ------------------------------------------------------------------------------------------------------------------------------
 # Features #
-1. Generality: m2clust uses distance matrix as input
+1. Generality: m2clust uses distance matrix as input, to allow users decide about appropriate distance metric for 
+their data.
 
 2. A simple user interface (single command driven flow)
-    * The user only needs to provide a paired dataset
+    * The user only needs to provide a distance matrix file and a metadata file (optional)
+
+3. A complete report
+    * a text file of clusters and related information is provided as output in a tab-delimited file, `clusters.txt`
+    * Three ordination plots (PCoA, MDS, and t-SNE) are provides for ease of interpretation. 
     
 # m2clust #
 ## m2clust appraoch ##

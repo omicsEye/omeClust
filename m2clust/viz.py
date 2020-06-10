@@ -354,13 +354,13 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
     for target_name in sorted_key_by_len_large:
         label_flag = True
         if metadata is not None:
-            point_mrakers = [markers_dic[val] for val in
+            point_markers = [markers_dic[str(val)] for val in
                              map(str, metadata[str(shapeby)].iloc[target_names_large[target_name]])]
         else:
-            point_mrakers = ['o' for val in target_names_large[target_name]]
+            point_markers = ['o' for val in target_names_large[target_name]]
         for xp, yp, mp in zip(coords[target_names_large[target_name], 0],
                               coords[target_names_large[target_name], 1],
-                              point_mrakers):
+                              point_markers):
             if [xp, yp] in outliers:
                 # print [xp, yp]
                 continue
