@@ -193,17 +193,17 @@ C5       |  A32;A31;A29;A30                          |  0.149117609       |  0.1
 # Guides to mclustviz for visuzlaization #
 
 
-* **Basic usage:** `$  mclustviz $DISTANCE_MATRIX.txt /path-to-mclust-output/mclust.txt --metadata $META_DATA.txt --shapeby $METADATA1 -o /path-to-mclust-output/`
-* `$DISTANCE_MATRIX.txt` = an distance matrix that used for clustering 
-* `mclust.txt` = an mclust output which assigns features to clusters
-* `$META_DATA.txt`: is metadata file which contains metadat for features
-* `$META_DATA1`: is a metadata in the metadata file to be used for shaping poins in the ordination plot
+* **Basic usage:** `$ m2clustviz /path-to-mclust-output/adist.txt /path-to-mclust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-mclust-output/`
+* `adist.txt` = an distance matrix that used for clustering 
+* `clusters.txt` = an m2clust output which assigns features to clusters
+* `metadata.txt`: is metadata file which contains metadata for features
+* `meta1`: is a metadata in the metadata file to be used for shaping points in the ordination plot
 * Run with `-h` to see additional command line options
 
 Produces a set of ordination plots for features colored by computational clusters and shaped by metadata.
 
 ```
-usage: mclustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT
+usage: m2clustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT
                  [--size-to-plot SIZE_TO_PLOT]
                  adist clusters
 

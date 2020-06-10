@@ -259,7 +259,7 @@ def m2clust_enrichment_score(clusters, metadata, n):
                     cluster_members = cluster.pre_order(lambda x: x.id)
                     # get category with max frequency in the cluster for meta column as metadata
                     freq_metadata, freq_value = most_common(metadata[meta].iloc[cluster_members])
-                    meta_enrichment_score.append(freq_value * 1.0 / len(cluster_members))
+                    meta_enrichment_score.append(freq_value / len(cluster_members))
                     # calculate the cluster score
                 # calculate meta data score for metadata meta
             metadata_enrichment_score[meta] = meta_enrichment_score #weighted_hormonic_mean(clusters, meta_enrichment_score, n)
@@ -270,17 +270,23 @@ def m2clust_enrichment_score(clusters, metadata, n):
     metadata_enrichment_score['n'] = [clusters[i].count for i in range(len(clusters))]
     metadata_enrichment_score_df = pd.DataFrame.from_dict(metadata_enrichment_score)
     metadata_enrichment_score_df = metadata_enrichment_score_df[metadata_enrichment_score_df['resolution_score'] > 0.05]
-    metadata_enrichment_score_df.reindex(metadata_enrichment_score_df.mean().sort_values().index, axis=1)
     #print(metadata_enrichment_score_df)
+    #print(metadata_enrichment_score_df.mean())
+    #print("index before",metadata_enrichment_score_df.columns)
+    sorted_keys = list(metadata_enrichment_score_df.mean().sort_values(ascending=False).index)
+    #metadata_enrichment_score_df.reindex(list(metadata_enrichment_score_df.mean().sort_values(ascending=False).index), axis=1)
+    #print("index after", metadata_enrichment_score_df.columns)
+    #print("after reindex:",metadata_enrichment_score_df)
     config.size_to_plot = min(metadata_enrichment_score_df['n'])
+    print("The number of major clusters: ", metadata_enrichment_score_df.shape[0])
     #metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(
     #    columns=(['resolution_score'] + list([a for a in metadata_enrichment_score_df.columns
     #                                                                                   if a != 'resolution_score'])))
     #metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(
     #    columns=(['n'] + list([a for a in metadata_enrichment_score_df.columns if a != 'n'])))
 
-    sorted_keys = list(metadata_enrichment_score_df.columns)
-    print(sorted_keys)
+    #sorted_keys = list(metadata_enrichment_score_df.columns)
+    #print(sorted_keys)
     sorted_keys.remove('resolution_score')
     sorted_keys.insert(0, 'resolution_score')
     sorted_keys.remove('n')

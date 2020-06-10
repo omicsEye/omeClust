@@ -289,43 +289,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         [1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))  #
     markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
                "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
-               "|", "_",
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.',
-               '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-               '.', '.', '.']
+               "|", "_"] + ["." for i in range(3000)]
 
     '''
      TICKLEFT, TICKRIGHT, TICKUP, TICKDOWN, CARETLEFT,
@@ -338,15 +302,15 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         df['freq'] = df.groupby(shapeby)[shapeby].transform('count')
         order_metadata = list(df.sort_values(by=['freq'], ascending=False, na_position='last')[shapeby].unique())
         for i, val in enumerate(order_metadata):
-            markers_dic[val] = markers[i]
+            markers_dic[str(val)] = markers[i]
     target_names_large = {}
     target_names_small = {}
     sorted_key_by_len = sorted(target_names, key=lambda k: len(target_names[k]), reverse=True)
     for target_name in sorted_key_by_len:
-        if len(target_names[target_name]) >= size_tobe_colered:
-            target_names_large[target_name] = target_names[target_name]
+        if len(target_names[str(target_name)]) >= size_tobe_colered:
+            target_names_large[str(target_name)] = target_names[str(target_name)]
         else:
-            target_names_small[target_name] = target_names[target_name]
+            target_names_small[str(target_name)] = target_names[str(target_name)]
     cmap = plt.get_cmap('jet')
 
     i = len(colors) - 1
@@ -355,7 +319,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         label_flag = True
         if metadata is not None:
             point_markers = [markers_dic[str(val)] for val in
-                             map(str, metadata[str(shapeby)].iloc[target_names_large[target_name]])]
+                             map(str, metadata[str(shapeby)].iloc[target_names_large[str(target_name)]])]
         else:
             point_markers = ['o' for val in target_names_large[target_name]]
         for xp, yp, mp in zip(coords[target_names_large[target_name], 0],
