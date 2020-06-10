@@ -273,12 +273,17 @@ def m2clust_enrichment_score(clusters, metadata, n):
     metadata_enrichment_score_df.reindex(metadata_enrichment_score_df.mean().sort_values().index, axis=1)
     #print(metadata_enrichment_score_df)
     config.size_to_plot = min(metadata_enrichment_score_df['n'])
-    metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(columns=(['resolution_score'] + list([a for a in metadata_enrichment_score_df.columns if a != 'resolution_score'])))
-    metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(columns=(['n'] + list([a for a in metadata_enrichment_score_df.columns if a != 'n'])))
-    sorted_keys = metadata_enrichment_score_df.columns
-    #sorted_keys.insert(0, 'resolution_score')
+    #metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(
+    #    columns=(['resolution_score'] + list([a for a in metadata_enrichment_score_df.columns
+    #                                                                                   if a != 'resolution_score'])))
+    #metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(
+    #    columns=(['n'] + list([a for a in metadata_enrichment_score_df.columns if a != 'n'])))
 
-    #sorted_keys.insert(0, 'n')
+    sorted_keys = metadata_enrichment_score_df.columns
+    sorted_keys.remove('resolution_score')
+    sorted_keys.insert(0, 'resolution_score')
+    sorted_keys.remove('n')
+    sorted_keys.insert(0, 'n')
 
     return metadata_enrichment_score, sorted_keys
 
