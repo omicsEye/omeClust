@@ -1,4 +1,3 @@
-
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -6,9 +5,11 @@ except ImportError:
 
 import os
 import urllib
+
 try:
-       from urllib.request import urlretrieve
-       classifiers=[
+    from urllib.request import urlretrieve
+
+    classifiers = [
         "Programming Language :: Python",
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -17,10 +18,11 @@ try:
         "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python :: 2.7",
         "Topic :: Scientific/Engineering :: Bio-Informatics"
-        ]
+    ]
 except ImportError:
-       from urllib import urlretrieve
-       classifiers=[
+    from urllib import urlretrieve
+
+    classifiers = [
         "Programming Language :: Python",
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -30,9 +32,9 @@ except ImportError:
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.4",
         "Topic :: Scientific/Engineering :: Bio-Informatics"
-        ]
+    ]
 
-VERSION = "1.1.2"
+VERSION = "1.1.3"
 AUTHOR = "Ali Rahnavard"
 AUTHOR_EMAIL = "gholamali.rahnavard@gmail.com"
 MAINTAINER = "Ali Rahnavard"
@@ -45,10 +47,10 @@ MAINTAINER_EMAIL = "gholamali.rahnavard@gmail.com"
 COUNTER_URL = "https://github.com/omicsEye/m2clust/blob/master/README.md"
 counter_file = "README.md"
 if not os.path.isfile(counter_file):
-    print("Downloading counter file to track m2clust downloads"+
-        " since the global PyPI download stats are currently turned off.")
+    print("Downloading counter file to track m2clust downloads" +
+          " since the global PyPI download stats are currently turned off.")
     try:
-        pass#file, headers = urlretrieve(COUNTER_URL,counter_file)
+        pass  # file, headers = urlretrieve(COUNTER_URL,counter_file)
     except EnvironmentError:
         print("Unable to download counter")
 
@@ -60,12 +62,12 @@ setup(
     license="MIT",
     description="m2clust: mluti-resolution clustering",
     long_description="m2clust provides an elegant clustering approach " + \
-        "to find clusters in data sets with different density and resolution." ,
+                     "to find clusters in data sets with different density and resolution.",
     url="http://github.com/omicsEye/m2clust",
-    keywords=['clustering','multi-resolution','hierarchically'],
-    platforms=['Linux','MacOS', "Windows"],
+    keywords=['clustering', 'multi-resolution', 'hierarchically'],
+    platforms=['Linux', 'MacOS', "Windows"],
     classifiers=classifiers,
-    #long_description=open('readme.md').read(),
+    # long_description=open('readme.md').read(),
     install_requires=[
         "latex >= 0.0.1",
         "Cython >= 0.29.2",
@@ -84,4 +86,4 @@ setup(
         ]},
     test_suite='m2clust.tests.m2clust_test',
     zip_safe=False
- )
+)

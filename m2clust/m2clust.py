@@ -14,16 +14,15 @@ from scipy.cluster.hierarchy import to_tree, linkage
 from scipy.spatial.distance import pdist, squareform
 
 # name global logging instance
-logger=logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-VERSION="1.1.2"
+VERSION = "1.1.3"
 try:
     from . import utilities, config, dataprocess
 except ImportError:
     sys.exit("CRITICAL ERROR: Unable to find the utilities module." +
              " Please check your m2clust install.")
 from . import distance, viz
-
 
 def main_run(distance_matrix=None,
              number_of_estimated_clusters=None,
@@ -34,7 +33,7 @@ def main_run(distance_matrix=None,
     bTree = True
     if do_plot:
         Z = viz.dendrogram_plot(data_table=None, D=distance_matrix, xlabels_order=[], xlabels=distance_matrix.index,
-                                filename=output_dir + "/dendrogram", colLable=False,rowLabel=False,
+                                filename=output_dir + "/dendrogram", colLable=False, rowLabel=False,
                                 linkage_method=linkage_method)
     else:
         Z = linkage(squareform(distance_matrix), method=linkage_method)
@@ -138,24 +137,23 @@ def m2clust(data, metadata, resolution=config.resolution,
             output_dir=config.output_dir,
             estimated_number_of_clusters=config.estimated_number_of_clusters,
             linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None):
-
-    #read  input files
+    # read  input files
     data = pd.read_table(data, index_col=0, header=0)
-    #print(data.shape)
-    #print(data.index)
-    #print(data.columns)
+    # print(data.shape)
+    # print(data.index)
+    # print(data.columns)
     if metadata is not None:
         metadata = pd.read_table(metadata, index_col=0, header=0)
-        #print(data.index)
-        #print(metadata.index)
+        # print(data.index)
+        # print(metadata.index)
         ind = metadata.index.intersection(data.index)
-        #print(len(ind), data.shape[1])
+        # print(len(ind), data.shape[1])
         if len(ind) != data.shape[0]:
-            print ("the data and metadata have different number of rows and number of common rows is: ", len(ind))
+            print("the data and metadata have different number of rows and number of common rows is: ", len(ind))
             print("The number of missing metadata are: ", data.shape[0] - len(ind))
-            #print("Metadata will not be used!!! ")
-            #metadata = None
-            #else:
+            # print("Metadata will not be used!!! ")
+            # metadata = None
+            # else:
         metadata = metadata.loc[ind, :]
         data = data.loc[ind, ind]
 
@@ -182,31 +180,32 @@ def m2clust(data, metadata, resolution=config.resolution,
     m2clust_enrichment_scores, sorted_keys = None, None
     shapeby = None
     if metadata is not None:
-        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, df_distance.shape[0])
+        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,
+                                                                                    df_distance.shape[0])
         if len(sorted_keys) > 2:
             shapeby = sorted_keys[2]
             print(shapeby, " is the most influential metadata in clusters")
     else:
-        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, df_distance.shape[0])
+        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,
+                                                                                    df_distance.shape[0])
     # print m2clust_enrichment_scores, sorted_keys
     dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
     if size_to_plot is None:
         size_to_plot = config.size_to_plot
-    viz.mds_ord(df_distance, target_names=dataprocess.cluster2dict(clusters, df_distance), \
+    viz.mds_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.pcoa_ord(df_distance, target_names=dataprocess.cluster2dict(clusters, df_distance), \
+    viz.pcoa_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
                  size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.tsne_ord(df_distance, target_names=dataprocess.cluster2dict(clusters, df_distance), \
+    viz.tsne_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
                  size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
-    if data_flag:
-        viz.pca_ord(data, target_names=dataprocess.cluster2dict(clusters, df_distance), \
-                    size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
+    viz.pca_ord(data, target_names=dataprocess.cluster2dict(clusters), \
+                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
 
 
 def update_configuration(args):
-
     # configure the logger
-    logging.basicConfig(filename=args.output+'/m2clust_log.txt', format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+    logging.basicConfig(filename=args.output + '/m2clust_log.txt',
+                        format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         level=getattr(logging, "INFO"), filemode='w', datefmt='%m/%d/%Y %I:%M:%S %p')
 
     # write the version of the software to the log
@@ -214,8 +213,6 @@ def update_configuration(args):
 
     # write the version of the software to the log
     logger.info("resolution level:\t" + args.resolution)
-
-
 
 
 def main():
@@ -244,7 +241,6 @@ def main():
             estimated_number_of_clusters=args.estimated_number_of_clusters,
             size_to_plot=args.size_to_plot)
     update_configuration(config)
-
 
 
 if __name__ == "__main__":

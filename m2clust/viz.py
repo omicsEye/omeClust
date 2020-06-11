@@ -14,9 +14,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import rc
 # activate latex text rendering
-#rc('text', usetex=True)
-#matplotlib.rcParams['text.usetex']=True
-#matplotlib.rcParams['text.latex.unicode']=True
+# rc('text', usetex=True)
+# matplotlib.rcParams['text.usetex']=True
+# matplotlib.rcParams['text.latex.unicode']=True
 import numpy as np
 import pandas as pd
 import pylab
@@ -75,8 +75,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         fig = pylab.figure(figsize=(plot_weight, plot_height))
 
     ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6], frame_on=True)
-    ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom ='off',  direction='out')
-    ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off', direction='out')
+    ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
+    ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
     # Compute and plot second dendrogram.
     if len(D) > 0:
         Y1 = linkage(squareform(D), method=linkage_method)
@@ -97,8 +97,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
     # Compute and plot second dendrogram.
     if len(xlabels_order) == 0:
         ax2 = fig.add_axes([0.3, 0.71, 0.6, 0.2], frame_on=True)
-        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom ='off', direction='out')
-        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off', direction='out')
+        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
+        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
         Y2 = []
         if not data_table is None:
             try:
@@ -115,8 +115,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
 
         ax2.set_xticks([])
         ax2.set_yticks([])
-        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom = 'off', direction='out')
-        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off',  direction='out')
+        ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
+        ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
     else:
         Y2 = []
 
@@ -160,12 +160,12 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
             label2 = [ylabels[i] for i in idx2]
         else:
             label2 = idx2
-        #axmatrix.set_xticks(range(len(idx2)))
-        #axmatrix.set_xticklabels(label2, minor=False)
-        #axmatrix.xaxis.set_label_position('bottom')
-        #axmatrix.xaxis.tick_bottom()
-        axmatrix.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom = 'off', direction='out')
-        axmatrix.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left = 'off',  direction='out')
+        # axmatrix.set_xticks(range(len(idx2)))
+        # axmatrix.set_xticklabels(label2, minor=False)
+        # axmatrix.xaxis.set_label_position('bottom')
+        # axmatrix.xaxis.tick_bottom()
+        axmatrix.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
+        axmatrix.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
     else:
         axmatrix.set_xticks([])
         axmatrix.set_xticklabels([])
@@ -215,23 +215,31 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
 
 
 def lda_ord(adist, X, y, target_names=None):
-    pca = PCA(n_components=2)
+    pca = PCA(n_components=3)
 
     lda = LinearDiscriminantAnalysis(n_components=len(set(y)) - 1)
     X_r2 = lda.fit(X, y).transform(X)
 
 
-def tsne_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
+def tsne_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size=[3, 2.5],
+             point_size=15):
     from sklearn.manifold import TSNE
     model = TSNE(n_components=2, random_state=0, metric='precomputed')
     coords = model.fit_transform(adist)
     ord_plot(coords, target_names=target_names, ord_name='t-SNE', \
              size_tobe_colered=size_tobe_colered, \
              xlabel='t-SNE 1', ylabel='t-SNE 2',
-             metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
+             metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
+    model = TSNE(n_components=3, random_state=0, metric='precomputed')
+    coords = model.fit_transform(adist)
+    ord_plot_3d(coords, target_names=target_names, ord_name='t-SNE_3D', \
+             size_tobe_colered=size_tobe_colered, \
+             xlabel='t-SNE 1', ylabel='t-SNE 2', zlabel='t-SNE 3',
+             metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
 
 
-def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
+def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size=[3, 2.5],
+            point_size=15):
     # pca = PCA(n_components=2)
     # X_r = pca.fit(X).transform(X)
     from sklearn import manifold
@@ -246,22 +254,42 @@ def mds_ord(adist, target_names=None, size_tobe_colered=3, metadata=None, shapeb
     ord_plot(coords, target_names=target_names, ord_name='MDS', \
              size_tobe_colered=size_tobe_colered, \
              xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')', \
-             ylabel='', metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
+             ylabel='', metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
+
+    mds = manifold.MDS(n_components=3, dissimilarity="precomputed", random_state=6)
+    results = mds.fit(adist)
+
+    coords = results.embedding_
+    ord_plot_3d(coords, target_names=target_names, ord_name='MDS_3D', \
+             size_tobe_colered=size_tobe_colered, \
+             xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')', \
+             ylabel='', zlabel ='', metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
 
 
-def pcoa_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
-    pca = PCA(n_components=2)
+def pcoa_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size=[3, 2.5], point_size=15):
+    pca = PCA(n_components=3)
     pca_fit = pca.fit(X)
     X_r = pca_fit.transform(X)
     coords = X_r
+    #from skbio import DistanceMatrix
+    #from skbio.stats.ordination import pcoa
+
+    #pcoa_results = pcoa(DistanceMatrix(X)).biplot_scores
+    #coords = pcoa_results
     ord_plot(coords, target_names=target_names, ord_name='PCoA', \
              size_tobe_colered=size_tobe_colered, \
              xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
              ylabel='PCo2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
-             metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
+             metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
+    ord_plot_3d(coords, target_names=target_names, ord_name='PCoA_3D', \
+             size_tobe_colered=size_tobe_colered, \
+             xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
+             ylabel='PCo2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
+             zlabel='PCo3 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[2] * 100) + '%)',
+             metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
 
 
-def pca_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
+def pca_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=None, fig_size=[3, 2.5], point_size=15):
     pca = PCA(n_components=2)
     pca_fit = pca.fit(X)
     X_r = pca_fit.transform(X)
@@ -270,12 +298,22 @@ def pca_ord(X, target_names=None, size_tobe_colered=3, metadata=None, shapeby=No
              size_tobe_colered=size_tobe_colered, \
              xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
              ylabel='PC2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
-             metadata=metadata, shapeby=shapeby, fig_size = fig_size, point_size = point_size)
+             metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
+    pca = PCA(n_components=3)
+    pca_fit = pca.fit(X)
+    X_r = pca_fit.transform(X)
+    coords = X_r
+    ord_plot_3d(coords, target_names=target_names, ord_name='PCA_3D', \
+             size_tobe_colered=size_tobe_colered, \
+             xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
+             ylabel='PC2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
+             zlabel='PC3 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[2] * 100) + '%)',
+             metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
 
 
 def ord_plot(coords, target_names=None, ord_name='ord', \
              size_tobe_colered=3, xlabel='First component',
-             ylabel='Second component', metadata=None, shapeby=None, fig_size = [3, 2.5], point_size = 15):
+             ylabel='Second component', metadata=None, shapeby=None, fig_size=[3, 2.5], point_size=3):
     # identify/filter outliers 
     from scipy import stats
     '''if metadata is not None:
@@ -338,7 +376,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                        yp,
                        color=colors[i],
                        marker=mp,
-                       #label=label_cluster,
+                       # label=label_cluster,
                        s=point_size, alpha=.8, linewidths=.1, edgecolors='black')
 
         i -= 1
@@ -352,7 +390,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                    color=colors[i],
                    marker='o',
                    label=label_cluster,
-                   s=point_size*3, alpha=1, linewidths=.0, edgecolors=colors[i])
+                   s=point_size * 3, alpha=1, linewidths=.0, edgecolors=colors[i])
         i -= 1
 
     label_flag = True
@@ -375,7 +413,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                            None,
                            color='whitesmoke',
                            marker='o',
-                           s=point_size*3, alpha=1, linewidths=0, edgecolors='black',
+                           s=point_size * 3, alpha=1, linewidths=0, edgecolors='black',
                            label=label_cluster)
             else:
                 label_cluster = None
@@ -391,10 +429,8 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
                None,
                color='whitesmoke',
                marker=None,
-               s=point_size*3, alpha=0, linewidths=.2, edgecolors='black',
+               s=point_size * 3, alpha=0, linewidths=.2, edgecolors='black',
                label=shapeby)
-
-
 
     metadata_leg_markers = [markers[i] for i in range(len(order_metadata))]
     # Get artists and labels for legend and chose which ones to display
@@ -410,7 +446,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         [handle for i, handle in enumerate(handles) if i in range(to_display)] + markerArtist[0:to_display_markers],
         [label for i, label in enumerate(labels) if i in range(to_display)] + order_metadata[0:to_display_markers],
         loc='center left', bbox_to_anchor=(1, 0.5), title='Cluster: size', shadow=False, scatterpoints=1,
-        frameon=True, framealpha = .8, labelspacing=.6, fontsize=5)
+        frameon=True, framealpha=.8, labelspacing=.6, fontsize=5)
     ax.get_legend().get_title().set_fontsize('6')
     ax.get_legend().get_title().set_weight('bold')
 
@@ -442,6 +478,204 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
     else:
         plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
                     dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    plt.close()
+
+def ord_plot_3d(coords, target_names=None, ord_name='ord', \
+             size_tobe_colered=3, xlabel='First component',
+             ylabel='Second component', zlabel='Third component',
+             metadata=None, shapeby=None, fig_size=[3, 2.5], point_size=3):
+    # identify/filter outliers
+    from scipy import stats
+    from mpl_toolkits.mplot3d import Axes3D
+    '''if metadata is not None:
+        metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
+    outliers = coords[(np.abs(stats.zscore(coords)) >= 4).all(axis=1)]
+
+    plt.close()
+    plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
+    fig = plt.figure()
+    #ax = fig.gca(projection='3d')
+    #ax = fig.add_subplot(111, projection='3d')
+    ax = Axes3D(fig) #, rect=[0, 0, 1, 1], elev=30, azim=-60)
+    #ax =   plt.axes()
+    colors = ncolors(n=max(2, sum(
+        [1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))  #
+    markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
+               "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
+               "|", "_"] + ["." for i in range(3000)]
+
+    '''
+     TICKLEFT, TICKRIGHT, TICKUP, TICKDOWN, CARETLEFT,
+               CARETRIGHT, CARETUP, CARETDOWN, CARETLEFTBASE, CARETRIGHTBASE, CARETUPBASE,
+    '''
+    order_metadata = []
+    if metadata is not None and shapeby is not None:
+        markers_dic = {'nan': "_"}
+        df = metadata
+        df['freq'] = df.groupby(shapeby)[shapeby].transform('count')
+        order_metadata = list(df.sort_values(by=['freq'], ascending=False, na_position='last')[shapeby].unique())
+        for i, val in enumerate(order_metadata):
+            markers_dic[str(val)] = markers[i]
+    target_names_large = {}
+    target_names_small = {}
+    sorted_key_by_len = sorted(target_names, key=lambda k: len(target_names[k]), reverse=True)
+    for target_name in sorted_key_by_len:
+        if len(target_names[str(target_name)]) >= size_tobe_colered:
+            target_names_large[str(target_name)] = target_names[str(target_name)]
+        else:
+            target_names_small[str(target_name)] = target_names[str(target_name)]
+    #cmap = plt.get_cmap('jet')
+
+    i = len(colors) - 1
+    sorted_key_by_len_large = sorted(target_names_large, key=lambda k: len(target_names_large[k]), reverse=True)
+    for target_name in sorted_key_by_len_large:
+        label_flag = True
+        if metadata is not None:
+            point_markers = [markers_dic[str(val)] for val in
+                             map(str, metadata[str(shapeby)].iloc[target_names_large[str(target_name)]])]
+        else:
+            point_markers = ['o' for val in target_names_large[target_name]]
+        for xp, yp, zp, mp in zip(coords[target_names_large[target_name], 0],
+                              coords[target_names_large[target_name], 1],
+                              coords[target_names_large[target_name], 2],
+                              point_markers):
+            if [xp, yp, zp] in outliers:
+                # print [xp, yp]
+                continue
+            if label_flag:
+                label_cluster = str(target_name) + ': ' + str(len(target_names_large[target_name]))
+                label_flag = False
+            else:
+                label_cluster = None
+
+            ax.scatter(xp,
+                       yp,
+                       zp,
+                       color=colors[i],
+                       marker=mp,
+                       # label=label_cluster,
+                       depthshade=True,
+                       s=point_size, alpha=.8, linewidths=0, edgecolors='black')
+
+        i -= 1
+    # Use legend with no shape for clusters as clusters
+    # can have various values sof metadata value
+    i = len(colors) - 1
+    for target_name in sorted_key_by_len_large:
+        label_cluster = str(target_name) + ': ' + str(len(target_names_large[target_name]))
+        ax.scatter(None,
+                   None,
+                   0,
+                   color=colors[i],
+                   marker='o',
+                   label=label_cluster,
+                   depthshade=True,
+                   s=point_size * 3, alpha=1, linewidths=.0, edgecolors=colors[i])
+        i -= 1
+
+    label_flag = True
+    for target_name in target_names_small:
+        if metadata is not None and shapeby is not None:
+            point_mrakers = [markers_dic[val] for val in
+                             map(str, metadata[str(shapeby)].iloc[target_names_small[target_name]])]
+        else:
+            point_mrakers = ['o' for val in target_names_small[target_name]]
+        for xp, yp, zp, mp in zip(coords[target_names_small[target_name], 0],
+                              coords[target_names_small[target_name], 1],
+                              coords[target_names_small[target_name], 2],
+                              point_mrakers):
+            if [xp, yp, zp] in outliers:
+                # print [xp, yp]
+                continue
+            if label_flag:
+                label_cluster = '#' + str(len(target_names_small)) + ' < ' + str(size_tobe_colered)
+                label_flag = False
+                ax.scatter(None,
+                           None,
+                           0,
+                           color='whitesmoke',
+                           marker='o',
+                           depthshade=True,
+                           s=point_size * 3, alpha=1, linewidths=0, edgecolors='black',
+                           label=label_cluster)
+            else:
+                label_cluster = None
+                ax.scatter(xp,
+                           yp,
+                           zp,
+                           color='whitesmoke',
+                           marker=mp,
+                           depthshade=True,
+                           s=point_size, alpha=.3, linewidths=0, edgecolors='black',
+                           label=label_cluster)
+
+    # Legend and label for shape based on metadata
+    ax.scatter(None,
+               None,
+               0,
+               color='whitesmoke',
+               marker=None,
+               depthshade=True,
+               s=point_size * 3, alpha=0, linewidths=0, edgecolors='black',
+               label=shapeby)
+
+    metadata_leg_markers = [markers[i] for i in range(len(order_metadata))]
+    # Get artists and labels for legend and chose which ones to display
+    handles, labels = ax.get_legend_handles_labels()
+    # Create custom artists
+    markerArtist = [plt.Line2D([0], [0], color='black', marker=marker, \
+                               linestyle="none", markeredgewidth=0.25, markerfacecolor="whitesmoke", ) \
+                    for marker in metadata_leg_markers]
+
+    to_display = max(1, len(handles))
+    to_display_markers = min(10, len(markerArtist))
+    ax.legend(
+        [handle for i, handle in enumerate(handles) if i in range(to_display)] + markerArtist[0:to_display_markers],
+        [label for i, label in enumerate(labels) if i in range(to_display)] + order_metadata[0:to_display_markers],
+        loc='center left', bbox_to_anchor=(1, 0.5), title='Cluster: size', shadow=False, scatterpoints=1,
+        frameon=True, framealpha=.8, labelspacing=.6, fontsize=5)
+    ax.get_legend().get_title().set_fontsize('6')
+    ax.get_legend().get_title().set_weight('bold')
+
+    ax.grid('on', axis='both')
+
+    ax.set_xlabel(xlabel, fontsize=7, rotation=0, va='center', ha='center')
+    ax.set_ylabel(ylabel, fontsize=7, rotation=90, va='center', ha='center')  # fontweight='bold',
+    ax.set_zlabel(zlabel, fontsize=7, rotation=90, va='center', ha='center')  # fontweight='bold',
+    ax.get_xaxis().set_tick_params(which='both', labelsize=5, top='off', bottom='off', direction='out')
+    ax.get_yaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')
+    ax.get_zaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')
+    ax.get_xaxis().set_ticks([])
+    ax.get_yaxis().set_ticks([])
+    ax.get_zaxis().set_ticks([])
+    ax.spines['bottom'].set_linewidth(0.25)
+    ax.spines['left'].set_linewidth(0.25)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    try:
+        ax.autoscale_view('tight')
+    except:
+        pass
+    ax.set_autoscale_on(True)
+    # plt.title(ord_name + ' of m2clust clusters', fontsize=10)
+    try:
+        plt.tight_layout()
+        fig.tight_layout()
+    except:
+        pass
+    #ax.view_init(30, 0)
+    #plt.draw()
+    #plt.pause(100)
+    #for angle in range(0, 360):
+     #   ax.view_init(30, angle)
+     #   plt.draw()
+     #   plt.pause(.01)
+    if not shapeby is None:
+        plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
+                    dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    else:
+        plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
+                    dpi=350, bbox_inches='tight')  #  figsize = (fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 
@@ -498,13 +732,13 @@ def parse_arguments():
         default=3,
         help="Minimum size of cluster to be plotted")
     parser.add_argument("--fig-size", nargs=2,
-                        #type=int,
+                        # type=int,
                         dest='fig_size',
                         default=[3, 2.5], help="width and height of plots")
     parser.add_argument("--point-size",
                         type=int,
                         dest='point_size',
-                        default=15, help="width and height of plots")
+                        default=3, help="width and height of plots")
     return parser.parse_args()
 
 
@@ -528,13 +762,13 @@ def main():
         clusters = {row[0]: [list(df_distance).index(val) for val in row[1].split(';')] for row in rows}
     config.output_dir = args.output
     mds_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
-            shapeby=args.shapeby, fig_size = args.fig_size, point_size = args.point_size)
+            shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size)
 
     pcoa_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
-             shapeby=args.shapeby, fig_size = args.fig_size, point_size = args.point_size)
+             shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size)
 
     tsne_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
-             shapeby=args.shapeby, fig_size = args.fig_size, point_size = args.point_size)
+             shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size)
     # if data_flag:
     # pca_ord(df_data, target_names = dataprocess.cluster2dict(clusters, df_distance), size_tobe_colered = args.size_to_plot)
 

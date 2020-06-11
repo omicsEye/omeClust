@@ -51,11 +51,10 @@ def write_output(clusters, output, df_distance, enrichment_scores=None, sorted_k
     print("Output is written in %s" % output)
 
 
-def cluster2dict(clusters, df_distance):
+def cluster2dict(clusters):
     clusters_dic = {}
     for i in range(len(clusters)):
         features = clusters[i].pre_order(lambda x: x.id)
-        # feature_names = [df_distance.index[val] for val in features]
         clusters_dic['C' + str(i + 1)] = features
     return clusters_dic
 
