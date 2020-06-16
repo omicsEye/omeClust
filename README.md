@@ -155,17 +155,17 @@ is reported as most influential metadata on clusters structure.
 * Meta2: the second most 
 influential metadata. (Metadata2 is a name of a column in metadata if if it is provided).
 
-Below is an example output `m2clust.txt` file:
+Below is an example output `clusters.txt` file:
 ```
-cluster  |  members                                  |  resolution_score  |  Meta1        |  Meta2
----------|-------------------------------------------|--------------------|---------------|-------------
-C7       |  A44;A48;A42;A46;A49;A41;A43;A47;A45;A50  |  0.337590449       |  0.311316112  |  0.29595993
-C1       |  A26;A24;A21;A23;A20;A28;A25;A22;A27      |  0.299340924       |  0.276096463  |  0.276096463
-C4       |  A35;A37;A33;A38;A40;A36;A34;A39          |  0.271570917       |  0.254305428  |  0.244961184
-C6       |  A2;A7;A5;A4;A6;A1;A3                     |  0.246264653       |  0.231982388  |  0.229761528
-C2       |  A8;A9;A10;A13;A12;A11;A14                |  0.239955783       |  0.217158357  |  0.226375741
-C3       |  A16;A19;A15;A17;A18                      |  0.181968762       |  0.17405081   |  0.172177829
-C5       |  A32;A31;A29;A30                          |  0.149117609       |  0.143758382  |  0.142056564
+cluster  |  members                                  |  n   |  resolution_score  |  Group        |  Gender
+---------|-------------------------------------------|------|--------------------|---------------|-------------
+C4       |  A50;A45;A42;A41;A44;A47;A43;A48;A46;A49  |  10  |  0.340396822       |  1            |  0.6
+C2       |  A34;A35;A37;A33;A39;A36;A38;A40          |  8   |  0.280222171       |  1            |  0.625
+C7       |  A1;A2;A7;A3;A4;A5;A6                     |  7   |  0.252963544       |  1            |  0.857142857
+C6       |  A13;A12;A8;A9;A10;A11;A14                |  7   |  0.251534233       |  0.571428571  |  1
+C3       |  A22;A23;A28;A25;A26;A24;A27              |  7   |  0.251879003       |  1            |  1
+C5       |  A16;A15;A17;A18                          |  4   |  0.152475285       |  1            |  1
+C1       |  A32;A29;A30;A31                          |  4   |  0.153832161       |  1            |  0.75
 ```
 *   File name: `` $OUTPUT_DIR/m2clust.txt ``
 *   This file details the clusters. Features are grouped in clusters.

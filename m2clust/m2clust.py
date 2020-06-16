@@ -140,14 +140,15 @@ def m2clust(data, metadata, resolution=config.resolution,
     # read  input files
     data = pd.read_table(data, index_col=0, header=0)
     # print(data.shape)
-    # print(data.index)
-    # print(data.columns)
+    #print(data.index)
+    #print(data.columns)
+
     if metadata is not None:
         metadata = pd.read_table(metadata, index_col=0, header=0)
         # print(data.index)
-        # print(metadata.index)
+        #print(metadata.index)
         ind = metadata.index.intersection(data.index)
-        # print(len(ind), data.shape[1])
+        #print(len(ind), data.shape[1], ind)
         if len(ind) != data.shape[0]:
             print("the data and metadata have different number of rows and number of common rows is: ", len(ind))
             print("The number of missing metadata are: ", data.shape[0] - len(ind))
@@ -155,7 +156,9 @@ def m2clust(data, metadata, resolution=config.resolution,
             # metadata = None
             # else:
         metadata = metadata.loc[ind, :]
-        data = data.loc[ind, ind]
+        data = data.loc[ind]
+        data = data.loc[ind, :]
+
 
     config.output_dir = output_dir
     check_requirements()
