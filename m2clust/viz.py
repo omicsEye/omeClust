@@ -620,7 +620,7 @@ def ord_plot_3d(coords, target_names=None, ord_name='ord', \
                        marker=mp,
                        # label=label_cluster,
                        depthshade=True,
-                       s=point_size, alpha=.8, linewidths=0, edgecolors='black')
+                       s=point_size, alpha=.8, linewidths=0.05, edgecolors='black')
 
         i -= 1
     # Use legend with no shape for clusters as clusters
@@ -813,6 +813,8 @@ def main():
              shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
 
     tsne_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
+             shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
+    pca_ord(df_distance, target_names=clusters, size_tobe_colered=args.size_to_plot, metadata=metadata,
              shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
     # if data_flag:
     # pca_ord(df_data, target_names = dataprocess.cluster2dict(clusters, df_distance), size_tobe_colered = args.size_to_plot)

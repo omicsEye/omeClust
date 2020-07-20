@@ -259,7 +259,10 @@ def m2clust_enrichment_score(clusters, metadata, n):
                     cluster_members = cluster.pre_order(lambda x: x.id)
                     # get category with max frequency in the cluster for meta column as metadata
                     freq_metadata, freq_value = most_common(metadata[meta].iloc[cluster_members])
-                    meta_enrichment_score.append(freq_value / len(cluster_members))
+                    if freq_metadata != '':
+                        meta_enrichment_score.append(freq_value / len(cluster_members))
+                    else:
+                        meta_enrichment_score.append('')
                     # calculate the cluster score
                 # calculate meta data score for metadata meta
             metadata_enrichment_score[
@@ -298,7 +301,12 @@ def m2clust_enrichment_score(clusters, metadata, n):
 
 def most_common(lst):
     from collections import Counter
+    #print("before", lst)
+    lst = [x for x in lst if str(x) != 'nan']
+    #print ("After",lst)
     data = Counter(lst)
+    if len(lst) == 0:
+        return '', ''
     freq_metadata = max(lst, key=data.get)
     freq_value = data[freq_metadata]
     return freq_metadata, freq_value
