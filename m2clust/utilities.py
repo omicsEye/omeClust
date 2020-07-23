@@ -273,14 +273,20 @@ def m2clust_enrichment_score(clusters, metadata, n):
     metadata_enrichment_score['resolution_score'] = resolution_score(clusters)
     metadata_enrichment_score['n'] = [clusters[i].count for i in range(len(clusters))]
     metadata_enrichment_score_df = pd.DataFrame.from_dict(metadata_enrichment_score)
-    metadata_enrichment_score_df = metadata_enrichment_score_df[metadata_enrichment_score_df['resolution_score'] > 0.05]
-    # print(metadata_enrichment_score_df)
+    #print(metadata_enrichment_score_df)
+    metadata_enrichment_score_df2 = metadata_enrichment_score_df[metadata_enrichment_score_df['resolution_score'] > 0.05]
+    # if there is ate least on cluster passes threshold use it as major cluster
+    #print(metadata_enrichment_score_df2.shape)
+    if metadata_enrichment_score_df2.shape[0] >1:
+        metadata_enrichment_score_df = metadata_enrichment_score_df2
+    #print(metadata_enrichment_score_df)
     # print(metadata_enrichment_score_df.mean())
     # print("index before",metadata_enrichment_score_df.columns)
     sorted_keys = list(metadata_enrichment_score_df.mean().sort_values(ascending=False).index)
     # metadata_enrichment_score_df.reindex(list(metadata_enrichment_score_df.mean().sort_values(ascending=False).index), axis=1)
     # print("index after", metadata_enrichment_score_df.columns)
     # print("after reindex:",metadata_enrichment_score_df)
+    #print(metadata_enrichment_score_df['n'], metadata_enrichment_score['n'])
     config.size_to_plot = min(metadata_enrichment_score_df['n'])
     print("The number of major clusters: ", metadata_enrichment_score_df.shape[0])
     # metadata_enrichment_score_df = metadata_enrichment_score_df.reindex(

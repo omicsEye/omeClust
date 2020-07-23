@@ -112,8 +112,9 @@ def parse_arguments(args):
         help="Minimum size of cluster to be plotted")
     parser.add_argument(
         "-c", "--linkage_method",
-        default='single',
+        default='average',
         help="linkage clustering method method {default = single, options average, complete\n")
+    choices = ['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward']
     parser.add_argument(
         "--plot",
         help="dendrogram plus heatmap\n",
@@ -121,7 +122,7 @@ def parse_arguments(args):
         default=False)
     parser.add_argument(
         "--resolution",
-        default='low',
+        default='medium',
         help="Resolution c .\
          Low resolution is good when clusters are well separated clusters.",
         choices=['high', 'medium', 'low'])
