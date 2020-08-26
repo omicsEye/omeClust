@@ -8,8 +8,9 @@ import numpy as np
 import pandas as pd
 import sys
 from itertools import product
-
+from sklearn.metrics import normalized_mutual_info_score
 from . import config
+from . import m2clust
 
 
 def predict_best_number_of_clusters(hierarchy_tree, distance_matrix):
@@ -253,25 +254,52 @@ def m2clust_enrichment_score(clusters, metadata, n):
         for meta in metadata.columns:
             if len(metadata[meta].unique()) < 2:
                 continue
+            #metadata[meta] = jenks_discretize(metadata[meta], number_of_bins=None)
+            #print(metadata[meta])
+            # based of unique value decide if it  need decritziation
+            if len(set(metadata[meta])) != round(math.sqrt(len(metadata[meta]))):
+                #try:
+                    #print(list(metadata[meta]))
+                metadata[meta] = m2clust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
+                    #print(list(metadata[meta]))
+                #except:
+                #    pass
             meta_enrichment_score = []
+
+            i= 0
+            membership = []
+            all_cluster_members = []
             if metadata is not None:
                 for cluster in clusters:
+                    i += 1
                     cluster_members = cluster.pre_order(lambda x: x.id)
+                    all_cluster_members.extend(cluster_members)
+                    membership.extend(['C'+str(i) for member in cluster_members])
                     # get category with max frequency in the cluster for meta column as metadata
                     freq_metadata, freq_value = most_common(metadata[meta].iloc[cluster_members])
                     if freq_metadata != '':
                         meta_enrichment_score.append(freq_value / len(cluster_members))
                     else:
                         meta_enrichment_score.append('')
+                #print(membership)
                     # calculate the cluster score
                 # calculate meta data score for metadata meta
-            metadata_enrichment_score[
-                meta] = meta_enrichment_score  # weighted_hormonic_mean(clusters, meta_enrichment_score, n)
+            metadata_enrichment_score[meta] = meta_enrichment_score
+
+            # calculate NMI as an enrichment score
+            new_X, new_Y = remove_pairs_with_a_missing(membership, list(metadata[meta].iloc[all_cluster_members]))
+            nmi_score = normalized_mutual_info_score(new_X, new_Y)
+            metadata_enrichment_score[meta] = [nmi_score for cluster in clusters]
+            # weighted_hormonic_mean(clusters, meta_enrichment_score, n)
             # print metadata_enrichment_score[meta]
         # sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
+    metadata.to_csv(config.output_dir + '/discretize_metadata.txt', sep='\t')
     # sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
+
     metadata_enrichment_score['resolution_score'] = resolution_score(clusters)
     metadata_enrichment_score['n'] = [clusters[i].count for i in range(len(clusters))]
+    metadata_enrichment_score['branch_condensed_distance'] = [clusters[i].dist for i in range(len(clusters))]
+
     metadata_enrichment_score_df = pd.DataFrame.from_dict(metadata_enrichment_score)
     #print(metadata_enrichment_score_df)
     metadata_enrichment_score_df2 = metadata_enrichment_score_df[metadata_enrichment_score_df['resolution_score'] > 0.05]
@@ -297,6 +325,8 @@ def m2clust_enrichment_score(clusters, metadata, n):
 
     # sorted_keys = list(metadata_enrichment_score_df.columns)
     # print(sorted_keys)
+    sorted_keys.remove('branch_condensed_distance')
+    sorted_keys.insert(0, 'branch_condensed_distance')
     sorted_keys.remove('resolution_score')
     sorted_keys.insert(0, 'resolution_score')
     sorted_keys.remove('n')
@@ -323,3 +353,104 @@ def resolution_score(clusters):
     scores = [1.0 / (.5 / (clusters[i].count / n) + .5 / (1.0 - clusters[i].dist)) for i in
               range(len(clusters))]
     return scores
+
+def louvain_clust(D, min_weight = 0.5):
+    import community as community_louvain
+    import matplotlib.cm as cm
+    import matplotlib.pyplot as plt
+    import networkx as nx
+
+    # assume D is a distance matrix range between 0-1
+    W = 1.0 - D
+
+    # create edges from weight matrix
+    W['from'] = list(W.index.values)
+    W = pd.melt(W, id_vars=['from'], var_name='to', value_name='weight')
+    W = W[W['weight'] >= min_weight]
+    edges = [tuple(x) for x in W.to_records(index=False)]
+    # initiate a graph
+    G = nx.Graph()
+    G.add_weighted_edges_from(edges)
+
+    # compute the best partition
+    partition = community_louvain.best_partition(G)
+    # draw the graph
+    pos = nx.spring_layout(G)
+    # color the nodes according to their partition
+    cmap = cm.get_cmap('jet', max(partition.values()) + 1) #viridis
+    order_metadata = []
+    #markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
+    #           "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
+    #          "|", "_"] + ["." for i in range(3000)]
+    #markers_dic = {'nan': "_"}
+    #for i, val in enumerate(list(partition.values())):
+    #    markers_dic[str(val)] = markers[i]
+    #point_mrakers = [markers_dic[val] for val in
+    #                 list(partition.values())]
+    nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=5,
+                           cmap=cmap, node_color=list(partition.values()), node_shape = 'o' )
+    nx.draw_networkx_edges(G, pos, alpha=0.01) #, width = 2.0)
+    #nx.set_xlabel(xlabel, fontsize=7, rotation=0, va='center', ha='center')
+    #nx.get_xaxis().set_tick_params(which='both', labelsize=5, top='off', bottom='off', direction='out')
+    #nx.get_yaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')
+    #nx.get_xaxis().set_ticks([])
+    #nx.get_yaxis().set_ticks([])
+
+    plt.savefig(config.output_dir + '/' +'louvain_clust_plot.pdf',
+                dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    plt.close()
+
+
+def classify(value, breaks):
+    for i in range(1, len(breaks)):
+        if value <= breaks[i]:
+            return "G " + str(i)
+    return "G " + str(len(breaks) - 1)
+
+
+def jenks_discretize(values, number_of_bins=None):
+    import jenkspy
+    import math
+    if number_of_bins is None:
+        number_of_bins = min(len(set(values)), round(math.sqrt(len(values))))
+    #print(number_of_bins)
+    breaks = jenkspy.jenks_breaks(values, int(number_of_bins))
+    values_in_bins = [classify(value, breaks) for value in values]
+    return values_in_bins
+
+def m2clust_discretize(values, linkage_method='complete', resolution='low' ):
+    """
+    Discretize values
+    :param values: a list of numeric values
+    :return: bins membership reflecting category of each value
+    """
+    df_distance = abs(np.array([values], dtype=float).T - np.array([values], dtype=float))
+    df_distance = pd.DataFrame(df_distance)
+    #print(df_distance)
+    cluster_bins = m2clust.main_run(distance_matrix=df_distance,
+                        number_of_estimated_clusters=2,
+                        linkage_method=linkage_method,
+                        output_dir=config.output_dir, do_plot=False, resolution=resolution)
+    membership = []
+    all_bin_members = []
+    i=0
+    membership = ["G 0" for i in range(len(values))]
+    for cluster in cluster_bins:
+        i += 1
+        cluster_members = cluster.pre_order(lambda x: x.id)
+        all_bin_members.extend(cluster_members)
+        #print(cluster_members)
+        for l in cluster_members:
+            membership[l] = 'G ' + str(i) #.extend(['G ' + str(i) for member in cluster_members])
+        #print (i, ":", len(cluster_members))
+    return membership #membership[all_bin_members]
+
+def remove_pairs_with_a_missing(X, Y, missing_char='NaN'):
+    if missing_char != missing_char or missing_char == 'NaN' :
+        test = [missing_char in [a, b] or not a == a or not b == b for a, b in zip(X, Y)]
+    else:
+        test = [missing_char in [a, b] for a, b in zip(X, Y)]
+    new_X = [a for a, b in zip(X, test) if not b]
+    new_Y = [a for a, b in zip(Y, test) if not b]
+    # print new_Y
+    return (new_X, new_Y)

@@ -341,7 +341,7 @@ def ord_plot(coords, target_names=None, ord_name='ord', \
         [1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))  #
     markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
                "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
-               "|", "_"] + ["." for i in range(3000)]
+               "|"] + ["." for i in range(3000)]
 
     '''
      TICKLEFT, TICKRIGHT, TICKUP, TICKDOWN, CARETLEFT,
@@ -519,7 +519,7 @@ def ord_plot_3d(coords, target_names=None, ord_name='ord', \
         [1 if len(target_names[target_name]) >= size_tobe_colered else 0 for target_name in target_names])))  #
     markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
                "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
-               "|", "_"] + ["." for i in range(3000)]
+               "|"] + ["." for i in range(3000)]
 
     '''
      TICKLEFT, TICKRIGHT, TICKUP, TICKDOWN, CARETLEFT,
@@ -818,7 +818,50 @@ def main():
              shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
     # if data_flag:
     # pca_ord(df_data, target_names = dataprocess.cluster2dict(clusters, df_distance), size_tobe_colered = args.size_to_plot)
+def network_plot(D, partition, min_weight = 0.5):
+    import community as community_louvain
+    import matplotlib.cm as cm
+    import matplotlib.pyplot as plt
+    import networkx as nx
 
+    # assume D is a distance matrix range between 0-1
+    W = 1.0 - D
+
+    # create edges from weight matrix
+    W['from'] = list(W.index.values)
+    W = pd.melt(W, id_vars=['from'], var_name='to', value_name='weight')
+    W = W[W['weight'] >= min_weight]
+    edges = [tuple(x) for x in W.to_records(index=False)]
+    # initiate a graph
+    G = nx.Graph()
+    G.add_weighted_edges_from(edges)
+
+    # draw the graph
+    pos = nx.spring_layout(G)
+    #print(pos, partition)
+    # color the nodes according to their partition
+    cmap = cm.get_cmap('jet', max(partition.values()) + 1) #viridis
+    order_metadata = []
+    #markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
+    #           "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
+    #          "|", "_"] + ["." for i in range(3000)]
+    #markers_dic = {'nan': "_"}
+    #for i, val in enumerate(list(partition.values())):
+    #    markers_dic[str(val)] = markers[i]
+    #point_mrakers = [markers_dic[val] for val in
+    #                 list(partition.values())]
+    nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=5,
+                           cmap=cmap, node_color=list(partition.values()), node_shape = 'o' )
+    nx.draw_networkx_edges(G, pos, alpha=0.01) #, width = 2.0)
+    #nx.set_xlabel(xlabel, fontsize=7, rotation=0, va='center', ha='center')
+    #nx.get_xaxis().set_tick_params(which='both', labelsize=5, top='off', bottom='off', direction='out')
+    #nx.get_yaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')
+    #nx.get_xaxis().set_ticks([])
+    #nx.get_yaxis().set_ticks([])
+
+    plt.savefig(config.output_dir + '/' +'network_plot.pdf',
+                dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    plt.close()
 
 if __name__ == "__main__":
     main()
