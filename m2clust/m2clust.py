@@ -42,6 +42,7 @@ def main_run(distance_matrix=None,
     # clusters = cutree_to_get_below_threshold_number_of_features (hclust_tree, t = estimated_num_clust)
     if number_of_estimated_clusters == None:
         number_of_estimated_clusters, _ = utilities.predict_best_number_of_clusters(hclust_tree, distance_matrix)
+        print('number_of_estimated_clusters: ',number_of_estimated_clusters)
     clusters = utilities.get_homogenous_clusters_silhouette(hclust_tree, array(distance_matrix),
                                                             number_of_estimated_clusters=number_of_estimated_clusters,
                                                             resolution=resolution)
@@ -156,9 +157,14 @@ def m2clust(data, metadata, resolution=config.resolution,
             # print("Metadata will not be used!!! ")
             # metadata = None
             # else:
-        metadata = metadata.loc[ind, :]
-        data = data.loc[ind]
-        data = data.loc[ind, :]
+            diff_rows = data.index.difference(metadata.index)
+            #print (diff_rows)
+            empty_section_metadata = pd.DataFrame(index=diff_rows, columns=metadata.columns)
+            metadata = pd.concat([metadata, empty_section_metadata])
+        metadata = metadata.loc[data.index, :]
+        #print (data, metadata)
+        #data = data.loc[ind]
+        #data = data.loc[ind, :]
 
 
     config.output_dir = output_dir
@@ -175,7 +181,6 @@ def m2clust(data, metadata, resolution=config.resolution,
     df_distance = df_distance[df_distance.values.sum(axis=0) != 0]
     df_distance.to_csv(output_dir + '/adist.txt', sep='\t')
     # df_distance = stats.scale_data(df_distance, scale = 'log')
-
     # viz.tsne_ord(df_distance, target_names = data.columns)
     clusters = main_run(distance_matrix=df_distance,
                         number_of_estimated_clusters=estimated_number_of_clusters,
@@ -186,14 +191,22 @@ def m2clust(data, metadata, resolution=config.resolution,
     if metadata is not None:
         m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,
                                                                                     df_distance.shape[0])
-        if len(sorted_keys) > 2:
-            shapeby = sorted_keys[2]
+        if len(sorted_keys) > 3:
+            shapeby = sorted_keys[3]
             print(shapeby, " is the most influential metadata in clusters")
     else:
         m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,
                                                                                     df_distance.shape[0])
     # print m2clust_enrichment_scores, sorted_keys
     dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
+    #if True:
+    #    try:
+    max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
+    print(max_dist)
+    utilities.louvain_clust(df_distance, min_weight=-1.0-max_dist)
+    #    except:
+    #        print("Failed to run louvain!!!")
+    #        pass
     if size_to_plot is None:
         size_to_plot = config.size_to_plot
     viz.mds_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
@@ -204,6 +217,10 @@ def m2clust(data, metadata, resolution=config.resolution,
                  size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
     viz.pca_ord(data, target_names=dataprocess.cluster2dict(clusters), \
                  size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
+
+    # draw network
+    max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
+    viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = 1.0 - max_dist)
 
 
 def update_configuration(args):
