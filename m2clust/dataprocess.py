@@ -64,7 +64,7 @@ def feature2cluster(clusters, D):
         features = clusters[i].pre_order(lambda x: x.id)
         feature_names = [D.index[val] for val in features]
         for feature in feature_names:
-            feature2cluster_dic[feature] = i + 1
+            feature2cluster_dic[feature] = i + 1 #'C' + str(i + 1)
     return feature2cluster_dic
 
 

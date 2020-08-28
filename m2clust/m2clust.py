@@ -181,7 +181,7 @@ def m2clust(data, metadata, resolution=config.resolution,
     df_distance = df_distance[df_distance.values.sum(axis=0) != 0]
     df_distance.to_csv(output_dir + '/adist.txt', sep='\t')
     # df_distance = stats.scale_data(df_distance, scale = 'log')
-    # viz.tsne_ord(df_distance, target_names = data.columns)
+    # viz.tsne_ord(df_distance, cluster_members = data.columns)
     clusters = main_run(distance_matrix=df_distance,
                         number_of_estimated_clusters=estimated_number_of_clusters,
                         linkage_method=linkage_method,
@@ -199,29 +199,30 @@ def m2clust(data, metadata, resolution=config.resolution,
                                                                                     df_distance.shape[0])
     # print m2clust_enrichment_scores, sorted_keys
     dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
-    #if True:
-    #    try:
-    max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
-    print(max_dist)
-    utilities.louvain_clust(df_distance, min_weight=-1.0-max_dist)
-    #    except:
-    #        print("Failed to run louvain!!!")
-    #        pass
+
     if size_to_plot is None:
         size_to_plot = config.size_to_plot
-    viz.mds_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
-                size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.pcoa_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
-                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.tsne_ord(df_distance, target_names=dataprocess.cluster2dict(clusters), \
-                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.pca_ord(data, target_names=dataprocess.cluster2dict(clusters), \
-                 size_tobe_colered=size_to_plot, metadata=metadata, shapeby=shapeby)
+    viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+                size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+                 size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+                 size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    viz.pca_ord(data, cluster_members=dataprocess.cluster2dict(clusters), \
+                size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
 
     # draw network
     max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
-    viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = 1.0 - max_dist)
-
+    if plot:
+        viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = 1.0 - max_dist)
+    # if True:
+    #    try:
+    # max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
+    # print(max_dist)
+    # utilities.louvain_clust(df_distance, min_weight=0)
+    #    except:
+    #        print("Failed to run louvain!!!")
+    #        pass
 
 def update_configuration(args):
     # configure the logger

@@ -293,7 +293,7 @@ def m2clust_enrichment_score(clusters, metadata, n):
             # weighted_hormonic_mean(clusters, meta_enrichment_score, n)
             # print metadata_enrichment_score[meta]
         # sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
-    metadata.to_csv(config.output_dir + '/discretize_metadata.txt', sep='\t')
+        metadata.to_csv(config.output_dir + '/discretize_metadata.txt', sep='\t')
     # sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)
 
     metadata_enrichment_score['resolution_score'] = resolution_score(clusters)
