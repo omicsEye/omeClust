@@ -258,12 +258,12 @@ def m2clust_enrichment_score(clusters, metadata, n):
             #print(metadata[meta])
             # based of unique value decide if it  need decritziation
             if len(set(metadata[meta])) != round(math.sqrt(len(metadata[meta]))):
-                #try:
+                try:
                     #print(list(metadata[meta]))
-                metadata[meta] = m2clust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
+                    metadata[meta] = m2clust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
                     #print(list(metadata[meta]))
-                #except:
-                #    pass
+                except:
+                    pass
             meta_enrichment_score = []
 
             i= 0
