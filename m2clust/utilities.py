@@ -246,7 +246,7 @@ def cutree_to_get_number_of_features(cluster, distance_matrix, number_of_estimat
     return sub_clusters
 
 
-def m2clust_enrichment_score(clusters, metadata, n):
+def m2clust_enrichment_score(clusters, metadata, method = "NMI"):
     metadata_enrichment_score = dict()
     # sorted_keys = []
     # metadata_enrichment_score['resolution_score'] = weighted_hormonic_mean(clusters, [], n)
@@ -257,39 +257,41 @@ def m2clust_enrichment_score(clusters, metadata, n):
             #metadata[meta] = jenks_discretize(metadata[meta], number_of_bins=None)
             #print(metadata[meta])
             # based of unique value decide if it  need decritziation
-            if len(set(metadata[meta])) != round(math.sqrt(len(metadata[meta]))):
-                try:
-                    #print(list(metadata[meta]))
-                    metadata[meta] = m2clust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
-                    #print(list(metadata[meta]))
-                except:
-                    pass
+            #if len(set(metadata[meta])) > round(math.sqrt(len(metadata[meta]))):
+            try:
+                #print(list(metadata[meta]))
+                metadata[meta] = m2clust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
+                #print(list(metadata[meta]))
+            except:
+                pass
             meta_enrichment_score = []
 
             i= 0
             membership = []
             all_cluster_members = []
             if metadata is not None:
+
                 for cluster in clusters:
                     i += 1
                     cluster_members = cluster.pre_order(lambda x: x.id)
                     all_cluster_members.extend(cluster_members)
                     membership.extend(['C'+str(i) for member in cluster_members])
                     # get category with max frequency in the cluster for meta column as metadata
-                    freq_metadata, freq_value = most_common(metadata[meta].iloc[cluster_members])
-                    if freq_metadata != '':
-                        meta_enrichment_score.append(freq_value / len(cluster_members))
-                    else:
-                        meta_enrichment_score.append('')
+                    if method.lower() == "freq":
+                        freq_metadata, freq_value = most_common(metadata[meta].iloc[cluster_members])
+                        if freq_metadata != '':
+                            meta_enrichment_score.append(freq_value / len(cluster_members))
+                        else:
+                            meta_enrichment_score.append('')
                 #print(membership)
                     # calculate the cluster score
                 # calculate meta data score for metadata meta
-            metadata_enrichment_score[meta] = meta_enrichment_score
-
-            # calculate NMI as an enrichment score
-            new_X, new_Y = remove_pairs_with_a_missing(membership, list(metadata[meta].iloc[all_cluster_members]))
-            nmi_score = normalized_mutual_info_score(new_X, new_Y)
-            metadata_enrichment_score[meta] = [nmi_score for cluster in clusters]
+                metadata_enrichment_score[meta] = meta_enrichment_score
+                if method.lower() == "nmi":
+                    # calculate NMI as an enrichment score
+                    new_X, new_Y = remove_pairs_with_a_missing(membership, list(metadata[meta].iloc[all_cluster_members]))
+                    nmi_score = normalized_mutual_info_score(new_X, new_Y)
+                    metadata_enrichment_score[meta] = [nmi_score for cluster in clusters]
             # weighted_hormonic_mean(clusters, meta_enrichment_score, n)
             # print metadata_enrichment_score[meta]
         # sorted_keys = sorted(metadata_enrichment_score, key=lambda k: sum(metadata_enrichment_score[k]), reverse=True)

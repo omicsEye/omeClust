@@ -114,8 +114,8 @@ def parse_arguments(args):
     parser.add_argument(
         "-c", "--linkage_method",
         default='average',
-        help="linkage clustering method method {default = single, options average, complete\n")
-    choices = ['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward']
+        help="linkage clustering method method {default = single, options average, complete\n",
+        choices = ['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward'])
     parser.add_argument(
         "--plot",
         help="dendrogram plus heatmap\n",
@@ -128,6 +128,12 @@ def parse_arguments(args):
          Low resolution is good when clusters are well separated clusters.",
         choices=['high', 'medium', 'low'])
     parser.add_argument(
+        "--enrichment",
+        default='nmi',
+        dest="enrichment_method",
+        help="enrichment method.",
+        choices=['nmi', 'freq'])
+    parser.add_argument(
         "-v", "--verbose",
         help="additional output is printed\n",
         action="store_true",
@@ -138,7 +144,7 @@ def parse_arguments(args):
 def m2clust(data, metadata, resolution=config.resolution,
             output_dir=config.output_dir,
             estimated_number_of_clusters=config.estimated_number_of_clusters,
-            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None):
+            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None, enrichment_method = "nmi"):
     # read  input files
     data = pd.read_table(data, index_col=0, header=0)
     # print(data.shape)
@@ -189,14 +195,12 @@ def m2clust(data, metadata, resolution=config.resolution,
     m2clust_enrichment_scores, sorted_keys = None, None
     shapeby = None
     if metadata is not None:
-        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,
-                                                                                    df_distance.shape[0])
+        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, method=enrichment_method)
         if len(sorted_keys) > 3:
             shapeby = sorted_keys[3]
             print(shapeby, " is the most influential metadata in clusters")
     else:
-        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,
-                                                                                    df_distance.shape[0])
+        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,method=enrichment_method)
     # print m2clust_enrichment_scores, sorted_keys
     dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
 
@@ -254,14 +258,16 @@ def main():
     config.size_to_plot = args.size_to_plot
     config.estimated_number_of_clusters = args.estimated_number_of_clusters,
     config.linkage_method = args.linkage_method
-    config.plot = config.plot
-    config.size_to_plot = config.size_to_plot
+    config.plot = args.plot
+    config.size_to_plot = args.size_to_plot
+    config.enrichment_method = config.enrichment_method
     m2clust(data=args.input, metadata=args.metadata,
             resolution=args.resolution, output_dir=args.output,
             linkage_method=args.linkage_method,
             plot=args.plot,
             estimated_number_of_clusters=args.estimated_number_of_clusters,
-            size_to_plot=args.size_to_plot)
+            size_to_plot=args.size_to_plot,
+            enrichment_method = args.enrichment_method)
     update_configuration(config)
 
 

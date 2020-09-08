@@ -21,6 +21,7 @@ estimated_number_of_clusters = 2
 linkage_method = 'average'
 plot = False
 size_to_plot = 3
+enrichment_method = 'nmi'
 
 # output directort
 output_dir = './'
