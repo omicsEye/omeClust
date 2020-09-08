@@ -16,7 +16,7 @@ from scipy.spatial.distance import pdist, squareform
 # name global logging instance
 logger = logging.getLogger(__name__)
 
-VERSION = "1.1.3"
+VERSION = "1.1.4"
 try:
     from . import utilities, config, dataprocess
 except ImportError:
