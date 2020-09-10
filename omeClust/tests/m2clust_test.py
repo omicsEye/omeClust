@@ -1,4 +1,4 @@
-""" m2clust_test.py : Test discovery module for m2clust. """
+""" omeClust_test.py : Test discovery module for omeClust. """
 
 import os
 import unittest

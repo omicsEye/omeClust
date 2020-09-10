@@ -10,7 +10,7 @@ import sys
 from itertools import product
 from sklearn.metrics import normalized_mutual_info_score
 from . import config
-from . import m2clust
+from . import omeClust
 
 
 def predict_best_number_of_clusters(hierarchy_tree, distance_matrix):
@@ -246,7 +246,7 @@ def cutree_to_get_number_of_features(cluster, distance_matrix, number_of_estimat
     return sub_clusters
 
 
-def m2clust_enrichment_score(clusters, metadata, method = "NMI"):
+def omeClust_enrichment_score(clusters, metadata, method = "NMI"):
     metadata_enrichment_score = dict()
     # sorted_keys = []
     # metadata_enrichment_score['resolution_score'] = weighted_hormonic_mean(clusters, [], n)
@@ -260,7 +260,7 @@ def m2clust_enrichment_score(clusters, metadata, method = "NMI"):
             #if len(set(metadata[meta])) > round(math.sqrt(len(metadata[meta]))):
             try:
                 #print(list(metadata[meta]))
-                metadata[meta] = m2clust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
+                metadata[meta] = omeClust_discretize(metadata[meta])#jenks_discretize(metadata[meta], number_of_bins=None)#
                 #print(list(metadata[meta]))
             except:
                 pass
@@ -420,7 +420,7 @@ def jenks_discretize(values, number_of_bins=None):
     values_in_bins = [classify(value, breaks) for value in values]
     return values_in_bins
 
-def m2clust_discretize(values, linkage_method='complete', resolution='low' ):
+def omeClust_discretize(values, linkage_method='complete', resolution='low' ):
     """
     Discretize values
     :param values: a list of numeric values
@@ -429,10 +429,10 @@ def m2clust_discretize(values, linkage_method='complete', resolution='low' ):
     df_distance = abs(np.array([values], dtype=float).T - np.array([values], dtype=float))
     df_distance = pd.DataFrame(df_distance)
     #print(df_distance)
-    cluster_bins = m2clust.main_run(distance_matrix=df_distance,
-                        number_of_estimated_clusters=2,
-                        linkage_method=linkage_method,
-                        output_dir=config.output_dir, do_plot=False, resolution=resolution)
+    cluster_bins = omeClust.main_run(distance_matrix=df_distance,
+                                     number_of_estimated_clusters=2,
+                                     linkage_method=linkage_method,
+                                     output_dir=config.output_dir, do_plot=False, resolution=resolution)
     membership = []
     all_bin_members = []
     i=0

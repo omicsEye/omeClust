@@ -21,7 +21,7 @@ try:
     from . import utilities, config, dataprocess
 except ImportError:
     sys.exit("CRITICAL ERROR: Unable to find the utilities module." +
-             " Please check your m2clust install.")
+             " Please check your omeClust install.")
 from . import distance, viz
 
 def main_run(distance_matrix=None,
@@ -36,7 +36,7 @@ def main_run(distance_matrix=None,
                                 filename=output_dir + "/dendrogram", colLable=False, rowLabel=False,
                                 linkage_method=linkage_method)
     else:
-        Z = linkage(squareform(distance_matrix), method=linkage_method)
+        Z = linkage(squareform(distance_matrix), method=linkage_method, optimal_ordering=True)
 
     hclust_tree = to_tree(Z)
     # clusters = cutree_to_get_below_threshold_number_of_features (hclust_tree, t = estimated_num_clust)
@@ -78,7 +78,7 @@ def parse_arguments(args):
     parser = argparse.ArgumentParser(
         description="Multi-resolution clustering using hierarchical clustering and Silhouette score.\n",
         formatter_class=argparse.RawTextHelpFormatter,
-        prog="m2clust")
+        prog="omeClust")
     parser.add_argument(
         "--version",
         action="version",
@@ -141,7 +141,7 @@ def parse_arguments(args):
     return parser.parse_args()
 
 
-def m2clust(data, metadata, resolution=config.resolution,
+def omeClust(data, metadata, resolution=config.resolution,
             output_dir=config.output_dir,
             estimated_number_of_clusters=config.estimated_number_of_clusters,
             linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None, enrichment_method = "nmi"):
@@ -192,36 +192,48 @@ def m2clust(data, metadata, resolution=config.resolution,
                         number_of_estimated_clusters=estimated_number_of_clusters,
                         linkage_method=linkage_method,
                         output_dir=output_dir, do_plot=plot, resolution=resolution)
-    m2clust_enrichment_scores, sorted_keys = None, None
+    omeClust_enrichment_scores, sorted_keys = None, None
     shapeby = None
     if metadata is not None:
-        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata, method=enrichment_method)
+        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata, method=enrichment_method)
         if len(sorted_keys) > 3:
             shapeby = sorted_keys[3]
             print(shapeby, " is the most influential metadata in clusters")
     else:
-        m2clust_enrichment_scores, sorted_keys = utilities.m2clust_enrichment_score(clusters, metadata,method=enrichment_method)
-    # print m2clust_enrichment_scores, sorted_keys
-    dataprocess.write_output(clusters, output_dir, df_distance, m2clust_enrichment_scores, sorted_keys)
+        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata,method=enrichment_method)
+    # print omeClust_enrichment_scores, sorted_keys
+    dataprocess.write_output(clusters, output_dir, df_distance, omeClust_enrichment_scores, sorted_keys)
 
     if size_to_plot is None:
         size_to_plot = config.size_to_plot
-    viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
-                size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
-                 size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
-                 size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    viz.pca_ord(data, cluster_members=dataprocess.cluster2dict(clusters), \
-                size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    try:
+        viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+                    size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    except:
+        pass
+    try:
+        viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+                     size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    except:
+        pass
+    try:
+     viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+                     size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    except:
+        pass
+    try:
+        viz.pca_ord(data, cluster_members=dataprocess.cluster2dict(clusters), \
+                    size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    except:
+        pass
 
     # draw network
-    max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
+    max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     if plot:
         viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = 1.0 - max_dist)
     # if True:
     #    try:
-    # max_dist = max(m2clust_enrichment_scores['branch_condensed_distance'])
+    # max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     # print(max_dist)
     # utilities.louvain_clust(df_distance, min_weight=0)
     #    except:
@@ -230,12 +242,12 @@ def m2clust(data, metadata, resolution=config.resolution,
 
 def update_configuration(args):
     # configure the logger
-    logging.basicConfig(filename=args.output + '/m2clust_log.txt',
+    logging.basicConfig(filename=args.output + '/omeClust_log.txt',
                         format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         level=getattr(logging, "INFO"), filemode='w', datefmt='%m/%d/%Y %I:%M:%S %p')
 
     # write the version of the software to the log
-    logger.info("Running m2clust version:\t" + VERSION)
+    logger.info("Running omeClust version:\t" + VERSION)
 
     # write the version of the software to the log
     logger.info("resolution level:\t" + args.resolution)
@@ -261,7 +273,7 @@ def main():
     config.plot = args.plot
     config.size_to_plot = args.size_to_plot
     config.enrichment_method = config.enrichment_method
-    m2clust(data=args.input, metadata=args.metadata,
+    omeClust(data=args.input, metadata=args.metadata,
             resolution=args.resolution, output_dir=args.output,
             linkage_method=args.linkage_method,
             plot=args.plot,

@@ -1,6 +1,6 @@
 version = '1.1.3'
 __description__ = """
- m2clust for multi-resolution clustering
+ omeClust for multi-resolution clustering
 """
 
 __doc__ = __doc__
@@ -16,7 +16,7 @@ diatance_metric = 'spearman'  # euclidean'
 data = None
 metadata = None
 resolution = 'low'
-output_dir = 'm2clust_output'
+output_dir = 'omeClust_output'
 estimated_number_of_clusters = 2
 linkage_method = 'average'
 plot = False

@@ -1,6 +1,6 @@
-# m2clust: multi-resolution clustering of omics data #
+# omeClust: multi-resolution clustering of omics data #
 
-**m2clust** is a clustering method that detects
+**omeClust** is a clustering method that detects
 clusters of features using omics data and scores metadata 
 (resolution score) based on their influences in clustering.
 The similarity of features within each cluster can be 
@@ -13,18 +13,18 @@ number of features which group together.
 
 **Citation:**
 
-Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . https://github.com/omicsEye/m2clust/
+Rahnavard A. et al, **omeClust: multi-resolution clustering of omics data** . https://github.com/omicsEye/omeClust/
 
 ----
 
-* Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki/Workshop) for a one hour workshop.
+* Please see the [Workshop](https://github.com/omicsEye/omeClust/wiki/Workshop) for a one hour workshop.
 
 ----
 # mclust user manual
 
 ## Contents ##
 * [Features](#features)
-* [m2clust](#m2clust)
+* [omeClust](#omeClust)
     * [mclust approach](#mclust-approach)
     * [Requirements](#requirements)
     * [Installation](#installation)
@@ -37,7 +37,7 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
     * [Basic usage](#basic-usage)
     * [Setting for cluster resolution](#setting-for-cluster-resolution)
     * [Demo runs](#demo-runs)
-* [Guides to mclustviz for visuzlaization](#guides-to-m2clustviz-for-visualiazation)
+* [Guides to mclustviz for visuzlaization](#guides-to-omeClustviz-for-visualiazation)
 * [Synthetic clusters](#synthetic-clusters)
 * [Output files](#output-files)
     1. [Cluster file](#clsters-file)
@@ -52,13 +52,13 @@ Rahnavard A. et al, **m2clust: multi-resolution clustering of omics data** . htt
     * [Distance using correlation](#Distance-using-correlation)
     * [Distance using entropy](#distance-using-entropy)
 * [Tools](#markdown-header-tools)
-    * [m2clust synthetic paired datasets generator](#m2clust-synthetic-paired-datasets-generator)
-    * [m2clust Python API](#m2clust-python-api)
+    * [omeClust synthetic paired datasets generator](#omeClust-synthetic-paired-datasets-generator)
+    * [omeClust Python API](#omeClust-python-api)
 * [FAQs](#markdown-header-faqs)
 * [Complete option list](#markdown-header-complete-option-list)
 ------------------------------------------------------------------------------------------------------------------------------
 # Features #
-1. Generality: m2clust uses distance matrix as input, to allow users decide about appropriate distance metric for 
+1. Generality: omeClust uses distance matrix as input, to allow users decide about appropriate distance metric for 
 their data.
 
 2. A simple user interface (single command driven flow)
@@ -68,9 +68,9 @@ their data.
     * a text file of clusters and related information is provided as output in a tab-delimited file, `clusters.txt`
     * Three ordination plots (PCoA, MDS, and t-SNE) are provides for ease of interpretation. 
     
-# m2clust #
-## m2clust appraoch ##
-![overview.png](https://github.com/omicsEye/m2clust/docs/overviwe.png)
+# omeClust #
+## omeClust appraoch ##
+![overview.png](https://github.com/omicsEye/omeClust/docs/overviwe.png)
 ## REQUIREMENTS ##
 * [Matplotlib](http://matplotlib.org/)
 * [Python 3.*](https://www.python.org/download/releases/)
@@ -79,30 +79,30 @@ their data.
 
 ## INSTALLATION ##
 ```
-$ sudo pip3 install m2clust
+$ sudo pip3 install omeClust
 ```
 ------------------------------------------------------------------------------------------------------------------------------
 
 # Getting Started with mclust #
-## TEST m2clust ##
+## TEST omeClust ##
 
-To test if m2clust is installed correctly, you may run the following command in the terminal:
+To test if omeClust is installed correctly, you may run the following command in the terminal:
 
 ```
 #!cmd
 
-m2clust -h
+omeClust -h
 
 ```
 
-Which yields m2clust command line options
+Which yields omeClust command line options
 
 
 ## Options ##
 
 ```
 #!python
-usage: m2clust [-h] [-i INPUT] -o OUTPUT [-m SIMILARITY] [--metadata METADATA]
+usage: omeClust [-h] [-i INPUT] -o OUTPUT [-m SIMILARITY] [--metadata METADATA]
                [-n ESTIMATED_NUMBER_OF_CLUSTERS] [--size-to-plot SIZE_TO_PLOT]
                [-c LINKAGE_METHOD] [--plot] [--resolution {high,medium,low}]
                [-v]
@@ -146,7 +146,7 @@ Th input is a tab-delimited text file of `n * n` where `n` is number of features
 
 ## Output ##
 
-the main output is the `m2clust.txt` a a tab-delimited text file that each row is a cluster with following columns.
+the main output is the `omeClust.txt` a a tab-delimited text file that each row is a cluster with following columns.
 * cluster: is a cluster name starts with C	
 * members: members of a cluster	
 * resolution_score: an score defined by 	
@@ -167,7 +167,7 @@ C3       |  A22;A23;A28;A25;A26;A24;A27              |  7   |  0.251879003      
 C5       |  A16;A15;A17;A18                          |  4   |  0.152475285       |  1            |  1
 C1       |  A32;A29;A30;A31                          |  4   |  0.153832161       |  1            |  0.75
 ```
-*   File name: `` $OUTPUT_DIR/m2clust.txt ``
+*   File name: `` $OUTPUT_DIR/omeClust.txt ``
 *   This file details the clusters. Features are grouped in clusters.
 *    **```cluster```**: a column contains clusters names that each cluster name starts with `C` following with a number.
 *    **```members```**: has one or more features that participate in the cluster.
@@ -193,9 +193,9 @@ C1       |  A32;A29;A30;A31                          |  4   |  0.153832161      
 # Guides to mclustviz for visuzlaization #
 
 
-* **Basic usage:** `$ m2clustviz /path-to-mclust-output/adist.txt /path-to-mclust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-mclust-output/`
+* **Basic usage:** `$ omeClustviz /path-to-mclust-output/adist.txt /path-to-mclust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-mclust-output/`
 * `adist.txt` = an distance matrix that used for clustering 
-* `clusters.txt` = an m2clust output which assigns features to clusters
+* `clusters.txt` = an omeClust output which assigns features to clusters
 * `metadata.txt`: is metadata file which contains metadata for features
 * `meta1`: is a metadata in the metadata file to be used for shaping points in the ordination plot
 * Run with `-h` to see additional command line options
@@ -203,7 +203,7 @@ C1       |  A32;A29;A30;A31                          |  4   |  0.153832161      
 Produces a set of ordination plots for features colored by computational clusters and shaped by metadata.
 
 ```
-usage: m2clustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT
+usage: omeClustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT
                  [--size-to-plot SIZE_TO_PLOT]
                  adist clusters
 
@@ -237,12 +237,12 @@ optional arguments:
 
 * Installation
 
-*m2clust* is implemented in python and packaged and available
+*omeClust* is implemented in python and packaged and available
 via PyPi. Run the following command to get it installed (use `sudo`
 to install it for all users or use --user and provide a path with write access) 
 
 ``
-$ sudo pip3 install m2clust
+$ sudo pip3 install omeClust
 `` 
 * Input data 
 
@@ -255,13 +255,13 @@ optional input is a metadata table `n*m` where
 
 
 ``
-$ m2clust -i synthetic_demo/adist.txt -o demo_output
+$ omeClust -i synthetic_demo/adist.txt -o demo_output
 ``
 
 if metadata is available then use the following command:
 
 ``
-$ m2clust -i synthetic_demo/adist.txt -o demo_output --metadata synthetic_demo/metadata.txt  --plot
+$ omeClust -i synthetic_demo/adist.txt -o demo_output --metadata synthetic_demo/metadata.txt  --plot
 ``
 
 `--plot` is optional to generate a heatmap with 
@@ -277,51 +277,51 @@ $ python3
 `` 
 
 ``
-from m2clust import m2clust
+from omeClust import omeClust
 ``
 
 ``
-m2clust.m2clust(data='/path-to/adist.txt', metadata='/path-to/metadata.txt', 
-                output_dir='m2clust_output')
+omeClust.omeClust(data='/path-to/adist.txt', metadata='/path-to/metadata.txt', 
+                output_dir='omeClust_output')
 ``
 * output
-1. `m2clust.txt` contains cluster, their members,
+1. `omeClust.txt` contains cluster, their members,
 and metadata resolution score sorted 
 from highest to lowest score.
 
-* [Learn more about details of options](https://github.com/omicsEye/m2clust/wiki)
+* [Learn more about details of options](https://github.com/omicsEye/omeClust/wiki)
 
 ### Demo run using synthetic data ###
 1. Download the input:
-[Distance matrix](m2clust_demo/synthetic_data/adist.txt) and
-[metadata](m2clust_demo/synthetic_data/metadata.txt))
-2. Run m2clust in command line with input
-``$ m2clust -i synthetic_demo/adist.txt -o demo_output --metadata synthetic_demo/metadata.txt --plot``
+[Distance matrix](omeClust_demo/synthetic_data/adist.txt) and
+[metadata](omeClust_demo/synthetic_data/metadata.txt))
+2. Run omeClust in command line with input
+``$ omeClust -i synthetic_demo/adist.txt -o demo_output --metadata synthetic_demo/metadata.txt --plot``
 3. Check your output folder
 
 Here we show the PCoA and DMS plot as one the representative 
 visualization of the results. 
 
-<img src="m2clust_demo/output/PCoA_plot.png" height="35%" width="35%">
-<img src="m2clust_demo/output/MDS_plot.png" height="35%" width="35%">
+<img src="omeClust_demo/output/PCoA_plot.png" height="35%" width="35%">
+<img src="omeClust_demo/output/MDS_plot.png" height="35%" width="35%">
 
 ### Real world example ###
 
 Please see the wiki for real-world example including: 
 gene expression, microbial species stains, and metabolite profiles.
 
-<img src="m2clust_demo/output/PCoA_plot.png" height="35%" width="35%">
-<img src="m2clust_demo/output/MDS_plot.png" height="35%" width="35%">
-<img src="m2clust_demo/output/PCoA_plot.png" height="35%" width="35%">
+<img src="omeClust_demo/output/PCoA_plot.png" height="35%" width="35%">
+<img src="omeClust_demo/output/MDS_plot.png" height="35%" width="35%">
+<img src="omeClust_demo/output/PCoA_plot.png" height="35%" width="35%">
 
-Please see the [Workshop](https://github.com/omicsEye/m2clust/wiki) for the data, their description.
+Please see the [Workshop](https://github.com/omicsEye/omeClust/wiki) for the data, their description.
 
-# m2clust synthetic paired datasets generator #
+# omeClust synthetic paired datasets generator #
 
 ```buildoutcfg
 $ python3
-from  m2clust import cluster_generator
-from  m2clust import dataprocess
+from  omeClust import cluster_generator
+from  omeClust import dataprocess
 nX = 100
 nY = 100 
 nSamples = 50
@@ -360,6 +360,6 @@ the datasets and spiked relationship within and between datasets:
 
 ### Support ###
 
-* Please submit your questions or issues with the software at [Issues tracker](https://github.com/omicsEye/m2clust/issues).
+* Please submit your questions or issues with the software at [Issues tracker](https://github.com/omicsEye/omeClust/issues).
 
 

@@ -130,7 +130,7 @@ def rope_unrelated(nSamples, nX, nY, noiseVar, ropeMinCov, ropeMaxCov, fractionT
 # it won't be exactly that many zeros, but bigger numbers will make more zeros
 # the other one, you tweak `fractionTruePositive`
 
-# X,Y,A = m2clust.cluster_generator.circular_block(nSamples = 100, nX =100, nY = 100, nBlocks =5, noiseVar = 0.1,
+# X,Y,A = omeClust.cluster_generator.circular_block(nSamples = 100, nX =100, nY = 100, nBlocks =5, noiseVar = 0.1,
 #                                             blockIntraCov = 0.3, offByOneIntraCov = 0.0,
 #                                             blockInterCov = 0.2, offByOneInterCov = 0.0,
 #                                             holeCov = 0.3, holeProb = .25)

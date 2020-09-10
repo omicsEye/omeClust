@@ -84,14 +84,14 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         Y1 = linkage(squareform(D), method=linkage_method)
     else:
         D = pdist(data_table, metric=distance.pDistance)
-        Y1 = linkage(D, method=linkage_method)
+        Y1 = linkage(D, method=linkage_method, optimal_ordering = True)
     if len(Y1) > 1:
         try:
             Z1 = sch.dendrogram(Y1, orientation='left')
         except:
             print("Warning: dendrogram plot faced an exception!")
             pylab.close()
-            Y1 = linkage(squareform(D), method=linkage_method)
+            Y1 = linkage(squareform(D), method=linkage_method, optimal_ordering = True)
             return Y1
     ax1.set_xticks([])
     ax1.set_yticks([])
@@ -104,7 +104,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         Y2 = []
         if not data_table is None:
             try:
-                Y2 = linkage(data_table.T, metric=distance.pDistance, method=linkage_method)
+                Y2 = linkage(data_table.T, metric=distance.pDistance, method=linkage_method, optimal_ordering = True)
             except ValueError:
                 pass
         if len(Y2) > 1:
@@ -481,7 +481,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord', \
     except:
         pass
     # ax.set_autoscale_on(False)
-    # plt.title(ord_name + ' of m2clust clusters', fontsize=10)
+    # plt.title(ord_name + ' of omeClust clusters', fontsize=10)
     try:
         plt.tight_layout()
     except:
@@ -695,7 +695,7 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
     except:
         pass
     ax.set_autoscale_on(True)
-    # plt.title(ord_name + ' of m2clust clusters', fontsize=10)
+    # plt.title(ord_name + ' of omeClust clusters', fontsize=10)
     try:
         #pass
         plt.tight_layout()
@@ -738,7 +738,7 @@ def parse_arguments():
     """
 
     parser = argparse.ArgumentParser(
-        description="m2clust visualization script.\n",
+        description="omeClust visualization script.\n",
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(

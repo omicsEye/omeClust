@@ -1,7 +1,8 @@
 import sys
 import unittest
+import itertools
 
-from halla import stats
+from omeClust import omeClust
 
 try:
     from numpy import array
@@ -9,13 +10,14 @@ except ImportError:
     sys.exit("Please install numpy")
 
 
-class Testm2clustStatsFunctions(unittest.TestCase):
+class TestomeClustDistanceFunctions(unittest.TestCase):
     """
-    Test the functions found in m2clust
+    Test the functions found in omeClust
     """
-
+        
     def test_import(self):
         """
         Test the normalized mututal information function
         """
         pass
+
