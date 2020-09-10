@@ -37,7 +37,7 @@ Rahnavard A. et al, **omeClust: multi-resolution clustering of omics data** . ht
     * [Basic usage](#basic-usage)
     * [Setting for cluster resolution](#setting-for-cluster-resolution)
     * [Demo runs](#demo-runs)
-* [Guides to mclustviz for visuzlaization](#guides-to-omeClustviz-for-visualiazation)
+* [Guides to omeClustviz for visuzlaization](#guides-to-omeClustviz-for-visualiazation)
 * [Synthetic clusters](#synthetic-clusters)
 * [Output files](#output-files)
     1. [Cluster file](#clsters-file)
@@ -190,7 +190,7 @@ C1       |  A32;A29;A30;A31                          |  4   |  0.153832161      
 *   This file has a 
 *   ###
 
-# Guides to mclustviz for visuzlaization #
+# Guides to omeClustviz for visuzlaization #
 
 
 * **Basic usage:** `$ omeClustviz /path-to-mclust-output/adist.txt /path-to-mclust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-mclust-output/`
