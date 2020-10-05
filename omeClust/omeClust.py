@@ -153,9 +153,11 @@ def omeClust(data, metadata, resolution=config.resolution,
 
     if metadata is not None:
         metadata = pd.read_table(metadata, index_col=0, header=0)
-        # print(data.index)
+        #   print(data.index)
         #print(metadata.index)
         ind = metadata.index.intersection(data.index)
+        #diff = set(metadata.index).difference(set(data.index))
+        #print (diff)
         #print(len(ind), data.shape[1], ind)
         if len(ind) != data.shape[0]:
             print("the data and metadata have different number of rows and number of common rows is: ", len(ind))
@@ -201,9 +203,11 @@ def omeClust(data, metadata, resolution=config.resolution,
             print(shapeby, " is the most influential metadata in clusters")
     else:
         omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata,method=enrichment_method)
-    # print omeClust_enrichment_scores, sorted_keys
+    #print (omeClust_enrichment_scores, sorted_keys)
     dataprocess.write_output(clusters, output_dir, df_distance, omeClust_enrichment_scores, sorted_keys)
-
+    feature2cluster = dataprocess.feature2cluster(clusters, df_distance)
+    feature2cluster_map = pd.DataFrame.from_dict(feature2cluster, orient='index', columns=['Cluster'])
+    feature2cluster_map.to_csv(output_dir + '/feature_cluster_label.txt', sep='\t')
     if size_to_plot is None:
         size_to_plot = config.size_to_plot
     try:

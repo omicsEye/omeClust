@@ -332,7 +332,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord', \
     from scipy import stats
     '''if metadata is not None:
         metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
-    outliers = coords[(np.abs(stats.zscore(coords)) >= 3).all(axis=1)]
+    outliers = coords[(np.abs(stats.zscore(coords)) >= 3).any(axis=1)]
 
     plt.close()
     plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
@@ -506,7 +506,7 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
 
     '''if metadata is not None:
         metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
-    outliers = coords[(np.abs(stats.zscore(coords)) >= 3).all(axis=1)]
+    outliers = coords[(np.abs(stats.zscore(coords)) >= 3).any(axis=1)]
 
     plt.close()
     plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
@@ -840,7 +840,14 @@ def network_plot(D, partition, min_weight = 0.5):
     pos = nx.spring_layout(G)
     #print(pos, partition)
     # color the nodes according to their partition
-    cmap = cm.get_cmap('jet', max(partition.values()) + 1) #viridis
+    clusters  = list(set(partition.values()))
+    #print(clusters)
+    cmap = ncolors(len(clusters)) # cm.get_cmap('jet', len(partition) ) #viridis
+    colors_dic =  dict(zip(clusters,cmap))
+    colors = []
+    for i, val in enumerate(list(partition.values())):
+        colors.append(colors_dic[val])
+    #print (colors, len(colors))
     order_metadata = []
     #markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
     #           "P", "*", 'X', "h", "H", "+", "x", "1", "2", "3", "4", "8", ".", ",",
@@ -851,8 +858,8 @@ def network_plot(D, partition, min_weight = 0.5):
     #point_mrakers = [markers_dic[val] for val in
     #                 list(partition.values())]
     nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=5,
-                           cmap=cmap, node_color=list(partition.values()), node_shape = 'o' )
-    nx.draw_networkx_edges(G, pos, alpha=0.01) #, width = 2.0)
+                           cmap=cmap,  node_color=colors, node_shape = 'o', edgecolors = 'black', linewidths =.05 )
+    nx.draw_networkx_edges(G, pos, alpha=0.1) #, width = 2.0)
     #nx.set_xlabel(xlabel, fontsize=7, rotation=0, va='center', ha='center')
     #nx.get_xaxis().set_tick_params(which='both', labelsize=5, top='off', bottom='off', direction='out')
     #nx.get_yaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')

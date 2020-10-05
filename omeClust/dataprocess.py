@@ -32,7 +32,7 @@ def write_output(clusters, output, df_distance, enrichment_scores=None, sorted_k
             metadata_order += '\t' + key
     else:
         importance_order = range(len(clusters))
-    f.write("cluster" + "\t" + "members" + metadata_order + '\n')
+    f.write("Cluster" + "\t" + "Members" + metadata_order + '\n')
     for i in importance_order:
         f.write('C' + str(i + 1) + "\t")
         features = clusters[i].pre_order(lambda x: x.id)
@@ -64,7 +64,7 @@ def feature2cluster(clusters, D):
         features = clusters[i].pre_order(lambda x: x.id)
         feature_names = [D.index[val] for val in features]
         for feature in feature_names:
-            feature2cluster_dic[feature] = i + 1 #'C' + str(i + 1)
+            feature2cluster_dic[feature] = 'C' + str(i + 1) #'C' + str(i + 1)
     return feature2cluster_dic
 
 

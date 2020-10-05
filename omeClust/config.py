@@ -22,6 +22,6 @@ linkage_method = 'average'
 plot = False
 size_to_plot = 3
 enrichment_method = 'nmi'
-
+point_size = 3
 # output directort
 output_dir = './'
