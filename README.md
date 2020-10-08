@@ -34,22 +34,7 @@ Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-
     * [Options](#options) 
     * [Input](#input)
     * [Output](#output)  
-* [How to run](#how-to-run)
-    * [Basic usage](#basic-usage)
-    * [Setting for cluster resolution](#setting-for-cluster-resolution)
-    * [Demo runs](#demo-runs)
 * [Guides to omeClustviz for visualization](#guides-to-omeClustviz-for-visualiazation)
-* [Synthetic clusters](#synthetic-clusters)
-* [Output files](#output-files)
-    1. [Cluster file](#clsters-file)
-    2. [Distance table](#distance-table)
-* [Result plots](#result-plots)
-    1. [PCoA plot](#pcoa-plot)
-    2. [MDS plot](#MDS-plot)
-    3. [t-SNE plot](#t-sne-plot)
-    4. [heatmap plot](#heatmap-plot)
-    5. [network plot](#network-plot)
-* [Configuration](#markdown-header-configuration)
 * [Tutorials for distance calculation](#tutorials-for-distance-calculation)
     * [Distance between sequencing alignments](#distance-between-sequencing-alignments)
     * [Distance using correlation](#Distance-using-correlation)
@@ -57,8 +42,7 @@ Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-
 * [Tools](#markdown-header-tools)
     * [omeClust synthetic paired datasets generator](#omeClust-synthetic-paired-datasets-generator)
     * [omeClust Python API](#omeClust-python-api)
-* [FAQs](#markdown-header-faqs)
-* [Complete option list](#markdown-header-complete-option-list)
+* [Support](#Support)
 ------------------------------------------------------------------------------------------------------------------------------
 # Features #
 1. Generality: omeClust uses distance matrix as input, to allow users decide about appropriate distance metric for 
@@ -73,7 +57,7 @@ their data.
     * Discretized metadata that has been used for enrichment score calculation 
     
 # omeClust #
-## omeClust appraoch ##
+## omeClust approach ##
 ![omeClust Workflow overview](img/fig1_overview.png)
 ## REQUIREMENTS ##
 * [Matplotlib](http://matplotlib.org/)
@@ -105,7 +89,8 @@ $ pip3 install omeClust
 ------------------------------------------------------------------------------------------------------------------------------
 
 # Getting Started with omeClust #
-## TEST omeClust ##
+
+## Test omeClust ##
 
 To test if omeClust is installed correctly, you may run the following command in the terminal:
 
@@ -187,8 +172,8 @@ influential metadata. (Metadata2 is a name of a column in metadata if if it is p
 ### Demo run using synthetic data ###
 
 1. Download the input:
-[Distance matrix](/data/synthetic_data/dist_4_0.001_4_200.txt) and
-[metadata](omeClust_demo/synthetic_data/truth_4_0.001_4_200.txt))
+[Distance matrix](data/synthetic/dist_4_0.001_4_200.txt) and
+[metadata](/data/synthetic/truth_4_0.001_4_200.txt))
 
 2. Run omeClust in command line with input
 ``$ omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclust_demo --plot``
