@@ -197,7 +197,6 @@ influential metadata. (Metadata2 is a name of a column in metadata if if it is p
 
 Here we show the PCoA and DMS plot as one the representative 
 visualization of the results. 
-![omeClust Workflow overview](img/Ground truth_PCoA_3D_plot.png)
 <img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%">
 <img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
 
