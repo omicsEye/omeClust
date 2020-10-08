@@ -16,7 +16,7 @@ from scipy.spatial.distance import pdist, squareform
 # name global logging instance
 logger = logging.getLogger(__name__)
 
-VERSION = "1.1.4"
+VERSION = "1.1.5"
 try:
     from . import utilities, config, dataprocess
 except ImportError:
@@ -239,7 +239,7 @@ def omeClust(data, metadata, resolution=config.resolution,
     #    try:
     # max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     # print(max_dist)
-    # utilities.louvain_clust(df_distance, min_weight=0)
+    utilities.louvain_clust(df_distance, min_weight=0)
     #    except:
     #        print("Failed to run louvain!!!")
     #        pass

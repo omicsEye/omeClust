@@ -1,4 +1,4 @@
-version = '1.1.3'
+version = '1.1.5'
 __description__ = """
  omeClust for multi-resolution clustering
 """

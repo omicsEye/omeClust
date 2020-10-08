@@ -13,23 +13,24 @@ number of features which group together.
 
 **Citation:**
 
-Rahnavard A. et al, **omeClust: multi-resolution clustering of omics data** . https://github.com/omicsEye/omeClust/
+Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-Ayele, and Himel Mallick
+ **Omics community detection using multi-resolution clustering**. 2020 https://github.com/omicsEye/omeClust/
 
 ----
 
 * Please see the [Workshop](https://github.com/omicsEye/omeClust/wiki/Workshop) for a one hour workshop.
 
 ----
-# mclust user manual
+# omeClust user manual
 
 ## Contents ##
 * [Features](#features)
 * [omeClust](#omeClust)
-    * [mclust approach](#mclust-approach)
+    * [omeClust approach](#omeClust-approach)
     * [Requirements](#requirements)
     * [Installation](#installation)
-* [Getting Started with mclust](#getting-started-with-mclust)
-    * [Test mclust](#test-mclust)
+* [Getting Started with omeClust](#getting-started-with-omeClust)
+    * [Test omeClust](#test-omeClust)
     * [Options](#options) 
     * [Input](#input)
     * [Output](#output)  
@@ -37,7 +38,7 @@ Rahnavard A. et al, **omeClust: multi-resolution clustering of omics data** . ht
     * [Basic usage](#basic-usage)
     * [Setting for cluster resolution](#setting-for-cluster-resolution)
     * [Demo runs](#demo-runs)
-* [Guides to omeClustviz for visuzlaization](#guides-to-omeClustviz-for-visualiazation)
+* [Guides to omeClustviz for visualization](#guides-to-omeClustviz-for-visualiazation)
 * [Synthetic clusters](#synthetic-clusters)
 * [Output files](#output-files)
     1. [Cluster file](#clsters-file)
@@ -46,6 +47,8 @@ Rahnavard A. et al, **omeClust: multi-resolution clustering of omics data** . ht
     1. [PCoA plot](#pcoa-plot)
     2. [MDS plot](#MDS-plot)
     3. [t-SNE plot](#t-sne-plot)
+    4. [heatmap plot](#heatmap-plot)
+    5. [network plot](#network-plot)
 * [Configuration](#markdown-header-configuration)
 * [Tutorials for distance calculation](#tutorials-for-distance-calculation)
     * [Distance between sequencing alignments](#distance-between-sequencing-alignments)
@@ -66,11 +69,11 @@ their data.
 
 3. A complete report
     * a text file of clusters and related information is provided as output in a tab-delimited file, `clusters.txt`
-    * Three ordination plots (PCoA, MDS, and t-SNE) are provides for ease of interpretation. 
+    * Ordination plots (PCoA, PCA, MDS, and t-SNE), heatmap,and network plot are provides for ease of interpretation. 
     
 # omeClust #
 ## omeClust appraoch ##
-![overview.png](https://github.com/omicsEye/omeClust/docs/overviwe.png)
+![omeClust Workflow overview](img/fig1_overview.png)
 ## REQUIREMENTS ##
 * [Matplotlib](http://matplotlib.org/)
 * [Python 3.*](https://www.python.org/download/releases/)
@@ -78,12 +81,26 @@ their data.
 * [Pandas (version >= 0.18.1)](http://pandas.pydata.org/getpandas.html)
 
 ## INSTALLATION ##
+
+Linux based and Mac OS:
+* First open a terminal 
+```
+$ sudo pip3 install omeClust
+```
+If you use `sudo` then you need provide admin password and teh software will be installed for all users.
+
+You can also install it as on user home directory by providing `--user` or specifying a path by providing a pATH AFTER `-t` option.
+
+Windows OS:
+* First open a Command Prompt terminal as administrator 
+then run the following command 
+
 ```
 $ sudo pip3 install omeClust
 ```
 ------------------------------------------------------------------------------------------------------------------------------
 
-# Getting Started with mclust #
+# Getting Started with omeClust #
 ## TEST omeClust ##
 
 To test if omeClust is installed correctly, you may run the following command in the terminal:
@@ -101,16 +118,18 @@ Which yields omeClust command line options
 ## Options ##
 
 ```
-#!python
-usage: omeClust [-h] [-i INPUT] -o OUTPUT [-m SIMILARITY] [--metadata METADATA]
-               [-n ESTIMATED_NUMBER_OF_CLUSTERS] [--size-to-plot SIZE_TO_PLOT]
-               [-c LINKAGE_METHOD] [--plot] [--resolution {high,medium,low}]
-               [-v]
+usage: omeClust [-h] [--version] [-i INPUT] -o OUTPUT [-m SIMILARITY]
+                [--metadata METADATA] [-n ESTIMATED_NUMBER_OF_CLUSTERS]
+                [--size-to-plot SIZE_TO_PLOT]
+                [-c {single,average,complete,weighted,centroid,median,ward}]
+                [--plot] [--resolution {high,medium,low}]
+                [--enrichment {nmi,freq}] [-v]
 
 Multi-resolution clustering using hierarchical clustering and Silhouette score.
 
 optional arguments:
   -h, --help            show this help message and exit
+  --version             show program's version number and exit
   -i INPUT, --input INPUT
                         the input file D*N, Rows: D features and columns: N samples OR 
                         a distance matrix file D*D (rows and columns should be the same and in the same order) 
@@ -124,11 +143,13 @@ optional arguments:
                         estimated number of clusters
   --size-to-plot SIZE_TO_PLOT
                         Minimum size of cluster to be plotted
-  -c LINKAGE_METHOD, --linkage_method LINKAGE_METHOD
+  -c {single,average,complete,weighted,centroid,median,ward}, --linkage_method {single,average,complete,weighted,centroid,median,ward}
                         linkage clustering method method {default = single, options average, complete
   --plot                dendrogram plus heatmap
   --resolution {high,medium,low}
                         Resolution c .         Low resolution is good when clusters are well separated clusters.
+  --enrichment {nmi,freq}
+                        enrichment method.
   -v, --verbose         additional output is printed
 ```
 
@@ -183,7 +204,7 @@ C1       |  A32;A29;A30;A31                          |  4   |  0.153832161      
 ### 1. First dataset heatmap ###
 ![](http:// =15x)
 
-### 2. mclust ordination plots ###
+### 2. omeClust ordination plots ###
 ![](http://.png =15x)
 
 *   File name: `` $OUTPUT_DIR/###.pdf ``
@@ -193,7 +214,7 @@ C1       |  A32;A29;A30;A31                          |  4   |  0.153832161      
 # Guides to omeClustviz for visuzlaization #
 
 
-* **Basic usage:** `$ omeClustviz /path-to-mclust-output/adist.txt /path-to-mclust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-mclust-output/`
+* **Basic usage:** `$ omeClustviz /path-to-omeClust-output/adist.txt /path-to-omeClust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-omeClust-output/`
 * `adist.txt` = an distance matrix that used for clustering 
 * `clusters.txt` = an omeClust output which assigns features to clusters
 * `metadata.txt`: is metadata file which contains metadata for features
@@ -207,7 +228,7 @@ usage: omeClustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT
                  [--size-to-plot SIZE_TO_PLOT]
                  adist clusters
 
-mclust visualization script.
+omeClust visualization script.
 
 positional arguments:
   adist                 the input file D*N, Rows: D features and columns: N samples OR 
@@ -229,7 +250,7 @@ optional arguments:
                         Minimum size of cluster to be plotted
 ```
 
-![t-SNE a plot of strains for microbial species in the expanded Human Microbiome Project (HMP1-II)](https://github.com/omicsEye/mclust/blob/master/img/t-SNE_plot.png)
+![t-SNE a plot of strains for microbial species in the expanded Human Microbiome Project (HMP1-II)](https://github.com/omicsEye/omeClust/blob/master/img/t-SNE_plot.png)
 
 
 

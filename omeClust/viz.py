@@ -75,7 +75,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         plot_height = min(int(len(D) / 7.25) + 5, max_hight)
         plot_weight = plot_height
         fig = pylab.figure(figsize=(plot_weight, plot_height))
-
+        #figsize = (cm2inch(4.5), cm2inch(4.5))
     ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6], frame_on=True)
     ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
     ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
@@ -210,7 +210,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         # axmatrix.get_figure().colorbar(im, ax=axmatrix)
     # plt.tight_layout()
 
-    fig.savefig(filename + '.pdf', bbox_inches='tight', dpi=350, figsize=(cm2inch(4.5), cm2inch(4.5)))
+    fig.savefig(filename + '.pdf', bbox_inches='tight', dpi=350)
     # heatmap2(data_table, xlabels = xlabels, filename=filename+"_distance", metric = "nmi", method = "single", )
     # pylab.close()
     return Y1
@@ -847,6 +847,11 @@ def network_plot(D, partition, min_weight = 0.5):
     colors = []
     for i, val in enumerate(list(partition.values())):
         colors.append(colors_dic[val])
+    #widths = [w *.1 for (a, b, w) in edges]
+    weights = list(nx.get_edge_attributes(G, 'weight').values())
+    weights = weights / max(weights) *.3
+    #print (weights)
+
     #print (colors, len(colors))
     order_metadata = []
     #markers = ["o", "s", "v", "^", "D", "H", "d", "<", ">", "p",
@@ -859,13 +864,13 @@ def network_plot(D, partition, min_weight = 0.5):
     #                 list(partition.values())]
     nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=5,
                            cmap=cmap,  node_color=colors, node_shape = 'o', edgecolors = 'black', linewidths =.05 )
-    nx.draw_networkx_edges(G, pos, alpha=0.1) #, width = 2.0)
+    nx.draw_networkx_edges(G, pos, alpha=0.1, width = weights)
     #nx.set_xlabel(xlabel, fontsize=7, rotation=0, va='center', ha='center')
     #nx.get_xaxis().set_tick_params(which='both', labelsize=5, top='off', bottom='off', direction='out')
     #nx.get_yaxis().set_tick_params(which='both', labelsize=5, right='off', left='off', direction='out')
     #nx.get_xaxis().set_ticks([])
     #nx.get_yaxis().set_ticks([])
-
+    plt.axis("off")
     plt.savefig(config.output_dir + '/' +'network_plot.pdf',
                 dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
