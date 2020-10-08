@@ -181,11 +181,9 @@ influential metadata. (Metadata2 is a name of a column in metadata if if it is p
 Here we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generated plots. 
 
 
-<img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%">
-<img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
+<img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%"> <img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
 
-<img src="img/network_plot.png" height="35%" width="35%">
-<img src="img/Ground truth_t-SNE_plot.png" height="35%" width="35%">
+<img src="img/network_plot.png" height="35%" width="35%"> <img src="img/Ground truth_t-SNE_plot.png" height="35%" width="35%">
 
 
 Below is an example output `clusters.txt` file, we only showing teh five members of each cluster for purpose of saving space:
