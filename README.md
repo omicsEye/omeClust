@@ -13,8 +13,7 @@ number of features which group together.
 
 **Citation:**
 
-Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-Ayele, and Himel Mallick
- **Omics community detection using multi-resolution clustering**. 2020 https://github.com/omicsEye/omeClust/
+Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-Ayele, and Himel Mallick, **Omics community detection using multi-resolution clustering**. 2020 https://github.com/omicsEye/omeClust/
 
 ----
 
@@ -37,9 +36,9 @@ Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-
 * [Guides to omeClustviz for visualization](#guides-to-omeClustviz-for-visualiazation)
 * [Tutorials for distance calculation](#tutorials-for-distance-calculation)
     * [Distance between sequencing alignments](#distance-between-sequencing-alignments)
-    * [Distance using correlation](#Distance-using-correlation)
-    * [Distance using entropy](#distance-using-entropy)
-* [Tools](#markdown-header-tools)
+    * [Distance using correlation](#distance-using-correlation)
+    * [Distance using genomics variation](distance-using-genomics-variation)
+* [Tools](#tools)
     * [omeClust synthetic paired datasets generator](#omeClust-synthetic-paired-datasets-generator)
     * [omeClust Python API](#omeClust-python-api)
 * [Support](#Support)
@@ -261,9 +260,9 @@ optional arguments:
 
 
 
-# omeClust synthetic paired datasets generator #
+## omeClust synthetic paired datasets generator ##
 
-```buildoutcfg
+```buildoutcfg=
 $ python3
 from  omeClust import cluster_generator
 from  omeClust import dataprocess
@@ -302,6 +301,14 @@ the datasets and spiked relationship within and between datasets:
 * `holeCov`: 
 * `holeProb`: 
 
+## Tutorials for distance calculation ##
+
+### Distance between sequencing alignments ###
+
+### Distance using correlation ###
+
+
+### Distance using genomics variation ###
 
 ### Support ###
 
