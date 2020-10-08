@@ -234,12 +234,12 @@ def omeClust(data, metadata, resolution=config.resolution,
     # draw network
     max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     if plot:
-        viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = 1.0 - max_dist)
+        viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = max_dist)
     # if True:
     #    try:
     # max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     # print(max_dist)
-    utilities.louvain_clust(df_distance, min_weight=0)
+    #utilities.louvain_clust(df_distance, min_weight=max_dist)
     #    except:
     #        print("Failed to run louvain!!!")
     #        pass

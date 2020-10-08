@@ -194,11 +194,13 @@ influential metadata. (Metadata2 is a name of a column in metadata if if it is p
 ``$ omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclust_demo --plot``
 
 3. Check your output folder
+Here we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generated plots. 
 
-Here we show the PCoA and DMS plot as one the representative 
-visualization of the results. 
+
 <img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%">
 <img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
+<img src="img/network_plot.png.png" height="35%" width="35%">
+<img src="img/Ground truth_t-SNE_plot.png" height="35%" width="35%">
 
 
 Below is an example output `clusters.txt` file, we only showing teh five members of each cluster for purpose of saving space:
@@ -216,26 +218,14 @@ C1       |  S129;S113;S132;S122;S131  |  43  |  0.321199973       |  0.365275944
 *    **```Members```**: has one or more features that participate in the cluster.
 *    **```n```**: this value is corresponding to `binary silhouette score` introduced in this work.
 *    **```resolution_score```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```branch_condensed_distance```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```Ground truth```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```Gender```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```Age```**: 
+*    **```branch_condensed_distance```**: this value is corresponding to `condensed distance` of a cluster branch in hierarchy.
+*    **```Ground truth```**: is a metadata that has the actual membership of features in synthetic data and 
+it was most influential metadata with normalized mutual information (NMI) 1. _omeClust_ uses NMI between 
+metadata categories and labels of detected clusters (communities) as an enrichment score for each metadata. 
+*    **```Gender```**: is the second influential metadata with NMI 0.1.
+*    **```Age```**: Age is has less overlap with clusters. _omeClust_ discretize continuous (numeric) metadata to 
+calculate enrichment score.   
 
-## Output files ##
-1. [###](#PCoA)
-2. [###](###)
-3. [###](####)
- 4. [###](####)
-
-### 1. First dataset heatmap ###
-![](http:// =15x)
-
-### 2. omeClust ordination plots ###
-![](http://.png =15x)
-
-*   File name: `` $OUTPUT_DIR/###.pdf ``
-*   This file has a 
-*   ###
 
 # Guides to omeClustviz for visuzlaization #
 
@@ -250,9 +240,8 @@ C1       |  S129;S113;S132;S122;S131  |  43  |  0.321199973       |  0.365275944
 Produces a set of ordination plots for features colored by computational clusters and shaped by metadata.
 
 ```
-usage: omeClustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT
-                 [--size-to-plot SIZE_TO_PLOT]
-                 adist clusters
+$ omeClustviz -h
+usage: omeClustviz [-h] [--metadata METADATA] [--shapeby SHAPEBY] -o OUTPUT [--size-to-plot SIZE_TO_PLOT] [--fig-size FIG_SIZE FIG_SIZE] [--point-size POINT_SIZE] [--show] adist clusters
 
 omeClust visualization script.
 
@@ -274,81 +263,17 @@ optional arguments:
                         the output directory
   --size-to-plot SIZE_TO_PLOT
                         Minimum size of cluster to be plotted
+  --fig-size FIG_SIZE FIG_SIZE
+                        width and height of plots
+  --point-size POINT_SIZE
+                        width and height of plots
+  --show                show ordination plot before save
 ```
 
+### Real world example ###
 ![t-SNE a plot of strains for microbial species in the expanded Human Microbiome Project (HMP1-II)](https://github.com/omicsEye/omeClust/blob/master/img/t-SNE_plot.png)
 
 
-
-### Quick start ###
-
-* Installation
-
-*omeClust* is implemented in python and packaged and available
-via PyPi. Run the following command to get it installed (use `sudo`
-to install it for all users or use --user and provide a path with write access) 
-
-``
-$ sudo pip3 install omeClust
-`` 
-* Input data 
-
-The input data is a distance matrix of feature `n*n` 
-where `n` is the number of features.
-optional input is a metadata table `n*m` where 
-`n` is the number of features and `m` is the number of metadata
-
-* How to run?
-
-
-``
-$ omeClust -i synthetic_demo/adist.txt -o demo_output
-``
-
-if metadata is available then use the following command:
-
-``
-$ omeClust -i synthetic_demo/adist.txt -o demo_output --metadata synthetic_demo/metadata.txt  --plot
-``
-
-`--plot` is optional to generate a heatmap with 
-deprogram of the data 
-
-`--metadata` is optional to shape the clusters with 
-highest influence in clusters.
-
-* How to run from script?
-
-``
-$ python3
-`` 
-
-``
-from omeClust import omeClust
-``
-
-``
-omeClust.omeClust(data='/path-to/adist.txt', metadata='/path-to/metadata.txt', 
-                output_dir='omeClust_output')
-``
-* output
-1. `omeClust.txt` contains cluster, their members,
-and metadata resolution score sorted 
-from highest to lowest score.
-
-* [Learn more about details of options](https://github.com/omicsEye/omeClust/wiki)
-
-
-### Real world example ###
-
-Please see the wiki for real-world example including: 
-gene expression, microbial species stains, and metabolite profiles.
-
-<img src="omeClust_demo/output/PCoA_plot.png" height="35%" width="35%">
-<img src="omeClust_demo/output/MDS_plot.png" height="35%" width="35%">
-<img src="omeClust_demo/output/PCoA_plot.png" height="35%" width="35%">
-
-Please see the [Workshop](https://github.com/omicsEye/omeClust/wiki) for the data, their description.
 
 # omeClust synthetic paired datasets generator #
 
@@ -395,5 +320,3 @@ the datasets and spiked relationship within and between datasets:
 ### Support ###
 
 * Please submit your questions or issues with the software at [Issues tracker](https://github.com/omicsEye/omeClust/issues).
-
-

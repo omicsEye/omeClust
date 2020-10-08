@@ -356,7 +356,7 @@ def resolution_score(clusters):
               range(len(clusters))]
     return scores
 
-def louvain_clust(D, min_weight = 0.5):
+def louvain_clust(D, min_weight = 0.0):
     import community as community_louvain
     import matplotlib.cm as cm
     import matplotlib.pyplot as plt
