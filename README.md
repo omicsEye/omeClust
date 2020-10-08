@@ -199,7 +199,8 @@ Here we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generat
 
 <img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%">
 <img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
-<img src="img/network_plot.png.png" height="35%" width="35%">
+
+<img src="img/network_plot.png" height="35%" width="35%">
 <img src="img/Ground truth_t-SNE_plot.png" height="35%" width="35%">
 
 
