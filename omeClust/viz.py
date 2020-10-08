@@ -76,6 +76,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         plot_weight = plot_height
         fig = pylab.figure(figsize=(plot_weight, plot_height))
         #figsize = (cm2inch(4.5), cm2inch(4.5))
+    fig = pylab.figure(figsize=(3, 2.5))
     ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6], frame_on=True)
     ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
     ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')

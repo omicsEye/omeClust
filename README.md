@@ -67,9 +67,10 @@ their data.
 2. A simple user interface (single command driven flow)
     * The user only needs to provide a distance matrix file and a metadata file (optional)
 
-3. A complete report
-    * a text file of clusters and related information is provided as output in a tab-delimited file, `clusters.txt`
-    * Ordination plots (PCoA, PCA, MDS, and t-SNE), heatmap,and network plot are provides for ease of interpretation. 
+3. A complete report including main outputs:
+    * A text file of clusters and related information is provided as output in a tab-delimited file, `clusters.txt`
+    * Ordination plots (PCoA, PCA, MDS, and t-SNE), heatmap,and network plot are provides for ease of interpretation
+    * Discretized metadata that has been used for enrichment score calculation 
     
 # omeClust #
 ## omeClust appraoch ##
@@ -96,8 +97,11 @@ Windows OS:
 then run the following command 
 
 ```
-$ sudo pip3 install omeClust
+$ pip3 install omeClust
 ```
+
+* You can replace `pip3` by `pip` if you have only Python 3 installed on your computer. `pip3` specifies to install `omClust` for Python 3. 
+
 ------------------------------------------------------------------------------------------------------------------------------
 
 # Getting Started with omeClust #
@@ -112,7 +116,7 @@ omeClust -h
 
 ```
 
-Which yields omeClust command line options
+Which yields omeClust command line options.
 
 
 ## Options ##
@@ -156,45 +160,68 @@ optional arguments:
 
 ## Input ##
 
-* ``-i or --input:`` a distance matrix.
-* ``--output-folder``: a folder containing all the output files
-* ``--resolution``: a resolution to be used for clustering {low or high}
+The two required input parameters are:
 
-Th input is a tab-delimited text file of `n * n` where `n` is number of features 
+1. ``-i or --input:`` a distance matrix.
+Th input is a  symmetric distance matrix in a format of a tab-delimited text file of `n * n` where `n` is number of features 
 (e.g. metabolites, stains, microbial species, individuals).
-  
+2. ``--output-folder``: a folder containing all the output files
 
+Also, user can specify a metadata input to find enrichment score for each metadata 
+* ``--metadata``: a tab-delimited text file with `n` rows for features names and `m` columns for metadata
+
+A list of all options are provided in #options section. 
 
 ## Output ##
 
-the main output is the `omeClust.txt` a a tab-delimited text file that each row is a cluster with following columns.
-* cluster: is a cluster name starts with C	
-* members: members of a cluster	
-* resolution_score: an score defined by 	
+the main output is the `clusters.txt` a a tab-delimited text file that each row is a cluster with following columns.
+* cluster: includes cluster/community IDs started with C.	
+* members: members of a cluster.	
+* resolution_score: an score defined for each cluster calculated as harmonic mean of number of cluster and condensed 
+distance of cluster branch in hierarchy. We used 0.05 as threshold to call a cluster as a major cluster. 	
 * Meta1: if metadata is provides this is the first metadata that is enriched in cluster and
 is reported as most influential metadata on clusters structure. 	
 * Meta2: the second most 
 influential metadata. (Metadata2 is a name of a column in metadata if if it is provided).
 
-Below is an example output `clusters.txt` file:
+### Demo run using synthetic data ###
+
+1. Download the input:
+[Distance matrix](/data/synthetic_data/dist_4_0.001_4_200.txt) and
+[metadata](omeClust_demo/synthetic_data/truth_4_0.001_4_200.txt))
+
+2. Run omeClust in command line with input
+``$ omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclust_demo --plot``
+
+3. Check your output folder
+
+Here we show the PCoA and DMS plot as one the representative 
+visualization of the results. 
+![omeClust Workflow overview](img/Ground truth_PCoA_3D_plot.png)
+<img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%">
+<img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
+
+
+Below is an example output `clusters.txt` file, we only showing teh five members of each cluster for purpose of saving space:
 ```
-cluster  |  members                                  |  n   |  resolution_score  |  Group        |  Gender
----------|-------------------------------------------|------|--------------------|---------------|-------------
-C4       |  A50;A45;A42;A41;A44;A47;A43;A48;A46;A49  |  10  |  0.340396822       |  1            |  0.6
-C2       |  A34;A35;A37;A33;A39;A36;A38;A40          |  8   |  0.280222171       |  1            |  0.625
-C7       |  A1;A2;A7;A3;A4;A5;A6                     |  7   |  0.252963544       |  1            |  0.857142857
-C6       |  A13;A12;A8;A9;A10;A11;A14                |  7   |  0.251534233       |  0.571428571  |  1
-C3       |  A22;A23;A28;A25;A26;A24;A27              |  7   |  0.251879003       |  1            |  1
-C5       |  A16;A15;A17;A18                          |  4   |  0.152475285       |  1            |  1
-C1       |  A32;A29;A30;A31                          |  4   |  0.153832161       |  1            |  0.75
+Cluster  |  Members                   |  n   |  resolution_score  |  branch_condensed_distance  |  Ground truth  |  Gender       |  Age
+---------|----------------------------|------|--------------------|-----------------------------|----------------|---------------|-------------
+C4       |  S185;S179;S160;S182;S155  |  54  |  0.346298577       |  0.517295151                |  1             |  0.103361176  |  0.025490005
+C2       |  S65;S102;S72;S88;S73      |  52  |  0.35782405        |  0.426337551                |  1             |  0.103361176  |  0.025490005
+C3       |  S13;S28;S12;S37;S25       |  51  |  0.330115156       |  0.53203748                 |  1             |  0.103361176  |  0.025490005
+C1       |  S129;S113;S132;S122;S131  |  43  |  0.321199973       |  0.365275944                |  1             |  0.103361176  |  0.025490005
 ```
-*   File name: `` $OUTPUT_DIR/omeClust.txt ``
+*   File name: `` $OUTPUT_DIR/clusters.txt ``
 *   This file details the clusters. Features are grouped in clusters.
-*    **```cluster```**: a column contains clusters names that each cluster name starts with `C` following with a number.
-*    **```members```**: has one or more features that participate in the cluster.
+*    **```Cluster```**: a column contains clusters names that each cluster name starts with `C` following with a number.
+*    **```Members```**: has one or more features that participate in the cluster.
+*    **```n```**: this value is corresponding to `binary silhouette score` introduced in this work.
 *    **```resolution_score```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```Meta1```**: 
-*    **```Meta2```**:
+*    **```branch_condensed_distance```**: this value is corresponding to `binary silhouette score` introduced in this work.
+*    **```Ground truth```**: this value is corresponding to `binary silhouette score` introduced in this work.
+*    **```Gender```**: this value is corresponding to `binary silhouette score` introduced in this work.
+*    **```Age```**: 
+
 ## Output files ##
 1. [###](#PCoA)
 2. [###](###)
@@ -312,19 +339,6 @@ from highest to lowest score.
 
 * [Learn more about details of options](https://github.com/omicsEye/omeClust/wiki)
 
-### Demo run using synthetic data ###
-1. Download the input:
-[Distance matrix](omeClust_demo/synthetic_data/adist.txt) and
-[metadata](omeClust_demo/synthetic_data/metadata.txt))
-2. Run omeClust in command line with input
-``$ omeClust -i synthetic_demo/adist.txt -o demo_output --metadata synthetic_demo/metadata.txt --plot``
-3. Check your output folder
-
-Here we show the PCoA and DMS plot as one the representative 
-visualization of the results. 
-
-<img src="omeClust_demo/output/PCoA_plot.png" height="35%" width="35%">
-<img src="omeClust_demo/output/MDS_plot.png" height="35%" width="35%">
 
 ### Real world example ###
 
