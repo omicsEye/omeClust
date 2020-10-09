@@ -376,8 +376,11 @@ $ omeClust -i HMP_disatnce.txt --metadata my_HMP_metadata.txt -o HMP_omeClust
 
 
 ## Microbial strains ##
+<img src="img/Body area_t-SNE_plot_H_parainfluenzae.png" height="100%" width="100%">
+
 
 ## Cell line gene expressions ##
+<img src="img/Tissue_t-SNE_plot.png" height="100%" width="100%">
 
 
 ### Support ###
