@@ -257,10 +257,6 @@ optional arguments:
   --show                show ordination plot before save
 ```
 
-### Real world example ###
-![t-SNE a plot of strains for microbial species in the expanded Human Microbiome Project (HMP1-II)](https://github.com/omicsEye/omeClust/blob/master/img/t-SNE_plot.png)
-
-
 
 ## omeClust synthetic paired datasets generator ##
 
@@ -371,9 +367,18 @@ write.table( veg_dist, 'data/HMP_disatnce.txt', sep = "\t", eol = "\n", na = "",
 # 10-  run the tool using HMP1-II data and metadata using 
 $ omeClust -i HMP_disatnce.txt --metadata my_HMP_metadata.txt -o HMP_omeClust
 ```
+### Distance using genomics variation ###
+
+# Real world example #
+
+## Microbial species communities ##
 <img src="img/Body area_t-SNE_plot.png" height="100%" width="100%"> <img src="img/Body area_PCoA_3D_plot.png" height="100%" width="100%">
 
-### Distance using genomics variation ###
+
+## Microbial strains ##
+
+## Cell line gene expressions ##
+
 
 ### Support ###
 
