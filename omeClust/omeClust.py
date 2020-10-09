@@ -113,7 +113,7 @@ def parse_arguments(args):
         help="Minimum size of cluster to be plotted")
     parser.add_argument(
         "-c", "--linkage_method",
-        default='average',
+        default='complete',
         help="linkage clustering method method {default = single, options average, complete\n",
         choices = ['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward'])
     parser.add_argument(
@@ -123,7 +123,7 @@ def parse_arguments(args):
         default=False)
     parser.add_argument(
         "--resolution",
-        default='medium',
+        default='low',
         help="Resolution c .\
          Low resolution is good when clusters are well separated clusters.",
         choices=['high', 'medium', 'low'])
@@ -211,50 +211,48 @@ def omeClust(data, metadata, resolution=config.resolution,
     if size_to_plot is None:
         size_to_plot = config.size_to_plot
     try:
-        viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
-                    size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    except:
-        pass
-    try:
-        viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+        viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
                      size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
     except:
         pass
     try:
-     viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters), \
+     viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
                      size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
     except:
         pass
     try:
-        viz.pca_ord(data, cluster_members=dataprocess.cluster2dict(clusters), \
+        viz.pca_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
                     size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
     except:
         pass
-
-    # draw network
+    try:
+        viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+                   size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+    except:
+        pass
+   # draw network
     max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
+    min_weight = df_distance.max().max() - max_dist
     if plot:
-        viz.network_plot(D = data, partition= dataprocess.feature2cluster(clusters,D = data), min_weight = max_dist)
+        viz.network_plot(D = df_distance, partition= dataprocess.feature2cluster(clusters,D = df_distance), min_weight = min_weight)
     # if True:
     #    try:
     # max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     # print(max_dist)
-    #utilities.louvain_clust(df_distance, min_weight=max_dist)
+    #utilities.louvain_clust(df_distance, min_weight = min_weight)
     #    except:
     #        print("Failed to run louvain!!!")
     #        pass
 
-def update_configuration(args):
+def log_configuration(args):
     # configure the logger
     logging.basicConfig(filename=args.output + '/omeClust_log.txt',
                         format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         level=getattr(logging, "INFO"), filemode='w', datefmt='%m/%d/%Y %I:%M:%S %p')
 
     # write the version of the software to the log
-    logger.info("Running omeClust version:\t" + VERSION)
-
-    # write the version of the software to the log
-    logger.info("resolution level:\t" + args.resolution)
+    for arg, value in sorted(vars(args).items()):
+        logger.info("%s \t %r", arg, value)
 
 
 def main():
@@ -277,6 +275,7 @@ def main():
     config.plot = args.plot
     config.size_to_plot = args.size_to_plot
     config.enrichment_method = config.enrichment_method
+    log_configuration(args)
     omeClust(data=args.input, metadata=args.metadata,
             resolution=args.resolution, output_dir=args.output,
             linkage_method=args.linkage_method,
@@ -284,7 +283,7 @@ def main():
             estimated_number_of_clusters=args.estimated_number_of_clusters,
             size_to_plot=args.size_to_plot,
             enrichment_method = args.enrichment_method)
-    update_configuration(config)
+
 
 
 if __name__ == "__main__":

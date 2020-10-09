@@ -363,7 +363,7 @@ def louvain_clust(D, min_weight = 0.0):
     import networkx as nx
 
     # assume D is a distance matrix range between 0-1
-    W = 1.0 - D
+    W = D.max().max() - D
 
     # create edges from weight matrix
     W['from'] = list(W.index.values)

@@ -305,10 +305,73 @@ the datasets and spiked relationship within and between datasets:
 
 ## Tutorials for distance calculation ##
 
+_omeClust_ is a genric tools and users can calculate a distance matrix using any appropriate method for their omics data 
+and provide it as the input to _omeClust_. Here we provide methods for several **omics** applications. 
+
 ### Distance between sequencing alignments ###
+Multiple sequence alignment (MSA) file can be used to measure dissimilarity between genomes or strains.
+We have used this approch to investigate Coronavirus strains and microbial strains.
 
-### Distance using correlation ###
+Below is demo code in `R` to calculate dissimalrity between aligned sequnces in a `fasta` format MSA file 
+```buildoutcfg=
+library(ape)
 
+#read FASTA file
+seq <- read.FASTA('data/Campylobacter_showae.fasta')
+
+# distance calculation
+D <- dist.dna(seq, model = "TN93", gamma = F, variance = TRUE,
+              pairwise.deletion = TRUE,
+              base.freq = NULL, as.matrix = TRUE)
+
+# write distance matrix to a file taht can be used as input for omeClust
+write.table( D, 'distance_matrix.txt', sep = "\t", eol = "\n", na = "", col.names = NA, quote= F, row.names = T)
+```
+
+### Distance using dissimilarity methods such as Bray-Curtis ###
+
+```buildoutcfg=
+
+library(vegan)
+
+##### load data from GWDBB package #####
+
+# 1- install GWDBB package
+library(devtools)
+install_github('GWCBI/GWDBB')
+library(GWDBB)
+
+# 2- load HMP1-II metadata
+data("HMP1_II_Metadata")
+
+# 3- See teh data: there is mislocation of headers du to space in a clumn header
+View(HMP1_II_Metadata)
+
+# 4- fix the headers
+colnames(HMP1_II_Metadata) <- c("Person_ID", "VISNO", "Body_area", "Body_site", "SNPRNT",  "Gender", "WMSPhase")
+
+# 5- slect meatadata of interest
+my_HMP_metadata <- HMP1_II_Metadata[,c("Body_area", "Body_site", "Gender")]
+
+# 6- write the meatdata in you computer as a tab-delimited file 
+write.table( my_HMP_metadata, 'data/my_HMP_metadata.txt', sep = "\t", eol = "\n", na = "", col.names = NA, quote= F, row.names = T)
+
+# 7- load HMP1-II microbial species abundances
+data("HMP1_II_Microbial_Species")
+HMP1_II_Microbial_Species <- t(HMP1_II_Microbial_Species)
+
+# 8- calculate simailrty between samples based on microbial species abundance
+library(vegan)
+veg_dist <- as.matrix(vegdist(HMP1_II_Microbial_Species, method="bray"))
+
+# 9- write the  in you computer as a tab-delimited file
+write.table( veg_dist, 'data/HMP_disatnce.txt', sep = "\t", eol = "\n", na = "", col.names = NA, quote= F, row.names = T)
+
+
+# 10-  run the tool using HMP1-II data and metadata using 
+$ omeClust -i HMP_disatnce.txt --metadata my_HMP_metadata.txt -o HMP_omeClust
+```
+<img src="img/Body area_t-SNE_plot.png" height="35%" width="35%"> <img src="img/Body area_PCoA_3D_plot.png" height="35%" width="35%">
 
 ### Distance using genomics variation ###
 

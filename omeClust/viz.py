@@ -58,6 +58,9 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
                     linkage_method="single",
                     colLable=False, rowLabel=False, color_bar=True, sortCol=True):
     # Adopted from Ref: http://stackoverflow.com/questions/2982929/plotting-results-of-hierarchical-clustering-ontop-of-a-matrix-of-data-in-python
+    plt.close()
+    plt.close()
+    matplotlib.rcParams['lines.linewidth'] = 0.25
     scale = []  # config.transform_method
     max_hight = 300
     max_weight = 300
@@ -77,7 +80,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         fig = pylab.figure(figsize=(plot_weight, plot_height))
         #figsize = (cm2inch(4.5), cm2inch(4.5))
     fig = pylab.figure(figsize=(3, 2.5))
-    ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6], frame_on=True)
+    ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6], frame_on=False)
     ax1.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
     ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
     # Compute and plot second dendrogram.
@@ -99,7 +102,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
 
     # Compute and plot second dendrogram.
     if len(xlabels_order) == 0:
-        ax2 = fig.add_axes([0.3, 0.71, 0.6, 0.2], frame_on=True)
+        ax2 = fig.add_axes([0.3, 0.71, 0.6, 0.2], frame_on=False)
         ax2.get_xaxis().set_tick_params(which='both', labelsize=8, top='off', bottom='off', direction='out')
         ax2.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
         Y2 = []
@@ -172,6 +175,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
     else:
         axmatrix.set_xticks([])
         axmatrix.set_xticklabels([])
+        axmatrix.set_yticks([])
+        axmatrix.set_yticklabels([])
         axmatrix.get_xaxis().set_tick_params(which='both', top='off')
         axmatrix.get_xaxis().set_tick_params(which='both', bottom='off')
         axmatrix.get_yaxis().set_tick_params(which='both', right='off')
@@ -203,10 +208,10 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         rect = l, b, w, h
         axcolor = fig.add_axes(rect)
         # axcolor = fig.add_axes([0.94,0.1,0.02,0.6])
-        legend_lable = ""  # str(config.similarity_method).upper() if len(config.similarity_method) <5 else config.similarity_method.title()
+        legend_lable = " Distance"  # str(config.similarity_method).upper() if len(config.similarity_method) <5 else config.similarity_method.title()
         if len(scale) > 0:
             legend_lable = legend_lable + ' (' + str(scale.title()) + ')'
-        fig.colorbar(im, cax=axcolor, label=legend_lable)
+        fig.colorbar(im, cax=axcolor, label=legend_lable, ticks = [0, D.max().max()/2.0, D.max().max()])
         # pylab.colorbar(ax=axmatrix)
         # axmatrix.get_figure().colorbar(im, ax=axmatrix)
     # plt.tight_layout()
@@ -229,14 +234,14 @@ def tsne_ord(adist, cluster_members=None, size_tobe_colored=3, metadata=None, sh
     from sklearn.manifold import TSNE
     model = TSNE(n_components=2, random_state=0, metric='precomputed')
     coords = model.fit_transform(adist)
-    ord_plot(coords, cluster_members=cluster_members, ord_name='t-SNE', \
-             size_tobe_colored=size_tobe_colored, \
+    ord_plot(coords, cluster_members=cluster_members, ord_name='t-SNE',
+             size_tobe_colored=size_tobe_colored,
              xlabel='t-SNE 1', ylabel='t-SNE 2',
              metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
     model = TSNE(n_components=3, random_state=0, metric='precomputed')
     coords = model.fit_transform(adist)
-    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='t-SNE_3D', \
-             size_tobe_colored=size_tobe_colored, \
+    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='t-SNE_3D',
+             size_tobe_colored=size_tobe_colored,
              xlabel='t-SNE 1', ylabel='t-SNE 2', zlabel='t-SNE 3',
              metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size, show=show)
 
@@ -254,20 +259,19 @@ def mds_ord(adist, cluster_members=None, size_tobe_colored=3, metadata=None, sha
     adist = adist / amax
     mds = manifold.MDS(n_components=2, dissimilarity="precomputed", random_state=6)
     results = mds.fit(adist)
-
     coords = results.embedding_
-    ord_plot(coords, cluster_members=cluster_members, ord_name='MDS', \
-             size_tobe_colored=size_tobe_colored, \
-             xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')', \
+    ord_plot(coords, cluster_members=cluster_members, ord_name='MDS',
+             size_tobe_colored=size_tobe_colored,
+             xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')',
              ylabel='', metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
 
     mds = manifold.MDS(n_components=3, dissimilarity="precomputed", random_state=6)
     results = mds.fit(adist)
 
     coords = results.embedding_
-    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='MDS_3D', \
-                size_tobe_colored=size_tobe_colored, \
-                xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')', \
+    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='MDS_3D',
+                size_tobe_colored=size_tobe_colored,
+                xlabel='MDS stress (' + "{0:0.1f}".format(results.stress_) + ')',
                 ylabel='', zlabel ='', metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size,
                 show=show)
 
@@ -283,14 +287,14 @@ def pcoa_ord(X, cluster_members=None, size_tobe_colored=3, metadata=None, shapeb
 
     #pcoa_results = pcoa(DistanceMatrix(X)).biplot_scores
     #coords = pcoa_results
-    ord_plot(coords, cluster_members=cluster_members, ord_name='PCoA', \
-             size_tobe_colored=size_tobe_colored, \
-             xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
+    ord_plot(coords, cluster_members=cluster_members, ord_name='PCoA',
+             size_tobe_colored=size_tobe_colored,
+             xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)',
              ylabel='PCo2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
              metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
-    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='PCoA_3D', \
-             size_tobe_colored=size_tobe_colored, \
-             xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
+    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='PCoA_3D',
+             size_tobe_colored=size_tobe_colored,
+             xlabel='PCo1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)',
              ylabel='PCo2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
              zlabel='PCo3 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[2] * 100) + '%)',
              metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size,
@@ -303,25 +307,25 @@ def pca_ord(X, cluster_members=None, size_tobe_colored=3, metadata=None, shapeby
     pca_fit = pca.fit(X)
     X_r = pca_fit.transform(X)
     coords = X_r
-    ord_plot(coords, cluster_members=cluster_members, ord_name='PCA', \
-             size_tobe_colored=size_tobe_colored, \
-             xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
+    ord_plot(coords, cluster_members=cluster_members, ord_name='PCA',
+             size_tobe_colored=size_tobe_colored,
+             xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)',
              ylabel='PC2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
              metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size)
     pca = PCA(n_components=3)
     pca_fit = pca.fit(X)
     X_r = pca_fit.transform(X)
     coords = X_r
-    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='PCA_3D', \
-                size_tobe_colored=size_tobe_colored, \
-                xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)', \
+    ord_plot_3d(coords, cluster_members=cluster_members, ord_name='PCA_3D',
+                size_tobe_colored=size_tobe_colored,
+                xlabel='PC1 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[0] * 100) + '%)',
                 ylabel='PC2 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[1] * 100) + '%)',
                 zlabel='PC3 (' + "{0:0.1f}".format(pca_fit.explained_variance_ratio_[2] * 100) + '%)',
                 metadata=metadata, shapeby=shapeby, fig_size=fig_size, point_size=point_size,
                 show=show)
 
 
-def ord_plot(coords, cluster_members=None, ord_name='ord', \
+def ord_plot(coords, cluster_members=None, ord_name='ord',
              size_tobe_colored=3, xlabel='First component',
              ylabel='Second component', metadata=None, shapeby=None, fig_size=[3, 2.5], point_size=10):
 
@@ -335,7 +339,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord', \
         metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).any(axis=1)]
 
-    plt.close()
+    #plt.close()
     plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
     ax = plt.axes()
     colors = ncolors(n=max(2, sum(
@@ -489,10 +493,10 @@ def ord_plot(coords, cluster_members=None, ord_name='ord', \
         pass
     if not shapeby is None:
         plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
-                    dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                    dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     else:
         plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
-                    dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                    dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
@@ -713,10 +717,10 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
      #   plt.pause(.01)
     if not shapeby is None:
         plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
-                    dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                    dpi=350, bbox_inches='tight', figsize = (fig_size[0], fig_size[1]))  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     else:
         plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
-                    dpi=350, bbox_inches='tight')  #  figsize = (fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                    dpi=350, bbox_inches='tight', figsize = (fig_size[0], fig_size[1]))  #  figsize = (fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 
@@ -809,10 +813,8 @@ def main():
     config.output_dir = args.output
     mds_ord(df_distance, cluster_members=clusters, size_tobe_colored=args.size_to_plot, metadata=metadata,
             shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
-
     pcoa_ord(df_distance, cluster_members=clusters, size_tobe_colored=args.size_to_plot, metadata=metadata,
              shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
-
     tsne_ord(df_distance, cluster_members=clusters, size_tobe_colored=args.size_to_plot, metadata=metadata,
              shapeby=args.shapeby, fig_size=args.fig_size, point_size=args.point_size, show=args.show)
     pca_ord(df_distance, cluster_members=clusters, size_tobe_colored=args.size_to_plot, metadata=metadata,
@@ -820,13 +822,13 @@ def main():
     # if data_flag:
     # pca_ord(df_data, cluster_members = dataprocess.cluster2dict(clusters, df_distance), size_tobe_colored = args.size_to_plot)
 def network_plot(D, partition, min_weight = 0.5):
-    import community as community_louvain
+    #import community as community_louvain
     import matplotlib.cm as cm
     import matplotlib.pyplot as plt
     import networkx as nx
 
-    # assume D is a distance matrix range between 0-1
-    W = 1.0 - D
+    # assume D is a distance matrix range between 0-max(D)
+    W = D.max().max() - D
 
     # create edges from weight matrix
     W['from'] = list(W.index.values)
@@ -873,7 +875,7 @@ def network_plot(D, partition, min_weight = 0.5):
     #nx.get_yaxis().set_ticks([])
     plt.axis("off")
     plt.savefig(config.output_dir + '/' +'network_plot.pdf',
-                dpi=350)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                dpi=350, bbox_inches='tight', papertype=None)  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 if __name__ == "__main__":
