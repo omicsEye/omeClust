@@ -371,7 +371,7 @@ write.table( veg_dist, 'data/HMP_disatnce.txt', sep = "\t", eol = "\n", na = "",
 # 10-  run the tool using HMP1-II data and metadata using 
 $ omeClust -i HMP_disatnce.txt --metadata my_HMP_metadata.txt -o HMP_omeClust
 ```
-<img src="img/Body area_t-SNE_plot.png" height="35%" width="35%"> <img src="img/Body area_PCoA_3D_plot.png" height="35%" width="35%">
+<img src="img/Body area_t-SNE_plot.png" height="50%" width="50%"> <img src="img/Body area_PCoA_3D_plot.png" height="50%" width="50%">
 
 ### Distance using genomics variation ###
 
