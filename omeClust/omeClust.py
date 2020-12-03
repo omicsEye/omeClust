@@ -141,10 +141,10 @@ def parse_arguments(args):
     return parser.parse_args()
 
 
-def omeClust(data, metadata, resolution=config.resolution,
+def omeClust(data, metadata=config.metadata, resolution=config.resolution,
             output_dir=config.output_dir,
             estimated_number_of_clusters=config.estimated_number_of_clusters,
-            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None, enrichment_method = "nmi"):
+            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None, enrichment_method="nmi"):
     # read  input files
     data = pd.read_table(data, index_col=0, header=0)
     # print(data.shape)
@@ -202,39 +202,42 @@ def omeClust(data, metadata, resolution=config.resolution,
             shapeby = sorted_keys[3]
             print(shapeby, " is the most influential metadata in clusters")
     else:
-        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata,method=enrichment_method)
+        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata, method=enrichment_method)
     #print (omeClust_enrichment_scores, sorted_keys)
     dataprocess.write_output(clusters, output_dir, df_distance, omeClust_enrichment_scores, sorted_keys)
     feature2cluster = dataprocess.feature2cluster(clusters, df_distance)
     feature2cluster_map = pd.DataFrame.from_dict(feature2cluster, orient='index', columns=['Cluster'])
+    feature2cluster_map = feature2cluster_map.loc[data.index, :]
     feature2cluster_map.to_csv(output_dir + '/feature_cluster_label.txt', sep='\t')
-    if size_to_plot is None:
-        size_to_plot = config.size_to_plot
-    try:
-        viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
-                     size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    except:
-        pass
-    try:
-     viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
-                     size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    except:
-        pass
-    try:
-        viz.pca_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
-                    size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    except:
-        pass
-    try:
-        viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
-                   size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-    except:
-        pass
-   # draw network
-    max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
-    min_weight = df_distance.max().max() - max_dist
     if plot:
-        viz.network_plot(D = df_distance, partition= dataprocess.feature2cluster(clusters,D = df_distance), min_weight = min_weight)
+        if size_to_plot is None:
+            size_to_plot = config.size_to_plot
+        try:
+            viz.pcoa_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+                         size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+        except:
+            pass
+        try:
+         viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+                         size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+        except:
+            pass
+        try:
+            viz.pca_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+                        size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+        except:
+            pass
+        try:
+            viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+                       size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+        except:
+            pass
+       # draw network
+        max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
+        min_weight = df_distance.max().max() - max_dist
+        viz.network_plot(D=df_distance, partition=dataprocess.feature2cluster(clusters, D=df_distance),
+                         min_weight=min_weight)
+    return feature2cluster_map
     # if True:
     #    try:
     # max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])

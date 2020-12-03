@@ -76,6 +76,8 @@ setup(
         "Matplotlib >= 1.5.1",
         "Scikit-learn >= 0.14.1",
         "pandas >= 0.18.1",
+        "Community >= 0.0.0",
+        "networkx >= 0.2.5"
     ],
     packages=find_packages(),
     entry_points={

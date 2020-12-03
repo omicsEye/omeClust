@@ -85,7 +85,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
     ax1.get_yaxis().set_tick_params(which='both', labelsize=8, right='off', left='off', direction='out')
     # Compute and plot second dendrogram.
     if len(D) > 0:
-        Y1 = linkage(squareform(D), method=linkage_method)
+        Y1 = linkage(squareform(D), method=linkage_method,  optimal_ordering=True)
     else:
         D = pdist(data_table, metric=distance.pDistance)
         Y1 = linkage(D, method=linkage_method, optimal_ordering = True)
