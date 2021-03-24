@@ -110,12 +110,9 @@ Which yields omeClust command line options.
 ## Options ##
 
 ```
-usage: omeClust [-h] [--version] [-i INPUT] -o OUTPUT [-m SIMILARITY]
-                [--metadata METADATA] [-n ESTIMATED_NUMBER_OF_CLUSTERS]
-                [--size-to-plot SIZE_TO_PLOT]
-                [-c {single,average,complete,weighted,centroid,median,ward}]
-                [--plot] [--resolution {high,medium,low}]
-                [--enrichment {nmi,freq}] [-v]
+$ omeClust -h
+usage: omeClust [-h] [--version] [-i INPUT] -o OUTPUT [-m SIMILARITY] [--metadata METADATA] [-n ESTIMATED_NUMBER_OF_CLUSTERS] [--size-to-plot SIZE_TO_PLOT]
+                [-c {single,average,complete,weighted,centroid,median,ward}] [--plot] [--resolution {high,medium,low}] [--enrichment {nmi,freq}] [-v]
 
 Multi-resolution clustering using hierarchical clustering and Silhouette score.
 
@@ -136,7 +133,7 @@ optional arguments:
   --size-to-plot SIZE_TO_PLOT
                         Minimum size of cluster to be plotted
   -c {single,average,complete,weighted,centroid,median,ward}, --linkage_method {single,average,complete,weighted,centroid,median,ward}
-                        linkage clustering method method {default = single, options average, complete
+                        linkage clustering method method {default = complete, options average, complete
   --plot                dendrogram plus heatmap
   --resolution {high,medium,low}
                         Resolution c .         Low resolution is good when clusters are well separated clusters.
