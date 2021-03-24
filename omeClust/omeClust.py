@@ -16,7 +16,7 @@ from scipy.spatial.distance import pdist, squareform
 # name global logging instance
 logger = logging.getLogger(__name__)
 
-VERSION = "1.1.5"
+VERSION = "1.1.8"
 try:
     from . import utilities, config, dataprocess
 except ImportError:
@@ -114,7 +114,7 @@ def parse_arguments(args):
     parser.add_argument(
         "-c", "--linkage_method",
         default='complete',
-        help="linkage clustering method method {default = single, options average, complete\n",
+        help="linkage clustering method method {default = complete, options average, complete\n",
         choices = ['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward'])
     parser.add_argument(
         "--plot",

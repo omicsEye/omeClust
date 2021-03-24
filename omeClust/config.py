@@ -1,4 +1,4 @@
-version = '1.1.6'
+version = '1.1.8'
 __description__ = """
  omeClust for multi-resolution clustering
 """
@@ -18,7 +18,7 @@ metadata = None
 resolution = 'low'
 output_dir = 'omeClust_output'
 estimated_number_of_clusters = 2
-linkage_method = 'average'
+linkage_method = 'complete'
 plot = False
 size_to_plot = 3
 enrichment_method = 'nmi'

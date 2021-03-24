@@ -34,7 +34,7 @@ except ImportError:
         "Topic :: Scientific/Engineering :: Bio-Informatics"
     ]
 
-VERSION = "1.1.6"
+VERSION = "1.1.8"
 AUTHOR = "Ali Rahnavard"
 AUTHOR_EMAIL = "gholamali.rahnavard@gmail.com"
 MAINTAINER = "Ali Rahnavard"
@@ -76,7 +76,7 @@ setup(
         "Matplotlib >= 1.5.1",
         "Scikit-learn >= 0.14.1",
         "pandas >= 0.18.1",
-        "Community >= 0.0.0",
+        "Community == 1.0.0b1",
         "networkx >= 0.2.5"
     ],
     packages=find_packages(),
