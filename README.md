@@ -15,6 +15,7 @@ number of features which group together.
 
 Ali Rahnavard, Suvo Chatterjee, Bahar Sayoldin, Keith A. Crandall, Fasil Tekola-Ayele, and Himel Mallick (2021). **[Omics community detection using multi-resolution clustering](https://doi.org/10.1093/bioinformatics/btab317)**. *Bioinformatics*, 37(20):3588-3594, https://github.com/omicsEye/omeClust/.
 
+Version 1.1.8 was used for publication evaluations and applications.
 ----
 
 * Please see the [Workshop](https://github.com/omicsEye/omeClust/wiki/Workshop) for a one hour workshop.
