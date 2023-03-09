@@ -68,27 +68,88 @@ their data.
 * [Numpy 1.9.*](http://www.numpy.org/)
 * [Pandas (version >= 0.18.1)](http://pandas.pydata.org/getpandas.html)
 
-## INSTALLATION ##
-
-Linux based and Mac OS:
-* First open a terminal 
+## Installation ##
+* First install *conda*  
+Go to the [Anaconda website](https://www.anaconda.com/) and download the latest version for your operating system.  
+* For Windows users: do not forget to add `conda` to your system `path`
+* Second is to check for conda availability  
+open a terminal (or command line for Windows users) and run:
 ```
-$ sudo pip3 install omeClust
+conda --version
 ```
-If you use `sudo` then you need provide admin password and teh software will be installed for all users.
-
-You can also install it as on user home directory by providing `--user` or specifying a path by providing a pATH AFTER `-t` option.
-
-Windows OS:
-* First open a Command Prompt terminal as administrator 
-then run the following command 
-
+it should out put something like:
 ```
-$ pip3 install omeClust
+conda 4.9.2
 ```
+if not, you must make *conda* available to your system for further steps.
+if you have problems adding conda to PATH, you can find instructions
+[here](https://docs.anaconda.com/anaconda/user-guide/faq/).  
 
-* You can replace `pip3` by `pip` if you have only Python 3 installed on your computer. `pip3` specifies to install `omClust` for Python 3. 
-
+### Windows Linux Mac ###
+If you are using an **Apple M1/M2 MAC** please go to the [Apple M1/M2 MAC](#apple-m1m2-mac) for installation
+instructions.  
+If you have a working conda on your system, you can safely skip to step three.  
+If you are using windows, please make sure you have both git and Microsoft Visual C++ 14.0 or greater installed.
+install [git](https://gitforwindows.org/)
+[Microsoft C++ build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+In case you face issues with this step, [this link](https://github.com/pycaret/pycaret/issues/1254) may help you.
+1) Create a new conda environment (let's call it omeClust_env) with the following command:
+```
+conda create --name omeClust_env python=3.9
+```
+2) Activate your conda environment:
+```commandline
+conda activate omeClust_env 
+```
+3) Install *omeClust*:
+install with pip:
+```commandline
+pip install omeClust
+```
+or you can directly install if from GitHub:
+```commandline
+python -m pip install git+https://github.com/omicsEye/omeClust
+```
+### Apple M1/M2 MAC ###
+1) Update/install Xcode Command Line Tools
+  ```commandline
+  xcode-select --install
+  ```
+2) Install [Brew](https://brew.sh/index_fr)
+  ```commandline
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+3) Install libraries for brew
+  ```commandline
+  brew install cmake libomp
+  ```
+4) Install miniforge
+  ```commandline
+  brew install miniforge
+  ```
+5) Close the current terminal and open a new terminal
+6) Create a new conda environment (let's call it omeClust_env) with the following command:
+  ```commandline
+  conda create --name omeClust_env python=3.9
+  ```
+7) Activate the conda environment
+  ```commandline
+  conda activate omeClust_env
+  ```
+8) Install packages from Conda
+  ```commandline
+  conda install lightgbm
+  pip install xgboost
+  ```
+9) Finally, install *omeClust*:
+install with pip:
+```commandline
+pip install omeClust
+```
+or you can directly install if from GitHub:
+```commandline
+python -m pip install git+https://github.com/omicsEye/omeClust
+```
 ------------------------------------------------------------------------------------------------------------------------------
 
 # Getting Started with omeClust #

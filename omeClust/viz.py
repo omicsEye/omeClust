@@ -59,7 +59,6 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
                     colLable=False, rowLabel=False, color_bar=True, sortCol=True):
     # Adopted from Ref: http://stackoverflow.com/questions/2982929/plotting-results-of-hierarchical-clustering-ontop-of-a-matrix-of-data-in-python
     plt.close()
-    plt.close()
     matplotlib.rcParams['lines.linewidth'] = 0.25
     scale = []  # config.transform_method
     max_hight = 300
@@ -219,6 +218,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
     fig.savefig(filename + '.pdf', bbox_inches='tight', dpi=350)
     # heatmap2(data_table, xlabels = xlabels, filename=filename+"_distance", metric = "nmi", method = "single", )
     # pylab.close()
+    plt.close()
+    plt.close()
     return Y1
 
 
@@ -339,7 +340,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord',
         metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).any(axis=1)]
 
-    #plt.close()
+    plt.close()
     plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
     ax = plt.axes()
     colors = ncolors(n=max(2, sum(
@@ -518,7 +519,11 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
     fig = plt.figure()
     #ax = fig.gca(projection='3d')
     #ax = fig.add_subplot(111, projection='3d')
-    ax = Axes3D(fig) #, rect=[0, 0, 1, 1], elev=30, azim=-60)
+     #
+
+    ax = Axes3D(fig, auto_add_to_figure = False)
+    fig.add_axes(ax)
+    #, rect=[0, 0, 1, 1], elev=30, azim=-60)
     #ax =   plt.axes()
     colors = ncolors(n=max(2, sum(
         [1 if len(cluster_members[target_name]) >= size_tobe_colored else 0 for target_name in cluster_members])))  #

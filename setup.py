@@ -34,7 +34,7 @@ except ImportError:
         "Topic :: Scientific/Engineering :: Bio-Informatics"
     ]
 
-VERSION = "1.1.8"
+VERSION = "1.1.9"
 AUTHOR = "Ali Rahnavard"
 AUTHOR_EMAIL = "gholamali.rahnavard@gmail.com"
 MAINTAINER = "Ali Rahnavard"
