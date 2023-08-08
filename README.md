@@ -137,12 +137,8 @@ python -m pip install git+https://github.com/omicsEye/omeClust
   ```commandline
   conda activate omeClust_env
   ```
-8) Install packages from Conda
-  ```commandline
-  conda install lightgbm
-  pip install xgboost
-  ```
-9) Finally, install *omeClust*:
+
+8) Finally, install *omeClust*:
 install with pip:
 ```commandline
 pip install omeClust
