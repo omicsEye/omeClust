@@ -236,10 +236,13 @@ influential metadata. (Metadata2 is a name of a column in metadata if if it is p
 if you use command line (e.g. to run it on a remote server) use `curl` or `wget`.
 
 Download metadata:
-``$ curl https://raw.githubusercontent.com/omicsEye/omeClust/master/data/synthetic/truth_4_0.001_4_200.txt >> ./truth_4_0.001_4_200.txt``
-
+```commandline
+curl https://raw.githubusercontent.com/omicsEye/omeClust/master/data/synthetic/truth_4_0.001_4_200.txt -o ./truth_4_0.001_4_200.txt
+```
 Download distance matrix:
-``$ curl https://raw.githubusercontent.com/omicsEye/omeClust/master/data/synthetic/dist_4_0.001_4_200.txt -o ./dist_4_0.001_4_200.txt``
+```commandline
+curl https://raw.githubusercontent.com/omicsEye/omeClust/master/data/synthetic/dist_4_0.001_4_200.txt -o ./dist_4_0.001_4_200.txt
+```
 
 3. Run omeClust in command line with input
 ``$ omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclust_demo --plot``
