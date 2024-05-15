@@ -13,3 +13,6 @@ scikit-learn==1.0.1
 scipy==1.7.2
 six==1.16.0
 threadpoolctl==3.0.0
+Community == 1.0.0b1
+latex >= 0.0.1
+Cython >= 0.29.2
