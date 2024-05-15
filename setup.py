@@ -68,17 +68,8 @@ setup(
     platforms=['Linux', 'MacOS', "Windows"],
     classifiers=classifiers,
     # long_description=open('readme.md').read(),
-    install_requires=[
-        "latex >= 0.0.1",
-        "Cython >= 0.29.2",
-        "Numpy >= 1.9.2",
-        "Scipy >= 0.17.0",
-        "Matplotlib >= 1.5.1",
-        "Scikit-learn >= 0.14.1",
-        "pandas >= 0.18.1",
-        "Community == 1.0.0b1",
-        "networkx >= 0.2.5"
-    ],
+    data_files=[('.', ['requirements.txt'])],
+    install_requires=required,
     packages=find_packages(),
     entry_points={
         'console_scripts': [
