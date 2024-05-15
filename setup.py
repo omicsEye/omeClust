@@ -4,7 +4,6 @@ except ImportError:
     sys.exit("Please install setuptools.")
 
 import os
-import urllib
 
 try:
     from urllib.request import urlretrieve
@@ -30,7 +29,7 @@ except ImportError:
         "Operating System :: Unix",
         "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Scientific/Engineering :: Bio-Informatics"
     ]
 
@@ -72,6 +71,24 @@ setup(
     # long_description=open('readme.md').read(),
     data_files=[('.', ['requirements.txt'])],
     install_requires=required,
+    # cycler==0.11.0
+    # joblib==1.1.0
+    # kiwisolver==1.3.2
+    # matplotlib==3.4.3
+    # networkx==2.6.3
+    # numpy==1.21.4
+    # pandas==1.3.4
+    # Pillow==8.4.0
+    # pyparsing==3.0.6
+    # python-dateutil==2.8.2
+    # pytz==2021.3
+    # scikit-learn==1.0.1
+    # scipy==1.7.2
+    # six==1.16.0
+    # threadpoolctl==3.0.0
+    # Community == 1.0.0b1
+    # latex >= 0.0.1
+    # Cython >= 0.29.2
     packages=find_packages(),
     entry_points={
         'console_scripts': [

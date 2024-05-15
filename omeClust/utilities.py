@@ -1,14 +1,16 @@
 '''
 This file includes modules that process finding clusters
 ===============================================
-Author: Gholamali Rahnavard (gholamali.rahnavard@gmail.com)
+Author: Ali Rahnavard (gholamali.rahnavard@gmail.com)
 '''
 import math
-import numpy as np
-import pandas as pd
 import sys
 from itertools import product
+
+import numpy as np
+import pandas as pd
 from sklearn.metrics import normalized_mutual_info_score
+
 from . import config
 from . import omeClust
 

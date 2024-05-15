@@ -3,7 +3,7 @@
 '''
 This file includes modules that help with visualization
 ===============================================
-Author: Gholamali Rahnavard (gholamali.rahnavard@gmail.com)
+Author: Ali Rahnavard (gholamali.rahnavard@gmail.com)
 '''
 # from numpy import array, median
 import argparse
@@ -12,9 +12,6 @@ import warnings
 
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import rc
-from scipy import stats
-from mpl_toolkits.mplot3d import Axes3D
 # activate latex text rendering
 # rc('text', usetex=True)
 # matplotlib.rcParams['text.usetex']=True
@@ -24,6 +21,8 @@ import pandas as pd
 import pylab
 import scipy.cluster.hierarchy as sch
 from matplotlib import font_manager
+from mpl_toolkits.mplot3d import Axes3D
+from scipy import stats
 from scipy.cluster.hierarchy import linkage
 from scipy.spatial.distance import pdist, squareform
 from sklearn.decomposition import PCA
@@ -58,7 +57,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
                     linkage_method="single",
                     colLable=False, rowLabel=False, color_bar=True, sortCol=True):
     # Adopted from Ref: http://stackoverflow.com/questions/2982929/plotting-results-of-hierarchical-clustering-ontop-of-a-matrix-of-data-in-python
-    plt.close()
+    plt.close('all')
     matplotlib.rcParams['lines.linewidth'] = 0.25
     scale = []  # config.transform_method
     max_hight = 300
@@ -210,7 +209,7 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
         legend_lable = " Distance"  # str(config.similarity_method).upper() if len(config.similarity_method) <5 else config.similarity_method.title()
         if len(scale) > 0:
             legend_lable = legend_lable + ' (' + str(scale.title()) + ')'
-        fig.colorbar(im, cax=axcolor, label=legend_lable, ticks = [0, D.max().max()/2.0, D.max().max()])
+        fig.colorbar(im, cax=axcolor, label=legend_lable, ticks=[0, D.max().max() / 2.0, D.max().max()])
         # pylab.colorbar(ax=axmatrix)
         # axmatrix.get_figure().colorbar(im, ax=axmatrix)
     # plt.tight_layout()
@@ -218,8 +217,8 @@ def dendrogram_plot(data_table, D=[], xlabels_order=[], xlabels=None, ylabels=[]
     fig.savefig(filename + '.pdf', bbox_inches='tight', dpi=350)
     # heatmap2(data_table, xlabels = xlabels, filename=filename+"_distance", metric = "nmi", method = "single", )
     # pylab.close()
-    plt.close()
-    plt.close()
+    plt.close('all')
+    # fig.close('all')
     return Y1
 
 
@@ -340,7 +339,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord',
         metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).any(axis=1)]
 
-    plt.close()
+    plt.close('all')
     plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
     ax = plt.axes()
     colors = ncolors(n=max(2, sum(
@@ -498,7 +497,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord',
     else:
         plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
                     dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
-    plt.close()
+    plt.close('all')
 
 def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
              size_tobe_colored=3, xlabel='First component',
@@ -514,6 +513,7 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
         metadata = metadata[(np.abs(stats.zscore(coords)) < 3).all(axis=1)]'''
     outliers = coords[(np.abs(stats.zscore(coords)) >= 3).any(axis=1)]
 
+    plt.close('all')
     plt.close()
     plt.rcParams["figure.figsize"] = (fig_size[0], fig_size[1])
     fig = plt.figure()
@@ -828,7 +828,6 @@ def main():
     # pca_ord(df_data, cluster_members = dataprocess.cluster2dict(clusters, df_distance), size_tobe_colored = args.size_to_plot)
 def network_plot(D, partition, min_weight = 0.5):
     #import community as community_louvain
-    import matplotlib.cm as cm
     import matplotlib.pyplot as plt
     import networkx as nx
 
