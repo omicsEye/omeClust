@@ -53,6 +53,8 @@ if not os.path.isfile(counter_file):
         pass  # file, headers = urlretrieve(COUNTER_URL,counter_file)
     except EnvironmentError:
         print("Unable to download counter")
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 setup(
     name="omeClust",
