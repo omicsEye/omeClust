@@ -1,3 +1,4 @@
+import sys
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -20,7 +21,6 @@ try:
     ]
 except ImportError:
     from urllib import urlretrieve
-
     classifiers = [
         "Programming Language :: Python",
         "Development Status :: 5 - Production/Stable",

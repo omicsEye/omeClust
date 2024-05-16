@@ -16,12 +16,11 @@ diatance_metric = 'spearman'  # euclidean'
 data = None
 metadata = None
 resolution = 'low'
-output_dir = 'omeClust_output'
+output_dir = './omeClust_output'
 estimated_number_of_clusters = 2
 linkage_method = 'complete'
 plot = False
 size_to_plot = 3
 enrichment_method = 'nmi'
 point_size = 3
-# output directort
-output_dir = './'
+

@@ -453,8 +453,8 @@ def ord_plot(coords, cluster_members=None, ord_name='ord',
     # Get artists and labels for legend and chose which ones to display
     handles, labels = ax.get_legend_handles_labels()
     # Create custom artists
-    markerArtist = [plt.Line2D([0], [0], color='black', marker=marker, \
-                               linestyle="none", markeredgewidth=0.25, markerfacecolor="whitesmoke", ) \
+    markerArtist = [plt.Line2D([0], [0], color='black', marker=marker,
+                               linestyle="none", markeredgewidth=0.25, markerfacecolor="whitesmoke", )
                     for marker in metadata_leg_markers]
 
     to_display = max(1, len(handles))
@@ -498,7 +498,7 @@ def ord_plot(coords, cluster_members=None, ord_name='ord',
     plt.close('all')
 
 
-def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
+def ord_plot_3d(coords, cluster_members=None, ord_name='ord',
                 size_tobe_colored=3, xlabel='First component',
                 ylabel='Second component', zlabel='Third component',
                 metadata=None, shapeby=None, fig_size=[3, 2.5], point_size=3, show=False):
@@ -535,6 +535,7 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
                CARETRIGHT, CARETUP, CARETDOWN, CARETLEFTBASE, CARETRIGHTBASE, CARETUPBASE,
     '''
     order_metadata = []
+    markers_dic = {}
     if metadata is not None and shapeby is not None:
         markers_dic = {'nan': "_"}
         df = metadata
@@ -649,8 +650,8 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
     # Get artists and labels for legend and chose which ones to display
     handles, labels = ax.get_legend_handles_labels()
     # Create custom artists
-    markerArtist = [plt.Line2D([0], [0], color='black', marker=marker, \
-                               linestyle="none", markeredgewidth=0.1, markerfacecolor="whitesmoke", ) \
+    markerArtist = [plt.Line2D([0], [0], color='black', marker=marker,
+                               linestyle="none", markeredgewidth=0.1, markerfacecolor="whitesmoke", )
                     for marker in metadata_leg_markers]
 
     to_display = max(1, len(handles))
@@ -721,10 +722,12 @@ def ord_plot_3d(coords, cluster_members=None, ord_name='ord', \
     #   plt.pause(.01)
     if not shapeby is None:
         plt.savefig(config.output_dir + '/' + shapeby + '_' + ord_name + '_plot.pdf',
-                    dpi=350, bbox_inches='tight')  #,figsize=(fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                    dpi=350,
+                    bbox_inches='tight')  # ,figsize=(fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     else:
         plt.savefig(config.output_dir + '/' + ord_name + '_plot.pdf',
-                    dpi=350, bbox_inches='tight')  # , figsize=(fig_size[0], fig_size[1])figsize = (fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+                    dpi=350,
+                    bbox_inches='tight')  # , figsize=(fig_size[0], fig_size[1])figsize = (fig_size[0], fig_size[1]) figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 
@@ -733,7 +736,6 @@ def cm2inch(value):
 
 
 def pcoa(adist, cluster_members=None):
-    import skbio
     from skbio import DistanceMatrix
     from skbio.stats.ordination import PCoA
 

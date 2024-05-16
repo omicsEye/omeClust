@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Multi-resolution clustering approach to find clusters with different diameter 
+Multi-resolution clustering approach to find clusters with different diameter
 
 """
 import argparse
@@ -24,6 +24,7 @@ except ImportError:
              " Please check your omeClust install.")
 from . import distance, viz
 
+
 def main_run(distance_matrix=None,
              number_of_estimated_clusters=None,
              linkage_method='single',
@@ -42,7 +43,7 @@ def main_run(distance_matrix=None,
     # clusters = cutree_to_get_below_threshold_number_of_features (hclust_tree, t = estimated_num_clust)
     if number_of_estimated_clusters == None:
         number_of_estimated_clusters, _ = utilities.predict_best_number_of_clusters(hclust_tree, distance_matrix)
-        print('number_of_estimated_clusters: ',number_of_estimated_clusters)
+        print('number_of_estimated_clusters: ', number_of_estimated_clusters)
     clusters = utilities.get_homogenous_clusters_silhouette(hclust_tree, array(distance_matrix),
                                                             number_of_estimated_clusters=number_of_estimated_clusters,
                                                             resolution=resolution)
@@ -71,7 +72,7 @@ def check_requirements():
 
 
 def parse_arguments(args):
-    """ 
+    """
     Parse the arguments from the user
     """
 
@@ -115,7 +116,7 @@ def parse_arguments(args):
         "-c", "--linkage_method",
         default='complete',
         help="linkage clustering method method {default = complete, options average, complete\n",
-        choices = ['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward'])
+        choices=['single', 'average', 'complete', 'weighted', 'centroid', 'median', 'ward'])
     parser.add_argument(
         "--plot",
         help="dendrogram plus heatmap\n",
@@ -142,23 +143,23 @@ def parse_arguments(args):
 
 
 def omeClust(data, metadata=config.metadata, resolution=config.resolution,
-            output_dir=config.output_dir,
-            estimated_number_of_clusters=config.estimated_number_of_clusters,
-            linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None, enrichment_method="nmi"):
+             output_dir=config.output_dir,
+             estimated_number_of_clusters=config.estimated_number_of_clusters,
+             linkage_method=config.linkage_method, plot=config.plot, size_to_plot=None, enrichment_method="nmi"):
     # read  input files
     data = pd.read_table(data, index_col=0, header=0)
     # print(data.shape)
-    #print(data.index)
-    #print(data.columns)
+    # print(data.index)
+    # print(data.columns)
 
     if metadata is not None:
         metadata = pd.read_table(metadata, index_col=0, header=0)
         #   print(data.index)
-        #print(metadata.index)
+        # print(metadata.index)
         ind = metadata.index.intersection(data.index)
-        #diff = set(metadata.index).difference(set(data.index))
-        #print (diff)
-        #print(len(ind), data.shape[1], ind)
+        # diff = set(metadata.index).difference(set(data.index))
+        # print (diff)
+        # print(len(ind), data.shape[1], ind)
         if len(ind) != data.shape[0]:
             print("the data and metadata have different number of rows and number of common rows is: ", len(ind))
             print("The number of missing metadata are: ", data.shape[0] - len(ind))
@@ -166,14 +167,13 @@ def omeClust(data, metadata=config.metadata, resolution=config.resolution,
             # metadata = None
             # else:
             diff_rows = data.index.difference(metadata.index)
-            #print (diff_rows)
+            # print (diff_rows)
             empty_section_metadata = pd.DataFrame(index=diff_rows, columns=metadata.columns)
             metadata = pd.concat([metadata, empty_section_metadata])
         metadata = metadata.loc[data.index, :]
-        #print (data, metadata)
-        #data = data.loc[ind]
-        #data = data.loc[ind, :]
-
+        # print (data, metadata)
+        # data = data.loc[ind]
+        # data = data.loc[ind, :]
 
     config.output_dir = output_dir
     check_requirements()
@@ -197,13 +197,15 @@ def omeClust(data, metadata=config.metadata, resolution=config.resolution,
     omeClust_enrichment_scores, sorted_keys = None, None
     shapeby = None
     if metadata is not None:
-        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata, method=enrichment_method)
+        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata,
+                                                                                      method=enrichment_method)
         if len(sorted_keys) > 3:
             shapeby = sorted_keys[3]
             print(shapeby, " is the most influential metadata in clusters")
     else:
-        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata, method=enrichment_method)
-    #print (omeClust_enrichment_scores, sorted_keys)
+        omeClust_enrichment_scores, sorted_keys = utilities.omeClust_enrichment_score(clusters, metadata,
+                                                                                      method=enrichment_method)
+    # print (omeClust_enrichment_scores, sorted_keys)
     dataprocess.write_output(clusters, output_dir, df_distance, omeClust_enrichment_scores, sorted_keys)
     feature2cluster = dataprocess.feature2cluster(clusters, df_distance)
     feature2cluster_map = pd.DataFrame.from_dict(feature2cluster, orient='index', columns=['Cluster'])
@@ -218,7 +220,7 @@ def omeClust(data, metadata=config.metadata, resolution=config.resolution,
         except:
             pass
         try:
-         viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+            viz.tsne_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
                          size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
         except:
             pass
@@ -227,12 +229,12 @@ def omeClust(data, metadata=config.metadata, resolution=config.resolution,
                         size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
         except:
             pass
-        #try:
-        viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
-                       size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-        #except:
-        #    pass
-       # draw network
+        try:
+            viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+                        size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
+        except:
+            pass
+        # draw network
         max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
         min_weight = df_distance.max().max() - max_dist
         viz.network_plot(D=df_distance, partition=dataprocess.feature2cluster(clusters, D=df_distance),
@@ -242,10 +244,11 @@ def omeClust(data, metadata=config.metadata, resolution=config.resolution,
     #    try:
     # max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
     # print(max_dist)
-    #utilities.louvain_clust(df_distance, min_weight = min_weight)
+    # utilities.louvain_clust(df_distance, min_weight = min_weight)
     #    except:
     #        print("Failed to run louvain!!!")
     #        pass
+
 
 def log_configuration(args):
     # configure the logger
@@ -280,13 +283,12 @@ def main():
     config.enrichment_method = config.enrichment_method
     log_configuration(args)
     omeClust(data=args.input, metadata=args.metadata,
-            resolution=args.resolution, output_dir=args.output,
-            linkage_method=args.linkage_method,
-            plot=args.plot,
-            estimated_number_of_clusters=args.estimated_number_of_clusters,
-            size_to_plot=args.size_to_plot,
-            enrichment_method = args.enrichment_method)
-
+             resolution=args.resolution, output_dir=args.output,
+             linkage_method=args.linkage_method,
+             plot=args.plot,
+             estimated_number_of_clusters=args.estimated_number_of_clusters,
+             size_to_plot=args.size_to_plot,
+             enrichment_method=args.enrichment_method)
 
 
 if __name__ == "__main__":
