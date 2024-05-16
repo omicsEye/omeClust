@@ -80,7 +80,7 @@ conda --version
 ```
 it should out put something like:
 ```
-conda 4.9.2
+conda 4.10.3
 ```
 if not, you must make *conda* available to your system for further steps.
 if you have problems adding conda to PATH, you can find instructions
@@ -96,7 +96,7 @@ install [git](https://gitforwindows.org/)
 In case you face issues with this step, [this link](https://github.com/pycaret/pycaret/issues/1254) may help you.
 1) Create a new conda environment (let's call it omeClust_env) with the following command:
 ```
-conda create --name omeClust_env python=3.9
+conda create --name omeClust_env python=3.12.3
 ```
 2) Activate your conda environment:
 ```commandline
@@ -131,7 +131,7 @@ python -m pip install git+https://github.com/omicsEye/omeClust
 5) Close the current terminal and open a new terminal
 6) Create a new conda environment (let's call it omeClust_env) with the following command:
   ```commandline
-  conda create --name omeClust_env python=3.9
+  conda create --name omeClust_env python=3.12.3
   ```
 7) Activate the conda environment
   ```commandline
