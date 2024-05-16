@@ -227,11 +227,11 @@ def omeClust(data, metadata=config.metadata, resolution=config.resolution,
                         size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
         except:
             pass
-        try:
-            viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
+        #try:
+        viz.mds_ord(df_distance, cluster_members=dataprocess.cluster2dict(clusters),
                        size_tobe_colored=size_to_plot, metadata=metadata, shapeby=shapeby)
-        except:
-            pass
+        #except:
+        #    pass
        # draw network
         max_dist = max(omeClust_enrichment_scores['branch_condensed_distance'])
         min_weight = df_distance.max().max() - max_dist
