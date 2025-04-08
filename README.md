@@ -244,8 +244,10 @@ Download distance matrix:
 curl https://raw.githubusercontent.com/omicsEye/omeClust/master/data/synthetic/dist_4_0.001_4_200.txt -o ./dist_4_0.001_4_200.txt
 ```
 
-3. Run omeClust in command line with input
-``$ omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclust_demo --plot``
+3. Run omeClust in the command line with input:
+```commandline
+omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclust_demo --plot
+```
 
 4. Check your output folder
 Here we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generated plots. 
