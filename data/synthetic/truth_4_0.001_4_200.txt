@@ -1,4 +1,4 @@
-#	Gender	Age	Ground truth
+	Gender	Age	Ground truth
 S1	F	23	G 1
 S2	F	17	G 1
 S3	F	34	G 1
