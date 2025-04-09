@@ -882,8 +882,8 @@ def network_plot(D, partition, min_weight=0.5):
     # nx.get_xaxis().set_ticks([])
     # nx.get_yaxis().set_ticks([])
     plt.axis("off")
-    # plt.savefig(config.output_dir + '/' +'network_plot.pdf',
-    #            dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
+    plt.savefig(config.output_dir + '/' +'network_plot.pdf',
+                dpi=350, bbox_inches='tight')  # figsize=(2.0, 2.0) (cm2inch(8.9), cm2inch(8.9))
     plt.close()
 
 
