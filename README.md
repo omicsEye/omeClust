@@ -5,9 +5,9 @@ clusters of features using omics data and scores metadata
 (resolution score) based on their influences in clustering.
 The similarity of features within each cluster can be 
 different (different resolution). Resolution of similarity score takes to 
-account not only similarity between measurements and 
+account not only the similarity between measurements and 
 also the structure in a hierarchical structure of data and 
-number of features which group together.
+number of features that group together.
 
 ---
 
@@ -52,12 +52,12 @@ Version 1.1.8 was used for publication evaluations and applications.
 1. Generality: omeClust uses distance matrix as input, to allow users decide about appropriate distance metric for 
 their data.
 
-2. A simple user interface (single command driven flow)
+2. A simple user interface (single command-driven flow)
     * The user only needs to provide a distance matrix file and a metadata file (optional)
 
 3. A complete report including main outputs:
     * A text file of clusters and related information is provided as output in a tab-delimited file, `clusters.txt`
-    * Ordination plots (PCoA, PCA, MDS, and t-SNE), heatmap,and network plot are provides for ease of interpretation
+    * Ordination plots (PCoA, PCA, MDS, and t-SNE), heatmap, and network plot are provided for ease of interpretation
     * Discretized metadata that has been used for enrichment score calculation 
     
 # omeClust #
@@ -74,23 +74,23 @@ their data.
 Go to the [Anaconda website](https://www.anaconda.com/) and download the latest version for your operating system.  
 * For Windows users: do not forget to add `conda` to your system `path`
 * Second is to check for conda availability  
-open a terminal (or command line for Windows users) and run:
+Open a terminal (or command line for Windows users) and run:
 ```
 conda --version
 ```
-it should out put something like:
+it should output something like:
 ```
 conda 4.10.3
 ```
-if not, you must make *conda* available to your system for further steps.
-if you have problems adding conda to PATH, you can find instructions
+If not, you must make *conda* available in your system for further steps.
+If you have problems adding conda to PATH, you can find instructions
 [here](https://docs.anaconda.com/anaconda/user-guide/faq/).  
 
-### Windows Linux Mac ###
+### Windows Linux Mac###
 If you are using an **Apple M1/M2 MAC** please go to the [Apple M1/M2 MAC](#apple-m1m2-mac) for installation
 instructions.  
 If you have a working conda on your system, you can safely skip to step three.  
-If you are using windows, please make sure you have both git and Microsoft Visual C++ 14.0 or greater installed.
+If you are using Windows, please make sure you have both git and Microsoft Visual C++ 14.0 or greater installed.
 install [git](https://gitforwindows.org/)
 [Microsoft C++ build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
 In case you face issues with this step, [this link](https://github.com/pycaret/pycaret/issues/1254) may help you.
@@ -103,11 +103,11 @@ conda create --name omeClust_env python=3.12.3
 conda activate omeClust_env 
 ```
 3) Install *omeClust*:
-install with pip:
+Install with pip:
 ```commandline
 pip install omeClust
 ```
-or you can directly install if from GitHub:
+Or you can directly install it from GitHub:
 ```commandline
 python -m pip install git+https://github.com/omicsEye/omeClust
 ```
@@ -217,15 +217,15 @@ A list of all options are provided in #options section.
 
 ## Output ##
 
-the main output is the `clusters.txt` a a tab-delimited text file that each row is a cluster with following columns.
-* cluster: includes cluster/community IDs started with C.	
+The main output is the `clusters.txt`, a tab-delimited text file in each row is a cluster with following columns.
+* cluster: includes cluster/community IDs starting with C.	
 * members: members of a cluster.	
-* resolution_score: an score defined for each cluster calculated as harmonic mean of number of cluster and condensed 
-distance of cluster branch in hierarchy. We used 0.05 as threshold to call a cluster as a major cluster. 	
-* Meta1: if metadata is provides this is the first metadata that is enriched in cluster and
+* resolution_score: a score defined for each cluster calculated as harmonic mean of number of cluster and condensed 
+distance of cluster branch in hierarchy. We used 0.05 as a threshold to call a cluster a major cluster. 	
+* Meta1: if metadata is provided this is the first metadata that is enriched in cluster and
 is reported as most influential metadata on clusters structure. 	
 * Meta2: the second most 
-influential metadata. (Metadata2 is a name of a column in metadata if if it is provided).
+influential metadata. (Metadata2 is a name of a column in metadata if it is provided).
 
 ### Demo run using synthetic data ###
 
@@ -233,7 +233,7 @@ influential metadata. (Metadata2 is a name of a column in metadata if if it is p
 [Distance matrix](data/synthetic/dist_4_0.001_4_200.txt) and
 [metadata](/data/synthetic/truth_4_0.001_4_200.txt))
 
-if you use command line (e.g. to run it on a remote server) use `curl` or `wget`.
+if you use the command line (e.g., to run it on a remote server), use `curl` or `wget`.
 
 Download metadata:
 ```commandline
@@ -250,7 +250,7 @@ omeClust -i dist_4_0.001_4_200.txt --metadata truth_4_0.001_4_200.txt -o omeclus
 ```
 
 4. Check your output folder
-Here we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generated plots. 
+Here, we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generated plots. 
 
 
 <img src="img/Ground truth_PCoA_plot.png" height="35%" width="35%"> <img src="img/Ground truth_PCoA_3D_plot.png" height="35%" width="35%">
@@ -258,7 +258,7 @@ Here we show the PCoA, PCoA 3D, network, and t-SNE plots from _omeClust_ generat
 <img src="img/network_plot.png" height="35%" width="35%"> <img src="img/Ground truth_t-SNE_plot.png" height="35%" width="35%">
 
 
-Below is an example output `clusters.txt` file, we only showing teh five members of each cluster for purpose of saving space:
+Below is an example output `clusters.txt` file. We are only showing the five members of each cluster for the purpose of saving space:
 ```
 Cluster  |  Members                   |  n   |  resolution_score  |  branch_condensed_distance  |  Ground truth  |  Gender       |  Age
 ---------|----------------------------|------|--------------------|-----------------------------|----------------|---------------|-------------
@@ -271,24 +271,23 @@ C1       |  S129;S113;S132;S122;S131  |  43  |  0.321199973       |  0.365275944
 *   This file details the clusters. Features are grouped in clusters.
 *    **```Cluster```**: a column contains clusters names that each cluster name starts with `C` following with a number.
 *    **```Members```**: has one or more features that participate in the cluster.
-*    **```n```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```resolution_score```**: this value is corresponding to `binary silhouette score` introduced in this work.
-*    **```branch_condensed_distance```**: this value is corresponding to `condensed distance` of a cluster branch in hierarchy.
+*    **```n```**: this value is corresponding to the `binary silhouette score` introduced in this work.
+*    **```resolution_score```**: This value is corresponding to the `binary silhouette score` introduced in this work.
+*    **```branch_condensed_distance```**: This value is corresponding to the `condensed distance` of a cluster branch in the hierarchy.
 *    **```Ground truth```**: is a metadata that has the actual membership of features in synthetic data and 
 it was most influential metadata with normalized mutual information (NMI) 1. _omeClust_ uses NMI between 
 metadata categories and labels of detected clusters (communities) as an enrichment score for each metadata. 
 *    **```Gender```**: is the second influential metadata with NMI 0.1.
-*    **```Age```**: Age is has less overlap with clusters. _omeClust_ discretize continuous (numeric) metadata to 
-calculate enrichment score.   
+*    **```Age```**: is has less overlap with clusters. _omeClust_ discretize continuous (numeric) metadata to calculate enrichment score.   
 
 
 # Guides to omeClustviz for visuzlaization #
 
 
 * **Basic usage:** `$ omeClustviz /path-to-omeClust-output/adist.txt /path-to-omeClust-output/clusters.txt --metadata metadata.txt --shapeby meta1 -o /path-to-omeClust-output/`
-* `adist.txt` = an distance matrix that used for clustering 
-* `clusters.txt` = an omeClust output which assigns features to clusters
-* `metadata.txt`: is metadata file which contains metadata for features
+* `adist.txt` = a distance matrix that is used for clustering 
+* `clusters.txt` = an omeClust output that assigns features to clusters
+* `metadata.txt`: is metadata file that contains metadata for features
 * `meta1`: is a metadata in the metadata file to be used for shaping points in the ordination plot
 * Run with `-h` to see additional command line options
 
@@ -331,7 +330,7 @@ optional arguments:
 ```buildoutcfg=
 $ python3
 from  omeClust import cluster_generator
-from  omeClust import dataprocess
+from  omeClust import data process
 nX = 100
 nY = 100 
 nSamples = 50
@@ -349,14 +348,14 @@ colheader = ['Feature'+ str(i) for i in range(0, nY)]
 
 dataprocess.write_table(A, name= '/your-file-path/' + 'A_'+ str(nX) + '_' + str(nY) +'.txt', prefix="Feature", colheader = colheader, rowheader = rowheader)
 ```
-`circular_block` function returns two datasets `X` and `Y`, and also 
+`circular_block` function returns two datasets, `X` and `Y`, and also 
 `A` matrix for relationships between features among these two datasets.
 
 Here is a description for parameters of the function for properties of 
 the datasets and spiked relationship within and between datasets:
-* `nSample`: number of samples in each datasets (appers as columns)
-* `nX`: number of features in each datasets (appears as rows of X)
-* `nY`: number of features in each datasets (appears as rows of Y)
+* `nSample`: number of samples in each dataset (appears as columns)
+* `nX`: number of features in each dataset (appears as rows of X)
+* `nY`: number of features in each dataset (appears as rows of Y)
 * `nBlocks`: number of clusters in each dataset
 * `noiseVar`: noise variable between [0.0..1.0], 0.0 refers to no noise
 * `blockIntraCov`: specifies covariance between features within a cluster
@@ -369,14 +368,15 @@ the datasets and spiked relationship within and between datasets:
 
 ## Tutorials for distance calculation ##
 
-_omeClust_ is a genric tools and users can calculate a distance matrix using any appropriate method for their omics data 
-and provide it as the input to _omeClust_. Here we provide methods for several **omics** applications. 
+A complete `.rmd` file in R to generate distance matrices is provided [HERE](https://github.com/omicsEye/omeClust/wiki/Generating-Distance-Matrices-from-Sequence-and-Omics-Data-for-omeClust) in omeClustwiki pages
+_omeClust_ is a generic tool, and practitioners can calculate a distance matrix using any appropriate method for their omics data 
+and provide it as the input to _omeClust_. Here, we provide methods for several **omics** applications. 
 
 ### Distance between sequencing alignments ###
-Multiple sequence alignment (MSA) file can be used to measure dissimilarity between genomes or strains.
-We have used this approch to investigate Coronavirus strains and microbial strains.
+A multiple-sequence alignment (MSA) file can be used to measure dissimilarity between genomes or strains.
+We have used this approach to investigate Coronavirus strains and microbial strains.
 
-Below is demo code in `R` to calculate dissimalrity between aligned sequnces in a `fasta` format MSA file 
+Below is demo code in `R` to calculate dissimalrity between aligned sequences in a `fasta` format MSA file 
 ```buildoutcfg=
 library(ape)
 
@@ -388,7 +388,7 @@ D <- dist.dna(seq, model = "TN93", gamma = F, variance = TRUE,
               pairwise.deletion = TRUE,
               base.freq = NULL, as.matrix = TRUE)
 
-# write distance matrix to a file taht can be used as input for omeClust
+# write distance matrix to a file that can be used as input for omeClust
 write.table( D, 'distance_matrix.txt', sep = "\t", eol = "\n", na = "", col.names = NA, quote= F, row.names = T)
 ```
 
@@ -405,34 +405,34 @@ library(devtools)
 install_github('GWCBI/GWDBB')
 library(GWDBB)
 
-# 2- load HMP1-II metadata
+# 2- Load HMP1-II metadata
 data("HMP1_II_Metadata")
 
-# 3- See teh data: there is mislocation of headers du to space in a clumn header
+# 3- See the data: there is a mislocation of headers due to spaces in a column header
 View(HMP1_II_Metadata)
 
-# 4- fix the headers
+# 4- Fix the headers
 colnames(HMP1_II_Metadata) <- c("Person_ID", "VISNO", "Body_area", "Body_site", "SNPRNT",  "Gender", "WMSPhase")
 
-# 5- slect meatadata of interest
+# 5- Select metadata of interest
 my_HMP_metadata <- HMP1_II_Metadata[,c("Body_area", "Body_site", "Gender")]
 
-# 6- write the meatdata in you computer as a tab-delimited file 
+# 6- Write the meat data in you computer as a tab-delimited file 
 write.table( my_HMP_metadata, 'data/my_HMP_metadata.txt', sep = "\t", eol = "\n", na = "", col.names = NA, quote= F, row.names = T)
 
 # 7- load HMP1-II microbial species abundances
 data("HMP1_II_Microbial_Species")
 HMP1_II_Microbial_Species <- t(HMP1_II_Microbial_Species)
 
-# 8- calculate simailrty between samples based on microbial species abundance
+# 8- Calculate the similarity between samples based on microbial species abundance
 library(vegan)
 veg_dist <- as.matrix(vegdist(HMP1_II_Microbial_Species, method="bray"))
 
-# 9- write the  in you computer as a tab-delimited file
+# 9- Write the  in you computer as a tab-delimited file
 write.table( veg_dist, 'data/HMP_disatnce.txt', sep = "\t", eol = "\n", na = "", col.names = NA, quote= F, row.names = T)
 
 
-# 10-  run the tool using HMP1-II data and metadata using 
+# 10-  Run the tool using HMP1-II data and metadata using 
 $ omeClust -i HMP_disatnce.txt --metadata my_HMP_metadata.txt -o HMP_omeClust
 ```
 ### Distance using genomics variation ###
