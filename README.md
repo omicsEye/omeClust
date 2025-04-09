@@ -368,7 +368,8 @@ the datasets and spiked relationship within and between datasets:
 
 ## Tutorials for distance calculation ##
 
-A complete `.rmd` file in R to generate distance matrices is provided [HERE](https://github.com/omicsEye/omeClust/wiki/Generating-Distance-Matrices-from-Sequence-and-Omics-Data-for-omeClust) in omeClustwiki pages
+A complete `.rmd` file in R to generate distance matrices is provided [HERE](https://github.com/omicsEye/omeClust/wiki/Generating-Distance-Matrices-from-Sequence-and-Omics-Data-for-omeClust) in omeClust wiki pages.
+
 _omeClust_ is a generic tool, and practitioners can calculate a distance matrix using any appropriate method for their omics data 
 and provide it as the input to _omeClust_. Here, we provide methods for several **omics** applications. 
 
